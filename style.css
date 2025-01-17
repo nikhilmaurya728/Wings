@@ -59,40 +59,47 @@ nav {
   .search-bar input {
     padding: 5px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #a1c4a1;
     border-radius: 4px 0 0 4px;
   }
   .search-bar button {
     padding: 5px 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid green;
     border-radius: 0 4px 4px 0;
-    background-color: #555;
+    background-color: green;
     color: white;
     cursor: pointer;
   }
-  .search-bar button:hover {
-    background-color: #777;
-  }
+   
   .search-icon {
     font-size: 20px;
     cursor: pointer;
     margin-right: 10px;
     display: none;
   }
-  .mode-button {
-    padding: 5px 10px;
-    font-size: 16px;
+  .fullscreen-btn {
     border: none;
     margin-left: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #555;
+    background-color: green;
     color: white;
     cursor: pointer;
   }
-  .mode-button:hover {
-    background-color: #777;
+
+  button img {
+
+    filter: invert(1);
+margin: 0px;
+    width: 30px; /* Icon size */
+    height: 30px;
+}
+  button.fullscreen {
+    background-color:  firebrick; /* Full-screen mode background */
+}
+  .fullscreen-btn:hover, .search-bar button:hover {
+    opacity: 80%;
   }
 
 

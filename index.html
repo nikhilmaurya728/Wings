@@ -5,46 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wings2</title>
-    <link rel="icon" href="image/favicon.png" >
+    <link rel="icon" href="image/favicon.png">
 
     <link rel="stylesheet" href="style.css">
-<style>
-   
-</style>
-    
+    <style>
+
+    </style>
+
 </head>
 <style>
-    
+
 </style>
+
 <body>
     <header>
         <nav>
-            <div class="nav-left"> <a href="C:/Users/Nitin%20Maurya/Desktop/projects1.2%20working%20code%20and%20data/notes.html">
-                <img class="logo" src="image/logo.png" alt="loading">
-            </a>
-            <select id="classDropdown">
-                
-                <option value="class1">Class 1</option>
-                <option value="class2">Class 2</option>
-                <option value="class3">Class 3</option>
-                <option value="class4">Class 4</option>
-            </select>
-        </div>
-        <div class="nav-right">
-            <div class="search-bar">
-              <span class="search-icon" onclick="toggleSearch()">🔍</span>
-              <input type="text" id="searchInput" placeholder="Search...">
-              <button onclick="performSearch()">Go</button>
+            <div class="nav-left"> <a
+                    href="index.html">
+                    <img class="logo" src="image/logo.png" alt="loading">
+                </a>
+                <select id="classDropdown">
+                    <option value="class3">Class 3</option>
+                    <option value="class4">Class 4</option>
+                </select>
             </div>
-            <button class="mode-button">Mode</button>
-          </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <span class="search-icon" onclick="toggleSearch()">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <button title="You can search any topic or chapter, also Search about your class, Fees, Exams, Van timings" onclick="performSearch()">Go</button>
+                </div>
+                <button class="fullscreen-btn" id="fullscreen-btn" title="Go Full Screen">
+                    <img id="fullscreen-icon" src="image/full.png" alt="Full Screen Icon">
+                </button>
+            </div>
         </nav>
         <div class="subnav" id="subjectList">
         </div>
     </header>
     <div class="material" id="material">
         <button class="toggle-button" onclick="toggleSidebar()"><b>☰</b></button>
-        
+
         <div class="sidebar" id="sidebar">
         </div>
 
@@ -61,10 +62,55 @@
             </ul>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
-    
+
     <script>
+        const fullscreenBtn = document.getElementById("fullscreen-btn");
+        const fullscreenIcon = document.getElementById("fullscreen-icon");
+
+        // Toggle full-screen mode when the button is clicked
+        fullscreenBtn.addEventListener("click", () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen()
+                    .then(() => {
+                        updateButton(true);
+                    })
+                    .catch(err => {
+                        alert(`Error trying to enable full-screen mode: ${err.message}`);
+                    });
+            } else {
+                document.exitFullscreen()
+                    .then(() => {
+                        updateButton(false);
+                    })
+                    .catch(err => {
+                        alert(`Error trying to exit full-screen mode: ${err.message}`);
+                    });
+            }
+        });
+
+        // Listen for the fullscreenchange event
+        document.addEventListener("fullscreenchange", () => {
+            if (document.fullscreenElement) {
+                updateButton(true); // Full-screen mode
+            } else {
+                updateButton(false); // Not in full-screen mode
+            }
+        });
+
+        function updateButton(isFullscreen) {
+    if (isFullscreen) {
+        fullscreenIcon.src = "image/cross.png"; // Icon for exiting full screen
+        fullscreenBtn.classList.add("fullscreen");
+        fullscreenBtn.title = "Exit Full Screen"; // Update tooltip
+    } else {
+        fullscreenIcon.src = "image/full.png"; // Icon for entering full screen
+        fullscreenBtn.classList.remove("fullscreen");
+        fullscreenBtn.title = "Go Full Screen"; // Update tooltip
+    }
+}
+
     </script>
 </body>
 
