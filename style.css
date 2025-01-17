@@ -40,7 +40,7 @@ nav {
 }
 
 .logo {
-    margin: 0 20px 0;
+    margin: 0 10px 0;
     height: 30px;
     width: 100px;
 }
@@ -137,10 +137,11 @@ nav {
 #sidebar {
     padding-top: 64px;
     width: 25%;
+    min-width: 170px;
     background-color: rgb(231, 236, 231);
     transition: transform 0.3s ease;
     overflow-y: auto; /* Enable vertical scrolling */
-    height: 100%;
+    height:calc(30px + 100%);
     z-index: 1;
     
     /* Full height */
@@ -316,6 +317,7 @@ nav {
     .sidebar {
         position: absolute;
         left: 0;
+        width: 25%;
         z-index: 1000;
     }
 
