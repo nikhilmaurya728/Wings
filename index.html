@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Notes</title>
     <link rel="stylesheet" href="style.css">
 <style>
    
@@ -17,9 +17,15 @@
 <body>
     <header>
         <nav>
-            <div class="nav-left"> <img class="logo" src="image/logo.png" alt="loading">
+            <div class="nav-left"> <a href="C:/Users/Nitin%20Maurya/Desktop/projects1.2%20working%20code%20and%20data/notes.html">
+                <img class="logo" src="image/logo.png" alt="loading">
+            </a>
             <select id="classDropdown">
-                <option value="home">Home</option>
+                
+                <option value="class1">Class 1</option>
+                <option value="class2">Class 2</option>
+                <option value="class3">Class 3</option>
+                <option value="class4">Class 4</option>
             </select>
         </div>
         <div class="nav-right">
@@ -34,9 +40,26 @@
         <div class="subnav" id="subjectList">
         </div>
     </header>
-    <div class="home" id="home">
+    <div class="material" id="material">
+        <button class="toggle-button" onclick="toggleSidebar()"><b>☰</b></button>
+        
+        <div class="sidebar" id="sidebar">
+        </div>
+
+        <div class="main" id="main">
+        </div>
+
+        <div class="right-bar">
+            <h3>Important Topics</h3>
+            <p>In this chapter we will learn about</p>
+            <ul>
+                <li>Introduction to HTML</li>
+                <li>Basics of CSS</li>
+                <li>JavaScript Basics</li>
+            </ul>
+        </div>
     </div>
-   
+    
     <script src="script.js"></script>
     
     <script>
