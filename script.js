@@ -1,10 +1,14 @@
 
 const classData = {
-    home: ['Home Work', 'Notes And Paper', 'English Speaking'],
-    class1: ['Sports', 'Civics', 'Art'],
-    class2: ['Sports', 'Civics', 'Art'],
-    class3: ['Sports', 'Art', 'Civics'],
-    class4: ['Grammar', 'Math', 'Science', 'History', 'Geography', 'Sports', 'Art'],
+    home: ['Names English to Hindi', 'Word Power'],
+    class34: ['Grammar', 'Math'],
+    /*
+    class56: ['Sports', 'Civics', 'Art'],
+    class78: ['Sports', 'Civics', 'Art'],
+    class9th: ['Sports', 'Civics', 'Art'],
+    class10th: ['Sports', 'Civics', 'Art'],
+    class11th: ['Sports', 'Civics', 'Art'],
+    class12th: ['Sports', 'Civics', 'Art'],*/
 };
 
 const classDropdown = document.getElementById('classDropdown');
