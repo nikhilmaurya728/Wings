@@ -5,39 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milk Man Live Location</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
         #map {
-            width: 600px;
-            height: 450px;
-            margin: 20px auto;
-            border: 1px solid #ccc;
+            height: 90vh;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <h1>Milk Man Live Location</h1>
-    <p id="status">Fetching location...</p>
-    <iframe id="map" loading="lazy" allowfullscreen></iframe>
-    
-    <script>
-        async function fetchLocation() {
-            try {
-                const response = await fetch("location.json?_t=" + new Date().getTime()); // Prevent caching
-                const data = await response.json();
-                document.getElementById("status").innerText = `Location: ${data.lat}, ${data.lon}`;
-                document.getElementById("map").src = `https://www.google.com/maps?q=${data.lat},${data.lon}&output=embed`;
-            } catch (error) {
-                document.getElementById("status").innerText = "Failed to fetch location";
-            }
-        }
 
-        setInterval(fetchLocation, 5000); // Update location every 5 seconds
-        fetchLocation(); // Fetch location on page load
+    <h1>Milk Man Live Location</h1>
+    <div id="map"></div>
+
+    <!-- ✅ Firebase SDK V8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- ✅ Google Maps API (API Key की ज़रूरत नहीं) -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
+
+    <script>
+        // ✅ Firebase Configuration (सही Details भरो)
+        var firebaseConfig = {
+            apiKey: "",  // यहाँ API Key खाली छोड़ सकते हो
+            authDomain: "milk-man-24d97.firebaseapp.com",
+            databaseURL: "https://milk-man-24d97-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "milk-man-24d97",
+            storageBucket: "milk-man-24d97.appspot.com",
+            messagingSenderId: "103608166782",
+            appId: ""
+        };
+
+        // ✅ Firebase Initialize
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        // ✅ Google Map & Marker
+        var map;
+        var marker;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: { lat: 25.4476, lng: 81.8544 } // Default location (Prayagraj)
+            });
+
+            marker = new google.maps.Marker({
+                position: { lat: 25.4476, lng: 81.8544 },
+                map: map,
+                title: "Milk Man Location"
+            });
+
+            // ✅ Firebase से लोकेशन डेटा पढ़ो और अपडेट करो
+            database.ref("milkman/location").on("value", (snapshot) => {
+                var data = snapshot.val();
+                if (data) {
+                    var newPosition = { lat: data.lat, lng: data.lon };
+                    marker.setPosition(newPosition);
+                    map.setCenter(newPosition);
+                    console.log("Milk Man Location Updated:", newPosition);
+                }
+            });
+        }
     </script>
+
 </body>
 </html>
