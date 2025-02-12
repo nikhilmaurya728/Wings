@@ -1,4 +1,6 @@
 * {
+  
+  font-size: 16px;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -167,6 +169,7 @@ margin: 0px;
 
 
 .main {
+  font-size: 60px;
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
@@ -357,7 +360,30 @@ margin: 0px;
     .w80{
       width: 80%;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+  }
 
+  th,
+  td {
+      border: 0px solid rgb(255, 0, 0);
+      padding: 10px;
+      text-align: left;
+  }
+
+  th {
+      background-color: #ff7b7b;
+  }
+
+  tr:nth-child(even) {
+      background-color: #f7fff7;
+  }
+
+  tr:nth-child(odd) {
+      background-color: #ffeaea;
+  }
 /* Start CSS for A4 pages */
 
 

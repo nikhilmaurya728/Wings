@@ -1,72 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milk Man Live Location</title>
+    <title>Wings2</title>
+    <link rel="icon" href="image/favicon.png">
+
+    <link rel="stylesheet" href="audiostyle.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        #map {
-            height: 90vh;
-            width: 100%;
-        }
+
     </style>
+
 </head>
+<style>
+
+</style>
+
 <body>
-    <button onclick="window.location.href='update.html'">Go to Milk Man Page</button>
-    <h1>Milk Man Live Location</h1>
-    <div id="map"></div>
+    <header>
+        <nav>
+            <div class="nav-left"> <a href="index.html">
+                    <img class="logo" src="image/logo.png" alt="loading">
+                </a>
+                <select id="classDropdown">
+                    <option value="home">Home</option>
+                    <!--<option value="KG">KG Class</option>
+                    <option value="class12">Class 1</option>
+                    <option value="class12">Class 2</option> -->
+                    <option value="class34">Class 3</option>
+                    <option value="class34">Class 4</option>
+                    <!-- <option value="class56">Class 5</option>
+                    <option value="class56">Class 6</option>
+                    <option value="class78">Class 7</option>
+                    <option value="class78">Class 8</option>
+                    <option value="class9th">Class 9th</option>
+                    <option value="class10th">Class 10th</option>
+                    <option value="class11th">Class 11th</option>
+                    <option value="class12th">Class 12th</option> -->
+                </select>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <span class="search-icon" onclick="toggleSearch()">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <button
+                        title="You can search any topic or chapter, also Search about your class, Fees, Exams, Van timings"
+                        onclick="performSearch()">Go</button>
+                </div>
+                <button class="fullscreen-btn" id="fullscreen-btn" title="Go Full Screen">
+                    <img id="fullscreen-icon" src="image/full.png" alt="Full Screen Icon">
+                </button>
+            </div>
+        </nav>
+        <div class="subnav" id="subjectList">
+        </div>
+    </header>
+    <div class="material" id="material">
+        <button class="toggle-button" onclick="toggleSidebar()"><b>☰</b></button>
 
-    <!-- ✅ Firebase SDK V8 -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <div class="sidebar" id="sidebar">
+        </div>
 
-    <!-- ✅ Google Maps API (API Key की ज़रूरत नहीं) -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
+        <div class="main" id="main">
+        </div>
+
+        <div class="right-bar">
+            <h3>Important Topics</h3>
+            <p>In this chapter we will learn about 🤖</p>
+            <ul>
+                <li>Introduction to HTML</li>
+                <li>Basics of CSS</li>
+                <li>JavaScript Basics</li>
+            </ul>
+            <div class="audiocontent">
+                <p class="bold" style="flex: 2;">Notes</p>
+                <p style="flex: 1;"></p>
+                <button style="flex: 3;" onclick="playMusic('song2.mp3', this)">Play Audio</button>
+            </div>
+
+        </div>
+        <div class="music-player" id="musicPlayer">
+            <div>
+                <button class="minimize" id="minimize" onclick="toggleMinimize()">-</button>
+                <button class="close" onclick="closePlayer()">&times;</button>
+            </div>
+
+            <div id="fullPlayer" class="full-player">
+                <p id="trackName">Now Playing: </p>
+                <audio id="audioPlayer" controls>
+                    <source id="audioSource" src="" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+
+                <div class="controls">
+                    <button onclick="previousSong()">Previous</button>
+                    <button onclick="skipTime(-5)">&laquo; 5s</button>
+                    <button class="mode-button" onclick="toggleMode()" id="modeButton">Stop Mode</button>
+                    <button onclick="skipTime(5)">5s &raquo;</button>
+                    <button onclick="nextSong()">Next</button>
+                </div>
+            </div>
+            <div id="minimizedPlayer" class="minimized-controls">
+                <button onclick="skipTime(-5)">&laquo;</button>
+                <button id="playpause" onclick="togglePlayPause('button')">⏯</button>
+                <button onclick="skipTime(5)">&raquo;</button>
+            </div>
+        </div>
+    </div>
+    <script src="audio.js"></script>
+    <script src="script.js"></script>
 
     <script>
-        // ✅ Firebase Configuration (सही Details भरो)
-        var firebaseConfig = {
-            apiKey: "",  // यहाँ API Key खाली छोड़ सकते हो
-            authDomain: "milk-man-24d97.firebaseapp.com",
-            databaseURL: "https://milk-man-24d97-default-rtdb.europe-west1.firebasedatabase.app/",
-            projectId: "milk-man-24d97",
-            storageBucket: "milk-man-24d97.appspot.com",
-            messagingSenderId: "103608166782",
-            appId: ""
-        };
+        const fullscreenBtn = document.getElementById("fullscreen-btn");
+        const fullscreenIcon = document.getElementById("fullscreen-icon");
 
-        // ✅ Firebase Initialize
-        firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
+        // Toggle full-screen mode when the button is clicked
+        fullscreenBtn.addEventListener("click", () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen()
+                    .then(() => {
+                        updateButton(true);
+                    })
+                    .catch(err => {
+                        alert(`Error trying to enable full-screen mode: ${err.message}`);
+                    });
+            } else {
+                document.exitFullscreen()
+                    .then(() => {
+                        updateButton(false);
+                    })
+                    .catch(err => {
+                        alert(`Error trying to exit full-screen mode: ${err.message}`);
+                    });
+            }
+        });
 
-        // ✅ Google Map & Marker
-        var map;
-        var marker;
+        // Listen for the fullscreenchange event
+        document.addEventListener("fullscreenchange", () => {
+            if (document.fullscreenElement) {
+                updateButton(true); // Full-screen mode
+            } else {
+                updateButton(false); // Not in full-screen mode
+            }
+        });
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
-                center: { lat: 25.4476, lng: 81.8544 } // Default location (Prayagraj)
-            });
-
-            marker = new google.maps.Marker({
-                position: { lat: 25.4476, lng: 81.8544 },
-                map: map,
-                title: "Milk Man Location"
-            });
-
-            // ✅ Firebase से लोकेशन डेटा पढ़ो और अपडेट करो
-            database.ref("milkman/location").on("value", (snapshot) => {
-                var data = snapshot.val();
-                if (data) {
-                    var newPosition = { lat: data.lat, lng: data.lon };
-                    marker.setPosition(newPosition);
-                    map.setCenter(newPosition);
-                    console.log("Milk Man Location Updated:", newPosition);
-                }
-            });
+        function updateButton(isFullscreen) {
+            if (isFullscreen) {
+                fullscreenIcon.src = "image/cross.png"; // Icon for exiting full screen
+                fullscreenBtn.classList.add("fullscreen");
+                fullscreenBtn.title = "Exit Full Screen"; // Update tooltip
+            } else {
+                fullscreenIcon.src = "image/full.png"; // Icon for entering full screen
+                fullscreenBtn.classList.remove("fullscreen");
+                fullscreenBtn.title = "Go Full Screen"; // Update tooltip
+            }
         }
-    </script>
 
+    </script>
 </body>
+
 </html>

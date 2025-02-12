@@ -1,4 +1,4 @@
-songs = ["song1.mp3", "song2.mp3", "song3.mp3"];
+songs = ["audio/chapter1.mp3", "song2.mp3", "song3.mp3"];
 var data = {
   
   "Ch 1: Parts of Speech": {

@@ -40,7 +40,7 @@
   bottom: 20px;
   left: 20px;
   width: 350px;
-  max-width: 89vw;
+  max-width: 85vw;
   background: #004810;
   color: white;
   border-radius: 10px;
@@ -89,7 +89,7 @@
 }
 
 .minimized-controls button {
-  background-color: red;
+  background-color: white;
   padding: 0 5px;
   border-radius: 2px;
   margin: 0 2px;

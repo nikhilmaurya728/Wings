@@ -85,7 +85,7 @@ function toggleMode() {
   } else if (playMode === 1) {
     modeButton.textContent = "Repeat Mode";
   } else {
-    modeButton.textContent = "Next Song Mode";
+    modeButton.textContent = "Next Song";
   }
 }
 
