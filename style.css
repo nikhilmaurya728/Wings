@@ -297,14 +297,13 @@ h2 {
 h3 {
   color: #3498db;
 }
-
-ul {
-  margin: 10px 0;
-  padding: 0 20px;
-}
-
 ul li {
   margin-bottom: 5px;
+}
+ul,
+ol {
+  margin: 10px 0;
+  padding: 0 20px;
 }
 
 p {
@@ -327,11 +326,7 @@ textarea {
   border-bottom: 1.4px solid black;
 }
 
-ul,
-ol {
-  margin: 10px 0;
-  padding: 0 20px;
-}
+
 
 img {
   display: block;
@@ -400,7 +395,7 @@ table {
 th,
 td {
   border: 0px solid rgb(255, 0, 0);
-  padding: 10px;
+  padding:5px 10px;
   text-align: left;
 }
 
