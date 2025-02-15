@@ -1,6 +1,6 @@
 * {
 
-  
+
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -180,7 +180,7 @@ button.fullscreen {
 
 
 .main {
-  
+
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
@@ -298,9 +298,11 @@ h2 {
 h3 {
   color: #3498db;
 }
+
 ul li {
   margin-bottom: 5px;
 }
+
 ul,
 ol {
   margin: 10px 0;
@@ -396,8 +398,10 @@ table {
 th,
 td {
   border: 0px solid rgb(255, 0, 0);
-  padding:0px 0px;
+  padding: 2px 4px;
   text-align: left;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 th {
