@@ -180,6 +180,7 @@ button.fullscreen {
 
 
 .main {
+  
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
@@ -270,7 +271,7 @@ button.fullscreen {
 .page {
   font-family: Arial, sans-serif;
   line-height: 1.5;
-  font-size: 25px;
+  font-size: 30px;
 }
 
 .a4page {
