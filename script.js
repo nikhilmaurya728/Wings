@@ -268,6 +268,16 @@ function generateSidebar() {
 
             // Click event for subtopic
             subtopicDiv.addEventListener("click", (e) => {
+
+                // new add for automatic hide sidebar, valid in phone
+                if (window.innerWidth < 700) {
+                    if (subtopicDiv.classList.contains("active")) {
+                        sidebar.classList.add('hidden');
+                    } else {
+                        setTimeout(() => sidebar.classList.add('hidden'), 900);
+                    }
+                } // 16/02/25 
+
                 e.stopPropagation(); // Prevent triggering topic click
                 clearActiveClasses("subtopic");
                 subtopicDiv.classList.add("active");
@@ -279,13 +289,7 @@ function generateSidebar() {
                     targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
 
-                // new add for automatic hide sidebar
-                if (window.innerWidth >= 700) {
-                    setTimeout(() => sidebar.classList.remove('hidden'), 800);
 
-                } else {
-                    setTimeout(() => sidebar.classList.add('hidden'), 800);
-                } // 16/02/25
             });
 
             // Store the first subtopic div for the first topic
