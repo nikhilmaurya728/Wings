@@ -281,9 +281,10 @@ function generateSidebar() {
 
                 // new add for automatic hide sidebar
                 if (window.innerWidth >= 700) {
-                    sidebar.classList.remove('hidden');
+                    setTimeout(() => sidebar.classList.remove('hidden'), 800);
+
                 } else {
-                    sidebar.classList.add('hidden');
+                    setTimeout(() => sidebar.classList.add('hidden'), 800);
                 } // 16/02/25
             });
 
