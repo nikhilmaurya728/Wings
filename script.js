@@ -121,7 +121,7 @@ classDropdown.dispatchEvent(new Event('change'));
 
 
 
-//--------------------------
+//selecting JS file--------------------------
 
 // Variables for Drag Scrolling
 let isDown = false;
@@ -278,6 +278,13 @@ function generateSidebar() {
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
+
+                // new add for automatic hide sidebar
+                if (window.innerWidth >= 700) {
+                    sidebar.classList.remove('hidden');
+                } else {
+                    sidebar.classList.add('hidden');
+                } // 16/02/25
             });
 
             // Store the first subtopic div for the first topic
