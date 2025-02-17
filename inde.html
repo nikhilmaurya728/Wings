@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Google Search Buttons</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e0e0e0;
+}
+
+#searchResults {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 300px; /* Set a maximum height */
+  min-height: 100px;
+}
+
+#searchResults iframe {
+  width: 100%;
+  height: 100%;
+  border: none; /* Remove iframe border */
+}
+</style>
+</head>
+<body>
+
+<h1>Google Search Buttons</h1>
+
+<div class="container">
+  <button data-query="cats">Search for Cats</button>
+  <button data-query="dogs">Search for Dogs</button>
+  <button data-query="programming tutorials">Programming Tutorials</button>
+  </div>
+
+<div id="searchResults">
+</div>
+
+<script>
+const buttons = document.querySelectorAll('button');
+const searchResults = document.getElementById('searchResults');
+
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const query = button.dataset.query;
+    const googleSearchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+
+    // Create an iframe to display the search results
+    const iframe = document.createElement('iframe');
+    iframe.src = googleSearchURL;  // Set the iframe source
+
+    searchResults.innerHTML = ""; // Clear previous results
+    searchResults.appendChild(iframe); // Add the iframe to the div
+
+  });
+});
+</script>
+
+</body>
+</html>
