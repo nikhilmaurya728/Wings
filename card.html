@@ -72,34 +72,39 @@
     </div>
 
     <script>
-        function downloadCard(cardId) {
+        function downloadCard(cardId, callback) {
             const card = document.getElementById(cardId);
             const buttons = card.querySelector('.buttons');
             buttons.style.display = 'none'; // Hide buttons before capturing
 
             html2canvas(card).then(canvas => {
-                let link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = cardId + '.png';
-                link.click();
-                buttons.style.display = 'block'; // Show buttons again after download
+                let imgData = canvas.toDataURL('image/png');
+                buttons.style.display = 'block'; // Show buttons again after capturing
+                if (callback) callback(imgData);
             });
         }
         
         function shareCard(cardId) {
-            const card = document.getElementById(cardId);
-            const buttons = card.querySelector('.buttons');
-            buttons.style.display = 'none'; // Hide buttons before capturing
-
-            html2canvas(card).then(canvas => {
-                buttons.style.display = 'block'; // Show buttons again after capture
-                let imgData = canvas.toDataURL('image/png');
+            downloadCard(cardId, function(imgData) {
                 let blob = dataURLToBlob(imgData);
                 let file = new File([blob], 'card.png', { type: 'image/png' });
-                let formData = new FormData();
-                formData.append('file', file);
-                let url = `https://api.whatsapp.com/send?text=Sharing%20this%20card%20on%20WhatsApp&url=${encodeURIComponent(imgData)}`;
-                window.open(url, '_blank');
+                let dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                let input = document.createElement('input');
+                input.type = 'file';
+                input.files = dataTransfer.files;
+
+                let shareData = {
+                    files: [file],
+                    title: "Word Card",
+                    text: "Check out this word card!"
+                };
+
+                if (navigator.canShare && navigator.canShare(shareData)) {
+                    navigator.share(shareData).catch(err => console.error("Error sharing image: ", err));
+                } else {
+                    alert("Sharing not supported, please download and share manually.");
+                }
             });
         }
 
