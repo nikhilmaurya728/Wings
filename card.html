@@ -57,7 +57,7 @@
         <div class="word">Serene</div>
         <div class="meaning">Calm and peaceful</div>
         <div class="buttons">
-            <button onclick="downloadCard('card1')">Download</button>
+            <button onclick="storeDownloadCard('card1')">Download</button>
             <button onclick="shareCard('card1')">Share</button>
         </div>
     </div>
@@ -66,12 +66,27 @@
         <div class="word">Eloquent</div>
         <div class="meaning">Fluent or persuasive in speaking</div>
         <div class="buttons">
-            <button onclick="downloadCard('card2')">Download</button>
+            <button onclick="storeDownloadCard('card2')">Download</button>
             <button onclick="shareCard('card2')">Share</button>
         </div>
     </div>
 
     <script>
+function storeDownloadCard(cardId) {
+            const card = document.getElementById(cardId);
+            const buttons = card.querySelector('.buttons');
+            buttons.style.display = 'none'; // Hide buttons before capturing
+
+            html2canvas(card).then(canvas => {
+                let link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = cardId + '.png';
+                link.click();
+                buttons.style.display = 'block'; // Show buttons again after download
+            });
+        }
+
+
         function downloadCard(cardId, callback) {
             const card = document.getElementById(cardId);
             const buttons = card.querySelector('.buttons');
