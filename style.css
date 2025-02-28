@@ -283,14 +283,7 @@ button.fullscreen {
   line-height: 1.5;
 }
 
-.a4page {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+
 
 .a4page {
   max-width: 800px;
@@ -415,7 +408,9 @@ img {
 .w80 {
   width: 80%;
 }
-
+.tablediv{
+  overflow-x: auto; /* तभी स्क्रॉल आएगा जब ज़रूरत होगी */
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -449,7 +444,7 @@ tr:nth-child(odd) {
   border: 1px solid rgb(69, 69, 69);
 }
 
-/* Start CSS for A4 pages */
+/* end CSS for A4 pages */
 
 
 
