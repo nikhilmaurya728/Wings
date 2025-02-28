@@ -116,6 +116,8 @@
     <script src="audio.js"></script>
     <script src="script.js"></script>
 
+    
+
     <script>
         const fullscreenBtn = document.getElementById("fullscreen-btn");
         const fullscreenIcon = document.getElementById("fullscreen-icon");
@@ -162,6 +164,13 @@
             }
         }
 
+    </script>
+    <script>
+        function showAnswer(id, answer, btn) {
+            document.getElementById(id).innerText = answer;
+            // btn.style.display = "none"; // बटन छुपाना
+        }
+    </script>
     </script>
 </body>
 
