@@ -9,15 +9,8 @@
 
     <link rel="stylesheet" href="audiostyle.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-
-    </style>
 
 </head>
-<style>
-
-</style>
-
 <body>
     <header>
         <nav>
@@ -114,64 +107,8 @@
         </div>
     </div>
     <script src="audio.js"></script>
+    <script src="screenshot.js"></script>
     <script src="script.js"></script>
 
-    
-
-    <script>
-        const fullscreenBtn = document.getElementById("fullscreen-btn");
-        const fullscreenIcon = document.getElementById("fullscreen-icon");
-
-        // Toggle full-screen mode when the button is clicked
-        fullscreenBtn.addEventListener("click", () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen()
-                    .then(() => {
-                        updateButton(true);
-                    })
-                    .catch(err => {
-                        alert(`Error trying to enable full-screen mode: ${err.message}`);
-                    });
-            } else {
-                document.exitFullscreen()
-                    .then(() => {
-                        updateButton(false);
-                    })
-                    .catch(err => {
-                        alert(`Error trying to exit full-screen mode: ${err.message}`);
-                    });
-            }
-        });
-
-        // Listen for the fullscreenchange event
-        document.addEventListener("fullscreenchange", () => {
-            if (document.fullscreenElement) {
-                updateButton(true); // Full-screen mode
-            } else {
-                updateButton(false); // Not in full-screen mode
-            }
-        });
-
-        function updateButton(isFullscreen) {
-            if (isFullscreen) {
-                fullscreenIcon.src = "image/cross.png"; // Icon for exiting full screen
-                fullscreenBtn.classList.add("fullscreen");
-                fullscreenBtn.title = "Exit Full Screen"; // Update tooltip
-            } else {
-                fullscreenIcon.src = "image/full.png"; // Icon for entering full screen
-                fullscreenBtn.classList.remove("fullscreen");
-                fullscreenBtn.title = "Go Full Screen"; // Update tooltip
-            }
-        }
-
-    </script>
-    <script>
-        function showAnswer(id, answer, btn) {
-            document.getElementById(id).innerText = answer;
-            // btn.style.display = "none"; // बटन छुपाना
-        }
-    </script>
-    </script>
 </body>
-
 </html>

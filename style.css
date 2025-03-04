@@ -276,6 +276,18 @@ button.fullscreen {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /* Start CSS for A4 pages */
 
 .page {
@@ -443,8 +455,283 @@ tr:nth-child(odd) {
   border-collapse: collapse;
   border: 1px solid rgb(69, 69, 69);
 }
-
 /* end CSS for A4 pages */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* start audio player */
+.audiocontent {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  width: 100%;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.audiocontent button {
+  max-width: 120px;
+  max-height: fit-content;
+  padding: 8px 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #000000;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  border-radius: 50%;
+}
+
+.audiocontent button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.audiocontent button.active {
+  background-color: #ffa500;
+}
+
+.music-player {
+  z-index: 2;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 350px;
+  max-width: 85vw;
+  background: #004810;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  display: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.music-player.active {
+  display: block;
+}
+
+.music-player audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.music-player .minimize {
+  position: absolute;
+  top: 2px;
+  right: 30px;
+  padding: 0 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+.minimized-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  display: none;
+
+}
+
+.music-player.minimized {
+  width: 150px;
+  height: fit-content;
+  padding: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.minimized-controls button {
+  background-color: white;
+  padding: 0 5px;
+  border-radius: 2px;
+  margin: 0 2px;
+}
+
+.music-player .close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 0 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+.music-player .close:hover,
+.minimize:hover {
+  color: #ff4d4d;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.controls button:hover {
+  background-color: #777;
+}
+
+.mode-button {
+  background-color: #444;
+  margin: 0 5px;
+}
+
+.mode-button:hover {
+  background-color: #666;
+}
+/* end audio player */
+
+
+
+
+
+
+
+/* start card */
+.cards{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background: #f5f5f5;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 95%;
+  max-width: 300px;
+  padding: 0px 5px 0px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uniCode {
+  text-align: center;
+  color: coral;
+  font-size: small;
+  font-weight: bold;
+}
+
+.cardlogo {
+  width: 50px;
+  display: none;
+}
+
+.buttons {
+  display: block;
+}
+
+
+.buttons button {
+  font-size: large;
+  height: 30px;
+  width: 30px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgb(174, 0, 0);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.rotate {
+  transform: rotate(90deg);
+}
+
+
+
+.middle-section {
+  flex-grow: 1;
+  text-align: center;
+  
+  padding: 0px 5px 0px;
+}
+
+.question {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.image-container img {
+  max-width: 80%;
+  max-height: 100px;
+}
+
+.bottom-section {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.bottom-section-col {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.left-options,
+.right-options {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 2px;
+}
+
+.option {
+  padding: 8px;
+  background: #eee;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* end card */
+
+
+
 
 
 
@@ -482,6 +769,11 @@ tr:nth-child(odd) {
     display: block;
     /* Hide search icon on larger screens */
   }
+.buttons button {
+  background-color:transparent;
+  
+  font-weight: bolder;
+}
 }
 
 @media (min-width: 1000px) {

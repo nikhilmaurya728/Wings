@@ -82,12 +82,16 @@ function loadScript(className, subjectName) {
 function toggleSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchButton = searchInput.nextElementSibling;
+    
     if (searchInput.style.display === 'block') {
         searchInput.style.display = 'none';
         searchButton.style.display = 'none';
+        classDropdown.style.display = 'block';
     } else {
         searchInput.style.display = 'block';
         searchButton.style.display = 'block';
+        
+        classDropdown.style.display = 'none';
     }
 }
 // Trigger the initial population
@@ -191,58 +195,21 @@ if (window.innerWidth >= 700) {
     sidebar.classList.add('hidden');
 }
 window.addEventListener('resize', () => {
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = searchInput.nextElementSibling;
     if (window.innerWidth >= 700) {
         sidebar.classList.remove('hidden');
+        searchInput.style.display = 'block';
+        searchButton.style.display = 'block';
     } else {
         sidebar.classList.add('hidden');
+        
+        searchInput.style.display = 'none';
+        searchButton.style.display = 'none';
     }
+    
 });
-/* Function to generate sidebar content
-function generateSidebar() {
-    for (const [topic, subtopics] of Object.entries(data)) {
-        // Create topic div
-        const topicDiv = document.createElement("div");
-        topicDiv.classList.add("topic");
-        topicDiv.textContent = topic;
 
-        // Subtopics container
-        const subtopicsContainer = document.createElement("div");
-        subtopicsContainer.classList.add("subtopics");
-
-        // Add subtopics
-        for (const [subtopic, explanation] of Object.entries(subtopics)) {
-            const subtopicDiv = document.createElement("div");
-            subtopicDiv.classList.add("subtopic");
-            subtopicDiv.textContent = subtopic;
-
-            // Click event for subtopic
-            subtopicDiv.addEventListener("click", (e) => {
-                e.stopPropagation(); // Prevent triggering topic click
-                clearActiveClasses("subtopic");
-                subtopicDiv.classList.add("active");
-                clearActiveClasses("topic");
-                topicDiv.classList.add("active");
-                displayContent(topic, subtopics);
-                const targetElement = document.getElementById(subtopic);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            });
-
-            subtopicsContainer.appendChild(subtopicDiv);
-        }
-
-        // Click event for topic
-        topicDiv.addEventListener("click", () => {
-            clearActiveClasses("topic");
-            topicDiv.classList.add("active");
-            displayContent(topic, subtopics);
-        });
-
-        sidebar.appendChild(topicDiv);
-        sidebar.appendChild(subtopicsContainer);
-    }
-} */
 // Function to generate sidebar content
 function generateSidebar() {
     let firstTopicDiv = null; // Store the first topic div
@@ -344,3 +311,66 @@ function clearActiveClasses(type) {
 }
 
 // Initialize sidebar
+
+
+
+
+
+
+// start Toggle full-screen mode
+
+        const fullscreenBtn = document.getElementById("fullscreen-btn");
+        const fullscreenIcon = document.getElementById("fullscreen-icon");
+
+        // Toggle full-screen mode when the button is clicked
+        fullscreenBtn.addEventListener("click", () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen()
+                    .then(() => {
+                        updateButton(true);
+                    })
+                    .catch(err => {
+                        alert(`Error trying to enable full-screen mode: ${err.message}`);
+                    });
+            } else {
+                document.exitFullscreen()
+                    .then(() => {
+                        updateButton(false);
+                    })
+                    .catch(err => {
+                        alert(`Error trying to exit full-screen mode: ${err.message}`);
+                    });
+            }
+        });
+
+        // Listen for the fullscreenchange event
+        document.addEventListener("fullscreenchange", () => {
+            if (document.fullscreenElement) {
+                updateButton(true); // Full-screen mode
+            } else {
+                updateButton(false); // Not in full-screen mode
+            }
+        });
+
+        function updateButton(isFullscreen) {
+            if (isFullscreen) {
+                fullscreenIcon.src = "image/cross.png"; // Icon for exiting full screen
+                fullscreenBtn.classList.add("fullscreen");
+                fullscreenBtn.title = "Exit Full Screen"; // Update tooltip
+            } else {
+                fullscreenIcon.src = "image/full.png"; // Icon for entering full screen
+                fullscreenBtn.classList.remove("fullscreen");
+                fullscreenBtn.title = "Go Full Screen"; // Update tooltip
+            }
+        }
+
+// end  Toggle full-screen mode
+        
+
+// start 𓆩⚝𓆪 मैं कौन हूँ?
+
+        function showAnswer(id, answer, btn) {
+            document.getElementById(id).innerText = answer;
+            // btn.style.display = "none"; // बटन छुपाना
+        }
+        
