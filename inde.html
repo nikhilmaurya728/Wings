@@ -3,70 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milk Man Live Location</title>
-    <style>
-        #map {
-            height: 90vh;
-            width: 100%;
-        }
-    </style>
+    <title>Milk Man Background Location</title>
 </head>
 <body>
-    <button onclick="window.location.href='update.html'">Go to Milk Man Page</button>
-    <h1>Milk Man Live Location</h1>
-    <div id="map"></div>
+    <h1>Background Location Running...</h1>
 
-    <!-- ✅ Firebase SDK V8 -->
+
+    <button onclick="requestLocationPermission()">Enable Location</button>
+
+    <script>
+        function requestLocationPermission() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        console.log("Permission Granted");
+                        registerServiceWorker();
+                    },
+                    (error) => {
+                        console.error("Permission Denied:", error.message);
+                        alert("Please allow location access for background tracking.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator && 'PeriodicSyncManager' in window) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => {
+                        console.log("Service Worker Registered");
+    
+                        navigator.serviceWorker.ready.then((sw) => {
+                            sw.periodicSync.register("update-location", {
+                                minInterval: 15 * 60 * 1000 // हर 15 मिनट में अपडेट
+                            });
+                        });
+                    });
+            } else {
+                console.log("Background Sync Not Supported");
+            }
+        }
+    </script>
+    
+
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-    <!-- ✅ Google Maps API (API Key की ज़रूरत नहीं) -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap" async defer></script>
-
     <script>
-        // ✅ Firebase Configuration (सही Details भरो)
+        // ✅ Firebase Configuration
         var firebaseConfig = {
-            apiKey: "",  // यहाँ API Key खाली छोड़ सकते हो
+            apiKey: "तुम्हारी_API_KEY",
             authDomain: "milk-man-24d97.firebaseapp.com",
             databaseURL: "https://milk-man-24d97-default-rtdb.europe-west1.firebasedatabase.app/",
             projectId: "milk-man-24d97",
             storageBucket: "milk-man-24d97.appspot.com",
             messagingSenderId: "103608166782",
-            appId: ""
+            appId: "तुम्हारा_APP_ID"
         };
-
-        // ✅ Firebase Initialize
         firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
 
-        // ✅ Google Map & Marker
-        var map;
-        var marker;
+        // ✅ Service Worker Register करो
+        if ('serviceWorker' in navigator && 'PeriodicSyncManager' in window) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => {
+                    console.log("Service Worker Registered");
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
-                center: { lat: 25.4476, lng: 81.8544 } // Default location (Prayagraj)
-            });
-
-            marker = new google.maps.Marker({
-                position: { lat: 25.4476, lng: 81.8544 },
-                map: map,
-                title: "Milk Man Location"
-            });
-
-            // ✅ Firebase से लोकेशन डेटा पढ़ो और अपडेट करो
-            database.ref("milkman/location").on("value", (snapshot) => {
-                var data = snapshot.val();
-                if (data) {
-                    var newPosition = { lat: data.lat, lng: data.lon };
-                    marker.setPosition(newPosition);
-                    map.setCenter(newPosition);
-                    console.log("Milk Man Location Updated:", newPosition);
-                }
-            });
+                    // ✅ Background Sync Register करो
+                    navigator.serviceWorker.ready.then((sw) => {
+                        sw.periodicSync.register("update-location", {
+                            minInterval: 15 * 60 * 1000 // हर 15 मिनट में अपडेट
+                        });
+                    });
+                });
+        } else {
+            console.log("Background Sync Supported नहीं है");
         }
     </script>
-
 </body>
 </html>
