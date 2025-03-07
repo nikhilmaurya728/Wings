@@ -201,9 +201,9 @@ window.addEventListener('resize', () => {
         sidebar.classList.remove('hidden');
         searchInput.style.display = 'block';
         searchButton.style.display = 'block';
+        classDropdown.style.display = 'block';
     } else {
         sidebar.classList.add('hidden');
-
         searchInput.style.display = 'none';
         searchButton.style.display = 'none';
     }
