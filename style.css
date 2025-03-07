@@ -616,6 +616,53 @@ tr:nth-child(odd) {
 
 
 
+.help {
+  z-index: 2;
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  height: 20px;
+}
+
+.button {
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  min-width: 60px;
+  padding:3px 10px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '6387851637';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -30px;
+  transition: 0.2s;
+}
+
+
+.button:hover span {
+  padding-right: 80px;
+  
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 
 
 
@@ -623,6 +670,9 @@ tr:nth-child(odd) {
 /* start card */
 .space{
   height: 85vh;
+}
+.side-space{
+  height: 75px;
 }
 .cards{
   display: flex;

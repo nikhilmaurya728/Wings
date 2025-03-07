@@ -82,7 +82,7 @@ function loadScript(className, subjectName) {
 function toggleSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchButton = searchInput.nextElementSibling;
-    
+
     if (searchInput.style.display === 'block') {
         searchInput.style.display = 'none';
         searchButton.style.display = 'none';
@@ -90,7 +90,7 @@ function toggleSearch() {
     } else {
         searchInput.style.display = 'block';
         searchButton.style.display = 'block';
-        
+
         classDropdown.style.display = 'none';
     }
 }
@@ -203,11 +203,11 @@ window.addEventListener('resize', () => {
         searchButton.style.display = 'block';
     } else {
         sidebar.classList.add('hidden');
-        
+
         searchInput.style.display = 'none';
         searchButton.style.display = 'none';
     }
-    
+
 });
 
 // Function to generate sidebar content
@@ -279,9 +279,11 @@ function generateSidebar() {
         if (!firstTopicDiv) {
             firstTopicDiv = topicDiv;
         }
-
         sidebar.appendChild(topicDiv);
         sidebar.appendChild(subtopicsContainer);
+
+
+
     }
 
     // Automatically click the first topic and its first subtopic
@@ -291,8 +293,26 @@ function generateSidebar() {
     if (firstSubtopicDiv) {
         setTimeout(() => firstSubtopicDiv.click(), 0); // Simulate click on the first subtopic
     }
+    const space = document.createElement('div');
+    space.classList.add('side-space');
+    sidebar.appendChild(space);
+
+    const help = document.createElement('div');
+    help.classList.add('help');
+    help.innerHTML = `
+        <button class="button" onclick="makeCall()">Pay</button>
+        <button class="button"  onclick="openWhatsApp()" ><span>Help</span></button>`
+    sidebar.appendChild(help);
+}
+function makeCall() {
+    window.location.href = "tel:+6387851637";
 }
 
+function openWhatsApp(){
+    var phoneNumber = "+6387851637";  // यहां अपना नंबर डालो
+    var message = encodeURIComponent("Hello user"); // मैसेज को URL-friendly बनाना जरूरी है
+    window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
+}
 
 
 // Function to display content in the main area
@@ -319,58 +339,58 @@ function clearActiveClasses(type) {
 
 // start Toggle full-screen mode
 
-        const fullscreenBtn = document.getElementById("fullscreen-btn");
-        const fullscreenIcon = document.getElementById("fullscreen-icon");
+const fullscreenBtn = document.getElementById("fullscreen-btn");
+const fullscreenIcon = document.getElementById("fullscreen-icon");
 
-        // Toggle full-screen mode when the button is clicked
-        fullscreenBtn.addEventListener("click", () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen()
-                    .then(() => {
-                        updateButton(true);
-                    })
-                    .catch(err => {
-                        alert(`Error trying to enable full-screen mode: ${err.message}`);
-                    });
-            } else {
-                document.exitFullscreen()
-                    .then(() => {
-                        updateButton(false);
-                    })
-                    .catch(err => {
-                        alert(`Error trying to exit full-screen mode: ${err.message}`);
-                    });
-            }
-        });
+// Toggle full-screen mode when the button is clicked
+fullscreenBtn.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen()
+            .then(() => {
+                updateButton(true);
+            })
+            .catch(err => {
+                alert(`Error trying to enable full-screen mode: ${err.message}`);
+            });
+    } else {
+        document.exitFullscreen()
+            .then(() => {
+                updateButton(false);
+            })
+            .catch(err => {
+                alert(`Error trying to exit full-screen mode: ${err.message}`);
+            });
+    }
+});
 
-        // Listen for the fullscreenchange event
-        document.addEventListener("fullscreenchange", () => {
-            if (document.fullscreenElement) {
-                updateButton(true); // Full-screen mode
-            } else {
-                updateButton(false); // Not in full-screen mode
-            }
-        });
+// Listen for the fullscreenchange event
+document.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement) {
+        updateButton(true); // Full-screen mode
+    } else {
+        updateButton(false); // Not in full-screen mode
+    }
+});
 
-        function updateButton(isFullscreen) {
-            if (isFullscreen) {
-                fullscreenIcon.src = "image/cross.png"; // Icon for exiting full screen
-                fullscreenBtn.classList.add("fullscreen");
-                fullscreenBtn.title = "Exit Full Screen"; // Update tooltip
-            } else {
-                fullscreenIcon.src = "image/full.png"; // Icon for entering full screen
-                fullscreenBtn.classList.remove("fullscreen");
-                fullscreenBtn.title = "Go Full Screen"; // Update tooltip
-            }
-        }
+function updateButton(isFullscreen) {
+    if (isFullscreen) {
+        fullscreenIcon.src = "image/cross.png"; // Icon for exiting full screen
+        fullscreenBtn.classList.add("fullscreen");
+        fullscreenBtn.title = "Exit Full Screen"; // Update tooltip
+    } else {
+        fullscreenIcon.src = "image/full.png"; // Icon for entering full screen
+        fullscreenBtn.classList.remove("fullscreen");
+        fullscreenBtn.title = "Go Full Screen"; // Update tooltip
+    }
+}
 
 // end  Toggle full-screen mode
-        
+
 
 // start 𓆩⚝𓆪 मैं कौन हूँ?
 
-        function showAnswer(id, answer, btn) {
-            document.getElementById(id).innerText = answer;
-            // btn.style.display = "none"; // बटन छुपाना
-        }
-        
+function showAnswer(id, answer, btn) {
+    document.getElementById(id).innerText = answer;
+    // btn.style.display = "none"; // बटन छुपाना
+}
+
