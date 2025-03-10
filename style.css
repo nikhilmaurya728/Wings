@@ -373,6 +373,10 @@ img {
   font-weight: bolder;
   color: #e74c3c;
 }
+.green {
+  font-weight: bolder;
+  color: #00bd0d;
+}
 
 .center {
   text-align: center;
