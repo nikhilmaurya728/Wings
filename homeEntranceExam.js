@@ -148,7 +148,7 @@ let paheli=[/*ज़रूर, यहाँ क्रमांकित पह�
 var data = {
 
   "Navodaya Vidyalaya": {
-    "JNVs School 5th": '<div class="page"> <div class="a4page"> </div> </div>',
+    "JNVs School 5th": '<div class="page"> <div class="a4page">Jawahar  Navodaya Vidyalaya </div> </div>',
   },
 };
 
