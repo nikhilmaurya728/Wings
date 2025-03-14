@@ -1,13 +1,13 @@
 
 const classData = {
-    home: ['Basic', 'Names English to Hindi', 'Word Power', 'कौन हूं मैं', ' पहेलियाँ', 'Entrance Exam'],
-    class34: ['Grammar', 'Math'],
+    home: ['Basic', 'Names English to Hindi', 'Word Power', '📚 कौन हूं मैं', ' पहेलियाँ', 'Entrance Exam'],
+    class34: ['Grammar', 'Math',],
     /*
     class56: ['Sports', 'Civics', 'Art'],
     class78: ['Sports', 'Civics', 'Art'],
     class9th: ['Sports', 'Civics', 'Art'],
     class10th: ['Sports', 'Civics', 'Art'],
-    class11th: ['Sports', 'Civics', 'Art'],
+    class11th: ['Sports', 'Civics', 'Art'], 
     class12th: ['Sports', 'Civics', 'Art'],*/
 };
 
@@ -251,10 +251,14 @@ function generateSidebar() {
                 clearActiveClasses("topic");
                 topicDiv.classList.add("active");
                 displayContent(topic, subtopics);
-                const targetElement = document.getElementById(subtopic);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
+                const targetElement = document.getElementById(subtopic);setTimeout(() => {
+                    const autoClickBtns = document.querySelectorAll(".auto-click-btn");
+                    autoClickBtns.forEach((btn) => btn.click());
+    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                  }, 10);
 
 
             });
@@ -305,12 +309,12 @@ function generateSidebar() {
     sidebar.appendChild(help);
 }
 function makeCall() {
-    window.location.href = "tel:+6387851637";
+    window.location.href = "tel:6387851637";
 }
 
 function openWhatsApp(){
-    var phoneNumber = "+6387851637";  // यहां अपना नंबर डालो
-    var message = encodeURIComponent("Hello user"); // मैसेज को URL-friendly बनाना जरूरी है
+    var phoneNumber = "6387851637";  // यहां अपना नंबर डालो
+    var message = encodeURIComponent("Hello sir"); // मैसेज को URL-friendly बनाना जरूरी है
     window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
 }
 

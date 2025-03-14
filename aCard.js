@@ -1,162 +1,22 @@
-
 const uniCodeData = '✮⋆˙ Wings Junior : Test Yourself ✬';
 const cardsData = [
     {
         id: 'Que 1: ',
         question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
+        options: ['Madrid', 'Paris',],
         rightAnswer: 'A',
         image: 'image/pic.png',
-        optionBig: 'y'
+        optionBig: 'y',
+        istrueFalse: 'y'
     }, {
         id: 'Que 2: ',
         question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
+        options: ['Berlin ', 'Madrid',],
+        rightAnswer: 'B',
         image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
-    },{
-        id: 'Que 1: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'A',
-        image: 'image/pic.png',
-        optionBig: 'y'
-    }, {
-        id: 'Que 2: ',
-        question: 'What is the capital of France?',
-        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
-        rightAnswer: 'D',
-        image: 'image/pic.png',
-        optionBig: ''
+        optionBig: '',
+        istrueFalse: 'y'
     },
-
 ];
 const cardsData1 = [
     {
@@ -175,9 +35,27 @@ const cardsData1 = [
         optionBig: ''
     }
 ];
+const cardsData2 = [
+    {
+        id: 'Que 5: ',
+        question: 'What is the capital of France?',
+        options: ['Berlin Berlin Berlin Berlin Berlin Berlin Berlin Berlin', 'Madrid', 'Paris', 'Rome'],
+        rightAnswer: 'A',
+        image: 'image/pic.png',
+        optionBig: 'y'
+    }, {
+        id: 'Que 6: ',
+        question: 'What is the capital of France?',
+        options: ['Berlin ', 'Madrid', 'Paris', 'Rome'],
+        rightAnswer: 'D',
+        image: 'image/pic.png',
+        optionBig: ''
+    }
+];
 
-function createCard(cardData) {
-    const cardsContainer = document.querySelector('.cards');
+function createCard(cardData, containerSelector) {
+    //const cardsContainer = document.querySelector('.cards');
+    const cardsContainer = document.querySelector(containerSelector);
     if (!cardsContainer) {
         console.error("❌ Error: No element with class 'cards' found.");
         return;
@@ -185,6 +63,7 @@ function createCard(cardData) {
     const card = document.createElement('div');
     card.classList.add('card');
     card.id = cardData.id;
+    istrueFalse = cardData.istrueFalse;
 
     const topSection = document.createElement('div');
     topSection.classList.add('top-section');
@@ -234,7 +113,6 @@ function createCard(cardData) {
         middleSection.appendChild(imageContainer);
     }
     card.appendChild(middleSection);
-
     const bottomSection = document.createElement('div');
     bottomSection.classList.add('bottom-section');
 
@@ -243,21 +121,24 @@ function createCard(cardData) {
     }
 
     const leftOptions = document.createElement('div');
-    leftOptions.classList.add('left-options');
-    leftOptions.innerHTML = `<div class="option" data-option="A">A. ${cardData.options[0]}</div>
-                             <div class="option" data-option="B">B. ${cardData.options[1]}</div>`;
-
     const rightOptions = document.createElement('div');
     rightOptions.classList.add('right-options');
-    rightOptions.innerHTML = `<div class="option" data-option="C">C. ${cardData.options[2]}</div>
-                              <div class="option" data-option="D">D. ${cardData.options[3]}</div>`;
+    leftOptions.classList.add('left-options');
 
+    if (istrueFalse == 'y') {
+        leftOptions.innerHTML = `<div class="option" data-option="A">A. ${cardData.options[0]}</div>`;
+        rightOptions.innerHTML = `<div class="option" data-option="B">B. ${cardData.options[2]}</div>`;
+    } else {
+        leftOptions.innerHTML = `<div class="option" data-option="A">A. ${cardData.options[0]}</div>
+            <div class="option" data-option="B">B. ${cardData.options[1]}</div>`;
+        rightOptions.innerHTML = `<div class="option" data-option="C">C. ${cardData.options[2]}</div>
+             <div class="option" data-option="D">D. ${cardData.options[3]}</div>`;
+    }
     bottomSection.appendChild(leftOptions);
     bottomSection.appendChild(rightOptions);
     card.appendChild(bottomSection);
     cardsContainer.appendChild(card);
 }
-
 // ✅ Function to Highlight Correct Answer
 function highlightAnswer(card, correctAnswer) {
     const options = card.querySelectorAll('.option');
@@ -273,7 +154,6 @@ function highlightAnswer(card, correctAnswer) {
         highlightAnswer(card, cardData.rightAnswer);
     };
 }
-
 function storeDownloadCard(cardId) {
     const card = document.getElementById(cardId);
     const buttons = card.querySelector('.buttons');
@@ -296,8 +176,6 @@ function storeDownloadCard(cardId) {
         uniCode.style.display = 'none';
     });
 }
-
-
 function downloadCard(cardId, callback) {
     const card = document.getElementById(cardId);
     const buttons = card.querySelector('.buttons');
@@ -319,7 +197,6 @@ function downloadCard(cardId, callback) {
         if (callback) callback(imgData);
     });
 }
-
 function shareCard(cardId) {
     downloadCard(cardId, function (imgData) {
         let blob = dataURLToBlob(imgData);
@@ -343,7 +220,6 @@ function shareCard(cardId) {
         }
     });
 }
-
 function dataURLToBlob(dataURL) {
     let arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
@@ -352,9 +228,11 @@ function dataURLToBlob(dataURL) {
     }
     return new Blob([u8arr], { type: mime });
 }
-function startcreateCard(btn, cardsData) {
-    cardsData.forEach(createCard);
-    btn.style.display = 'none'; // Hide the clicked button
+function startcreateCard(btn, cardsData, containerSelector) {
+    // 🃏 हर कार्ड के लिए createCard कॉल करो
 
+    cardsData.forEach((data) => createCard(data, containerSelector));
 
+    // 👁️ बटन छुपा दो
+    btn.style.display = 'none';
 }

@@ -678,7 +678,7 @@ tr:nth-child(odd) {
 .side-space{
   height: 75px;
 }
-.cards{
+.cards, .cards1, .cards2, .cards3, .cards4 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
