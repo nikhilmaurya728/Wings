@@ -12,14 +12,14 @@ body {
   align-items: center;
   margin: auto;
 }
-.sidebar {
+.topHeader {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
   background: #d6eaff;
   color: rgb(83, 0, 0);
-  padding: 5px 2px 2px;
+  padding: 10px 5px 5px;
   display: flex;
   align-items: center;
   width: 100%;
@@ -35,7 +35,7 @@ body {
   padding: 15px;
   text-align: center;
   font-size: 24px;
-  margin-top: 60px;
+  margin-top: 55px;
 }
 .slide {
   display: flex;
@@ -128,7 +128,7 @@ input:hover {
 }
 .transactions,.allcustomer{
   border-radius: 6px;
-  margin: 15px;
+  margin: 5px;
   padding: 10px;
   gap: 20px;
 }
@@ -149,4 +149,11 @@ padding: 10px;
 }
 #add-customer-form {
   gap: 20px;
+}
+ li::marker {
+  color: rgb(3, 0, 159); /* Change color of bullet points */
+}
+
+.space{
+  height: 20px;
 }

@@ -8,14 +8,14 @@
     <title>Business Khata - Admin</title>
     <link rel="stylesheet" href="stylesKhata.css">
     <style>
-        .bold{
+        .bold {
             font-weight: bold;
         }
     </style>
 </head>
 
 <body>
-    <div class="sidebar">
+    <div class="topHeader">
         <a href="indexKhata.html">
             <img class="logo" src="image/logo.png" alt="loading">
         </a>
@@ -28,19 +28,23 @@
             <p style="font-size: small;">Utarthiya sadarganj By paas road near KD Hospital <span
                     style="font-size:medium;"> - Time Date</span></p>
     </div>
+    <div class="space"> </div>
     <div class="slide">
         <div class="left">
             <div id="select-customer">
                 <select id="customer-dropdown" onchange="loadCustomerTransactions()">
-                    <option value="">Select My Customer</option>
+                    <option value="" disabled selected>Select My Customer</option>
                 </select>
             </div>
 
             <div id="transaction-form">
                 <select id="product-name">
-                    <option value="Paneer">Paneer</option>
-                    <option value="Milk">Milk</option>
-                    <option value="Curd">Curd</option>
+                    <option value="Many">🧆🥤🍔🍗🍟 Many Item</option>
+                    <option value="Paneer">🧀 Paneer</option>
+                    <option value="Milk">🥛 Milk</option>
+                    <option value="Curd">🍯 Curd</option>
+                    <option value="Curd">☕ Tea</option>
+                    <option value="Curd">🍩 Donut</option>
                 </select>
                 <input type="datetime-local" id="transaction-datetime" required>
                 <input type="number" id="buy-amount" placeholder="Total Amount + Tax">
@@ -64,16 +68,22 @@
 
 
     <div class="transactions">
-        <ol id="transaction-list"></ol>
+        <ul id="transaction-list"></ul>
     </div>
-
+    <div class="space"> </div>
     <div class="allcustomer">
-        <button onclick="sortCustomers('totalCardAmount')">Sort by Total Card Amount</button>
-        <button onclick="sortCustomers('totalIncome')">Sort by Total Income</button>
-        <button onclick="sortCustomers('totalpaid')">Sort by Total paid</button>
+        <div style="text-align: end;">
+            <select onchange="sortCustomers(this.value)">
+                <option value="" disabled selected>Arrange  The Customer</option>
+                <option value="totalCardAmount">💳 Card Balance</option>
+                <option value="totalIncome">💵 Total Earning</option>
+                <option value="totalpaid">🛒 Total Paid Amount</option>
+            </select>
+        </div>
 
-        <ol id="customer-list"></ol>
+        <ul id="customer-list"></ul>
     </div>
+
 
     <script type="module" src="./scriptKhata.js"></script>
     <script>

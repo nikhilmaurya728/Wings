@@ -37,7 +37,7 @@ window.addCustomer = async function () {
 // Load customers into dropdown
 async function loadCustomers() {
   const customerDropdown = document.getElementById('customer-dropdown');
-  customerDropdown.innerHTML = '<option value="">Select My Customer</option>';
+  customerDropdown.innerHTML = '<option value="" disabled selected>Select My Customer</option>';
 
   const querySnapshot = await getDocs(collection(db, "customers1"));
   querySnapshot.forEach((doc) => {
