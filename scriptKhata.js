@@ -23,7 +23,7 @@ window.addCustomer = async function () {
     const customerRef = doc(db, "customers1", phone);
     const customerSnap = await getDoc(customerRef);
     if (!customerSnap.exists()) {
-      await setDoc(customerRef, { name: name, phone: phone, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalPayed: 0 });
+      await setDoc(customerRef, { name: name, phone: phone, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalpaid: 0 });
 
       alert("Customer Added!");
       loadCustomers();
@@ -65,14 +65,14 @@ window.loadCustomerTransactions = async function () {
 
       const totalCardAmount = customerData.totalCardAmount;
       const totalIncome = customerData.totalIncome;
-      const totalPayed = customerData.totalPayed;
+      const totalpaid = customerData.totalpaid;
       console.log("Total Card Amount:", totalCardAmount);
       console.log("Total totalIncome:", totalIncome);
-      console.log("Total totalPayed:", totalPayed);
+      console.log("Total totalpaid:", totalpaid);
 
       document.getElementById('total-card-amount').textContent = totalCardAmount;
       document.getElementById('total-income').textContent = totalIncome;
-      document.getElementById('total-payed').textContent = totalPayed;
+      document.getElementById('total-paid').textContent = totalpaid;
 
 
 
@@ -90,7 +90,7 @@ window.loadCustomerTransactions = async function () {
             var temp = "❌ उधार धन राशि";
           } else  var temp = "✅ जमा धन राशि";
             const li = document.createElement('li');
-            li.textContent = `${dateTime}: Buy ${details.buyAmount}, Paid ${details.payedAmount}, OwnerPay ${details.ownerPay}, ${temp}: ${details.cardAmount} ₹`;
+            li.textContent = `${dateTime}: Buy ${details.buyAmount}, Paid ${details.paidAmount}, OwnerPay ${details.ownerPay}, ${temp}: ${details.cardAmount} ₹`;
           
 
           transactionList.appendChild(li);
@@ -108,10 +108,10 @@ window.addTransaction = async function () {
   const phone = document.getElementById('customer-dropdown').value;
   const dateTime = document.getElementById('transaction-datetime').value;
   const buyAmount = parseFloat(document.getElementById('buy-amount').value) || 0;
-  const payedAmount = parseFloat(document.getElementById('payed-amount').value) || 0;
+  const paidAmount = parseFloat(document.getElementById('paid-amount').value) || 0;
   const ownerPay = parseFloat(document.getElementById('owner-pay').value) || 0;
   const productName = document.getElementById('product-name').value;
-  const cardAmount = payedAmount + ownerPay - buyAmount;
+  const cardAmount = paidAmount + ownerPay - buyAmount;
 
 
 
@@ -125,12 +125,12 @@ window.addTransaction = async function () {
 
       let totalCardAmount = customerData.totalCardAmount + cardAmount;
       let totalIncome = customerData.totalIncome + ownerPay;
-      let totalPayed = customerData.totalPayed + payedAmount;
+      let totalpaid = customerData.totalpaid + paidAmount;
 
 
-      transactions[dateTime] = { cardAmount, buyAmount, payedAmount, ownerPay, productName };
+      transactions[dateTime] = { cardAmount, buyAmount, paidAmount, ownerPay, productName };
 
-      await updateDoc(customerRef, { transactions, totalCardAmount, totalIncome, totalPayed });
+      await updateDoc(customerRef, { transactions, totalCardAmount, totalIncome, totalpaid });
       alert("Transaction  ✅  ✅  Added!  ✅  ✅ ");
       loadCustomerTransactions();
     } else {
@@ -172,7 +172,7 @@ function displayCustomers(customerList) {
   customerList.forEach(customer => {
     // Create list item
     const li = document.createElement('li');
-    li.textContent = `${customer.name} - ${customer.phone} | TotalCard: ${customer.totalCardAmount} | TotalIncome: ${customer.totalIncome} | TotalPayed: ${customer.totalPayed}`;
+    li.textContent = `${customer.name} - ${customer.phone} | TotalCard: ${customer.totalCardAmount} | TotalIncome: ${customer.totalIncome} | Totalpaid: ${customer.totalpaid}`;
 
     // Set customer ID in dataset
     li.dataset.customerId = customer.id;
