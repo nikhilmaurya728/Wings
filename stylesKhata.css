@@ -37,6 +37,31 @@ body {
   font-size: 24px;
   margin-top: 55px;
 }
+
+
+.mainDiv {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  width: 100%;
+}
+
+.leftDiv {
+  flex: 1;
+  display: flex;
+  font-size: 24px;
+}
+
+.rightDiv {
+  flex: 1;
+  display: flex;
+  justify-content:end;
+  font-size: 24px;
+}
+
+
+
+
 .slide {
   display: flex;
   height: 275px;
@@ -153,7 +178,20 @@ padding: 10px;
  li::marker {
   color: rgb(3, 0, 159); /* Change color of bullet points */
 }
+.Transactions {
+  background: #a1effb93;
+  width: 100%;
+
+  padding: 15px;
+  text-align: center;
+}
+.phone-input-container{
+margin: 15px;
+}
 
 .space{
   height: 20px;
+}
+h3, h5{
+  text-align: center;
 }

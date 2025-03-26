@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <title>Business Khata - Customer</title>
+    <link rel="stylesheet" href="stylesKhata.css">
+</head>
+
+<body>
+    <div class="topHeader">
+        <a href="indexKhata.html">
+            <img class="logo" src="image/logo.png" alt="loading">
+        </a>
+        <p class="bold">My Card: <span id="total-card-amount">0</span> ₹ 💳</p>
+        <p class="bold">Earning: <span id="total-income">0</span> ₹ 💵</p>
+
+    </div>
+    <div class="header">
+        <h2>SalikRam Panipudi Wale </h1>
+            <p style="font-size: small;">Utarthiya sadarganj By paas road near KD Hospital <span
+                    style="font-size:medium;"> - Time Date</span></p>
+    </div>
+
+    <div class="mainDiv">
+        <div class="leftDiv"> <button onclick="window.location.href='indexKhata.html';"> Back
+            </button></div>
+        <div class="rightDiv">
+            <button onclick="window.location.href='tel:1234567890';"> 📞 Help
+            </button>
+        </div>
+    </div>
+
+    <div class="Transactions">
+        <h1>Transactions</h1>
+        <div class="phone-input-container">
+            <input type="text" id="customer-phone" placeholder="Enter Your Phone Number" required list="phone-list">
+            <datalist id="phone-list"></datalist>
+        </div>
+        <button onclick="loadCustomerTransactions()">View Transactions</button>
+    </div>
+
+    <div id="transactions" class="transactions">
+        <div class="mainDiv">
+            <div class="leftDiv"> <button onclick="takeImage()"> Print 🖨️ </button><button onclick="shareImage()">
+                    Share ➤ </button></div>
+            <div class="rightDiv">
+                <select id="transaction-filter" onchange="loadCustomerTransactions()">
+                    <option value="" disabled >Arrange The Customer</option>
+                    <option value="week">Last Week</option>
+                    <option value="ten">10 Days</option>
+                    <option value="month" selected>Last 1 Month</option>
+                    <option value="six-months">Last 6 Months</option>
+                    <option value="year">Last Year</option>
+                    <option value="twoyear">Last 2 Year</option>
+                    <option value="fiveyear">Last 5 Year</option>
+                </select>
+            </div>
+        </div>
+        <ul id="transaction-list"></ul>
+    </div>
+
+
+
+
+    <script type="module" defer>
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getFirestore, doc, getDocs, query, collection } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCV1ShZVpRQFIpckrwRzTBLokZH10LgH8w",
+            authDomain: "business-khata-360.firebaseapp.com",
+            projectId: "business-khata-360",
+            storageBucket: "business-khata-360.firebasestorage.app",
+            messagingSenderId: "904600080282",
+            appId: "1:904600080282:web:182fde2c1ffacd0f4db423",
+            measurementId: "G-X9NRDYZY1C"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadPhoneNumbers() {
+            const phoneList = document.getElementById('phone-list');
+            phoneList.innerHTML = "";  // Clear existing options
+            const querySnapshot = await getDocs(collection(db, "customers1"));
+            querySnapshot.forEach((doc) => {
+                const customer = doc.data();
+                const option = document.createElement('option');
+                option.value = customer.phone;
+                phoneList.appendChild(option);
+            });
+        }
+
+
+
+
+        window.loadCustomerTransactions = async function () {
+            const phone = document.getElementById('customer-phone').value;
+            const filter = document.getElementById('transaction-filter').value; // Get selected filter
+            if (phone) {
+                const q = query(collection(db, "customers1"));
+                const querySnapshot = await getDocs(q);
+                const transactionList = document.getElementById('transaction-list');
+                transactionList.innerHTML = "";
+
+                querySnapshot.forEach((doc) => {
+                    const customer = doc.data();
+                    if (customer.phone === phone) {
+                        document.getElementById('total-card-amount').textContent = customer.totalCardAmount;
+                        document.getElementById('total-income').textContent = customer.totalIncome;
+
+                        const name = document.createElement('h3');
+                        const li = document.createElement('h5');
+                        name.textContent = `Name : ${customer.name}-  My Phone No: ${customer.phone}📞`;
+                        li.textContent = ` Extra Earning: ${customer.totalIncome}₹, Card Balance: ${customer.totalCardAmount}₹`;
+                        transactionList.appendChild(name);
+                        transactionList.appendChild(li);
+
+                        // Get today's date and subtract based on filter
+                        const now = new Date();
+                        let filterDate = null;
+
+                        if (filter === "week") {
+                            filterDate = new Date();
+                            filterDate.setDate(now.getDate() - 7);
+                        } else if (filter === "ten") {
+                            filterDate = new Date();
+                            filterDate.setDate(now.getDate() - 10);
+                        } else if (filter === "month") {
+                            filterDate = new Date();
+                            filterDate.setMonth(now.getMonth() - 1);
+                        } else if (filter === "six-months") {
+                            filterDate = new Date();
+                            filterDate.setMonth(now.getMonth() - 6);
+                        } else if (filter === "year") {
+                            filterDate = new Date();
+                            filterDate.setFullYear(now.getFullYear() - 1);
+                        } else if (filter === "twoyear") {
+                            filterDate = new Date();
+                            filterDate.setFullYear(now.getFullYear() - 2);
+                        } else if (filter === "fiveyear") {
+                            filterDate = new Date();
+                            filterDate.setFullYear(now.getFullYear() - 5);
+                        }
+
+                        const transactions = customer.transactions || {};
+                        for (const [dateTime, details] of Object.entries(transactions)) {
+                            const transactionDate = new Date(dateTime);
+
+                            // Show only transactions within the selected time range
+                            if (!filterDate || transactionDate >= filterDate) {
+                                const temp = details.cardAmount < 0 ? "❌ उधार धन राशि" : "✅ जमा धन राशि";
+
+                                const transactionItem = document.createElement('li');
+                                transactionItem.textContent = `${dateTime}: Buy :${details.buyAmount}₹, Paid :${details.paiddAmount}₹, Owner Pay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
+                                transactionList.appendChild(transactionItem);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+
+        /*
+        window.loadCustomerTransactions = async function () {
+            const phone = document.getElementById('customer-phone').value;
+            if (phone) {
+                const q = query(collection(db, "customers1"));
+                const querySnapshot = await getDocs(q);
+                const transactionList = document.getElementById('transaction-list');
+                transactionList.innerHTML = "";
+                querySnapshot.forEach((doc) => {
+                    const customer = doc.data();
+                    if (customer.phone === phone) {
+                        document.getElementById('total-card-amount').textContent = customer.totalCardAmount;
+                        document.getElementById('total-income').textContent = customer.totalIncome;
+                        const name = document.createElement('h3');
+                        const li = document.createElement('h5');
+                        name.textContent = `Name : ${customer.name}-  My Phone No: ${customer.phone}📞`;
+                        li.textContent = ` Extra Earning: ${customer.totalIncome}₹, Card Balance: ${customer.totalCardAmount}₹`;
+                        transactionList.appendChild(name);
+                        transactionList.appendChild(li);
+                        const transactions = customer.transactions || {};
+                        for (const [dateTime, details] of Object.entries(transactions)) {
+                            if (details.cardAmount < 0) {
+                                var temp = "❌ उधार धन राशि";
+                            } else var temp = "✅ जमा धन राशि";
+
+                            const transactionItem = document.createElement('li');
+                            transactionItem.textContent = `${dateTime}: Buy :${details.buyAmount}₹, Paid :${details.payedAmount}₹, OwnerPay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
+                            transactionList.appendChild(transactionItem);
+                        }
+                    }
+                });
+            }
+        }; */
+
+        window.onload = async () => {
+            await loadPhoneNumbers();
+            const urlParams = new URLSearchParams(window.location.search);
+            //const phone = window.location.pathname.split('/').pop();
+            const phone = new URLSearchParams(window.location.search).get('phone');
+
+            if (phone) {
+                document.getElementById('customer-phone').value = phone;
+                loadCustomerTransactions();
+            }
+        };
+
+
+        //share image
+        function takeImage() {
+            html2canvas(document.querySelector("#transactions"), {
+                onrendered: function (canvas) {
+                    const link = document.createElement('a');
+                    link.download = 'sound-board.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                }
+            });
+        }
+
+
+        function dataURLToBlob(dataURL) {
+            let arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        }
+
+        function shareImage() {
+            html2canvas(document.querySelector("#transactions")).then(canvas => {
+                let imgData = canvas.toDataURL("image/png");
+                let blob = dataURLToBlob(imgData);
+                let file = new File([blob], 'transaction.png', { type: 'image/png' });
+
+                let shareData = {
+                    files: [file],
+                    title: "Transaction Details",
+                    text: "Check out this transaction details!"
+                };
+
+                if (navigator.canShare && navigator.canShare(shareData)) {
+                    navigator.share(shareData).catch(err => console.error("Error sharing image: ", err));
+                } else {
+                    alert("Sharing not supported, please download and share manually.");
+                }
+            });
+        }
+
+        // Expose to global scope
+        window.shareImage = shareImage;
+        window.takeImage = takeImage;
+    </script>
+</body>
+
+</html>

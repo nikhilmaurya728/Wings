@@ -24,11 +24,12 @@ window.addCustomer = async function () {
     const customerSnap = await getDoc(customerRef);
     if (!customerSnap.exists()) {
       await setDoc(customerRef, { name: name, phone: phone, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalpaid: 0 });
-
-      alert("Customer Added!");
+      playLocalSound(`musics/successfull.mp3`);
+      alert("Customer Added!✅✅✅ ");
       loadCustomers();
     } else {
-      alert("Phone Number already exists!");
+      playLocalSound(`musics/low paid.mp3`)
+      //alert("Phone Number already ❌❌ exists!");
     }
   }
 };
@@ -131,16 +132,23 @@ window.addTransaction = async function () {
       transactions[dateTime] = { cardAmount, buyAmount, paidAmount, ownerPay, productName };
 
       await updateDoc(customerRef, { transactions, totalCardAmount, totalIncome, totalpaid });
+      playLocalSound(`musics/successfull.mp3`);
       alert("Transaction  ✅  ✅  Added!  ✅  ✅ ");
+
       loadCustomerTransactions();
     } else {
-      alert("Customer not found!");
+      playLocalSound(`musics/low paid.mp3`)
+     // alert("Customer ❌❌ not ❌❌ found!");
     }
   } else {
-    alert("Customer ❌❌ not ❌❌ Selected!");
+    playLocalSound(`musics/low paid.mp3`)
+    //alert("Customer ❌❌ not ❌❌ Selected!");
   }
 };
-
+function playLocalSound(filename) {
+  const sound = new Audio(filename);
+  sound.play().catch(error => console.error('Sound play failed:', error));
+}
 
 const now = new Date();
 const offset = now.getTimezoneOffset() * 60000; // Offset in milliseconds
@@ -172,7 +180,7 @@ function displayCustomers(customerList) {
   customerList.forEach(customer => {
     // Create list item
     const li = document.createElement('li');
-    li.textContent = `${customer.name} - ${customer.phone} | TotalCard: ${customer.totalCardAmount} | TotalIncome: ${customer.totalIncome} | Totalpaid: ${customer.totalpaid}`;
+    li.textContent = `${customer.name} - ${customer.phone} | Card Balance: ${customer.totalCardAmount} | Total Earning: ${customer.totalIncome} | Total Paid: ${customer.totalpaid}`;
 
     // Set customer ID in dataset
     li.dataset.customerId = customer.id;
