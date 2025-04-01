@@ -31,10 +31,14 @@
                     style="font-size:medium;"> - Time Date</span></p>
     </div>
     <div class="mainDiv">
-        <div class="leftDiv"> <button  onclick="window.location.href='tel:6387851637';"> 📞 CTO
-            </button></div>
+        <div class="leftDiv">
+            <button
+                onclick="speakMessage('आप हमारे Chief Technical Officer को कॉल ना करें, व्हाट्स् ऐप नंबर  63, 87, 85, 16, 37, एक बार फिर से, 63, 87, 85, 16, 37,'); window.location.href='tel:6387851637';">
+                📞 CTO
+            </button>
+        </div>
         <div class="rightDiv">
-            <button onclick="window.location.href='customerKhata.html';">Go Print 🤵🏻
+            <button onclick="speakMessage('अपने Customer का transaction, डायरेक्ट, व्हाट्स् ऐप पर शेयर करो '); window.location.href='customerKhata.html';">Go Print 🤵🏻
             </button>
         </div>
     </div>
@@ -60,7 +64,7 @@
                 <input type="number" id="buy-amount" placeholder="Total Amount + Tax">
                 <input type="number" id="paid-amount" placeholder="Paid Amount">
                 <input type="number" id="owner-pay" placeholder="Owner Pay = 0₹">
-                <button onclick="addTransaction()">Save Transaction</button>
+                <button id="saveTransactionBTN" onclick="addTransaction()">Save Transaction</button>
             </div>
         </div>
         <div class="btnClass">
@@ -95,8 +99,15 @@
     </div>
 
 
-    <script type="module" src="./scriptKhata.js"></script>
+    <script type="module" src="scriptKhata.js"></script>
     <script>
+        function speakMessage(text) {
+            window.speechSynthesis.cancel();
+            let speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "hi-IN"; // भाषा सेट करो (English)
+            speech.rate = 1; // स्पीड नॉर्मल रखो
+            window.speechSynthesis.speak(speech);
+        }
         // for left right slide
         function toggleSlide() {
             const left = document.querySelector('.left');

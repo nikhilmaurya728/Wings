@@ -1,4 +1,3 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
@@ -15,7 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Add New Customer
 window.addCustomer = async function () {
   const phone = document.getElementById('new-customer-phone').value;
   const name = document.getElementById('new-customer-name').value;
@@ -24,12 +22,12 @@ window.addCustomer = async function () {
     const customerSnap = await getDoc(customerRef);
     if (!customerSnap.exists()) {
       await setDoc(customerRef, { name: name, phone: phone, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalpaid: 0 });
-      playLocalSound(`musics/successfull.mp3`);
+      speakMessage("ग्राहक सफलतापूर्वक जोड़ा गया, फिर से सुनो, ग्राहक सफलतापूर्वक जोड़ा गया");
       alert("Customer Added!✅✅✅ ");
       loadCustomers();
     } else {
-      playLocalSound(`musics/low paid.mp3`)
-      //alert("Phone Number already ❌❌ exists!");
+      speakMessage("ये ग्राहक पहले से मौजूद है, फिर से सुनो,ग्राहक पहले से मौजूद हैं-");
+      alert("Phone Number already ❌❌ exists!");
     }
   }
 };
@@ -64,9 +62,9 @@ window.loadCustomerTransactions = async function () {
       const transactions = customerSnap.data().transactions || {};
 
 
-      const totalCardAmount = customerData.totalCardAmount;
-      const totalIncome = customerData.totalIncome;
-      const totalpaid = customerData.totalpaid;
+      var totalCardAmount = customerData.totalCardAmount;
+      var totalIncome = customerData.totalIncome;
+      var totalpaid = customerData.totalpaid;
       console.log("Total Card Amount:", totalCardAmount);
       console.log("Total totalIncome:", totalIncome);
       console.log("Total totalpaid:", totalpaid);
@@ -85,14 +83,49 @@ window.loadCustomerTransactions = async function () {
       const sortedTransactions = Object.entries(transactions).sort(([a], [b]) => new Date(b) - new Date(a));
 
       for (const [dateTime, details] of sortedTransactions) {
-        
+
         setTimeout(() => {
-          if(details.cardAmount < 0){
+          if (details.cardAmount < 0) {
             var temp = "❌ उधार धन राशि";
-          } else  var temp = "✅ जमा धन राशि";
-            const li = document.createElement('li');
-            li.textContent = `${dateTime}: Buy ${details.buyAmount}, Paid ${details.paidAmount}, OwnerPay ${details.ownerPay}, ${temp}: ${details.cardAmount} ₹`;
-          
+          } else var temp = "✅ जमा धन राशि";
+
+          const li = document.createElement('li');
+          li.textContent = `${dateTime}: Buy ${details.buyAmount}, Paid ${details.paidAmount}, OwnerPay ${details.ownerPay}, ${temp}: ${details.cardAmount} ₹`;
+
+
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = `Delete ${dateTime}`;
+          deleteButton.addEventListener('click', async () => {
+            if (confirm("Transaction ✅✅ Added! ✅✅")) {
+              speakMessage('Transaction लिस्ट से, लेन-देन  मिटाया गया');
+              try {
+                // Remove the list item from the DOM
+                li.remove();
+
+                // Remove the transaction from the 'transactions' object
+                delete transactions[dateTime];
+
+                totalCardAmount = totalCardAmount - (details.paidAmount + details.ownerPay - details.buyAmount);
+                totalIncome = totalIncome - details.ownerPay;
+                totalpaid = totalpaid - details.paidAmount;
+
+                // Update the database
+                await updateDoc(customerRef, { transactions, totalCardAmount, totalIncome, totalpaid });
+                //re-render the list.
+                loadCustomerTransactions();
+
+              } catch (error) {
+                console.error("Error deleting transaction:", error);
+                // Handle the error appropriately (e.g., show an error message)
+              }
+
+            } else {
+              console.error("Cancel deleting transaction");
+              speakMessage('लेन-देन, मिटाया नहीं जा सका,Try once again');
+            }
+          });
+
+          li.appendChild(deleteButton);
 
           transactionList.appendChild(li);
         }, 0);
@@ -102,9 +135,28 @@ window.loadCustomerTransactions = async function () {
 };
 
 
+
+// Example: Call function with different messages
+//speakMessage("Transaction Successful");
+//speakMessage("Customer successfully added");
+//speakMessage("Customer selected");
+//speakMessage("Delete customer");
+//speakMessage("Transaction deleted");
+//speakMessage("Delete transaction canceled");
+
+
 // Add Transaction
 
 window.addTransaction = async function () {
+
+  const saveTransactionBTN = document.getElementById('saveTransactionBTN')
+
+  saveTransactionBTN.disabled = true; // बटन को डिसेबल कर दो
+  saveTransactionBTN.style.opacity = "0.5"; // यूजर को लगे कि बटन इनएक्टिव है
+
+  // यहाँ तुम्हारा async कोड चलेगा
+  console.log("Transaction Added ✅");
+
 
   const phone = document.getElementById('customer-dropdown').value;
   const dateTime = document.getElementById('transaction-datetime').value;
@@ -114,7 +166,10 @@ window.addTransaction = async function () {
   const productName = document.getElementById('product-name').value;
   const cardAmount = paidAmount + ownerPay - buyAmount;
 
+  document.getElementById('buy-amount').value = "";
 
+  document.getElementById('paid-amount').value = "";
+  document.getElementById('owner-pay').value = "";
 
 
   if (phone && dateTime) {
@@ -132,28 +187,41 @@ window.addTransaction = async function () {
       transactions[dateTime] = { cardAmount, buyAmount, paidAmount, ownerPay, productName };
 
       await updateDoc(customerRef, { transactions, totalCardAmount, totalIncome, totalpaid });
-      playLocalSound(`musics/successfull.mp3`);
+      if(buyAmount < ownerPay+paidAmount){
+        speakMessage(`'Thank you, लेन-देन सफलतापूर्वक लिखा गया, आपके कार्ड मे ${ownerPay + paidAmount - buyAmount} रुपया जोड़ा गया'`);
+      }else  speakMessage(`"लेन-देन सफलतापूर्वक लिखा गया, Please, ${buyAmount-ownerPay-paidAmount} रुपया का उधार ना करें"`);
+      
       alert("Transaction  ✅  ✅  Added!  ✅  ✅ ");
-
       loadCustomerTransactions();
+
+
+      setTimeout(() => {
+        saveTransactionBTN.disabled = false;
+        saveTransactionBTN.style.opacity = "1"; // बटन फिर से एक्टिव दिखे
+      }, 2000);
+
     } else {
-      playLocalSound(`musics/low paid.mp3`)
-     // alert("Customer ❌❌ not ❌❌ found!");
+      speakMessage('Customer not found!, Please, listen, Customer not found!'); alert("Customer ❌❌ not ❌❌ found!");
     }
   } else {
-    playLocalSound(`musics/low paid.mp3`)
-    //alert("Customer ❌❌ not ❌❌ Selected!");
+    speakMessage('Customer not found!,Please, listen, Customer not found!');
+    alert("Customer ❌❌ not ❌❌ Selected!");
   }
 };
-function playLocalSound(filename) {
-  const sound = new Audio(filename);
-  sound.play().catch(error => console.error('Sound play failed:', error));
+
+function updateDateTime() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000; // Offset in milliseconds
+  const localTime = new Date(now - offset).toISOString().slice(0, 19).replace(" ", " ");
+  document.getElementById('transaction-datetime').value = localTime;
 }
 
-const now = new Date();
-const offset = now.getTimezoneOffset() * 60000; // Offset in milliseconds
-const localTime = new Date(now - offset).toISOString().slice(0, 16);
-document.getElementById('transaction-datetime').value = localTime;
+// Call the function initially to set the value on load
+updateDateTime();
+
+// Update every second (1000 ms)
+setInterval(updateDateTime, 1000);
+
 
 //document.getElementById('owner-pay').value = 0;
 

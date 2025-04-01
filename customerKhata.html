@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+    <link rel="icon" href="image/logo.png" type="image/x-icon">
     <title>Business Khata - Customer</title>
     <link rel="stylesheet" href="stylesKhata.css">
 </head>
@@ -46,11 +47,13 @@
 
     <div id="transactions" class="transactions">
         <div class="mainDiv">
-            <div class="leftDiv"> <button onclick="takeImage()"> Print 🖨️ </button><button onclick="shareImage()">
-                    Share ➤ </button></div>
+            <div class="leftDiv">
+                <button onclick="takeImage()"> Print 🖨️ </button>
+                <button onclick="shareImage()"> Share ➤ </button>
+            </div>
             <div class="rightDiv">
                 <select id="transaction-filter" onchange="loadCustomerTransactions()">
-                    <option value="" disabled >Arrange The Customer</option>
+                    <option value="" disabled>Arrange The Customer</option>
                     <option value="week">Last Week</option>
                     <option value="ten">10 Days</option>
                     <option value="month" selected>Last 1 Month</option>
@@ -157,7 +160,7 @@
                                 const temp = details.cardAmount < 0 ? "❌ उधार धन राशि" : "✅ जमा धन राशि";
 
                                 const transactionItem = document.createElement('li');
-                                transactionItem.textContent = `${dateTime}: Buy :${details.buyAmount}₹, Paid :${details.paiddAmount}₹, Owner Pay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
+                                transactionItem.textContent = `${dateTime}: Buy :${details.buyAmount}₹, Paid :${details.paidAmount}₹, Owner Pay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
                                 transactionList.appendChild(transactionItem);
                             }
                         }
@@ -167,40 +170,7 @@
         };
 
 
-        /*
-        window.loadCustomerTransactions = async function () {
-            const phone = document.getElementById('customer-phone').value;
-            if (phone) {
-                const q = query(collection(db, "customers1"));
-                const querySnapshot = await getDocs(q);
-                const transactionList = document.getElementById('transaction-list');
-                transactionList.innerHTML = "";
-                querySnapshot.forEach((doc) => {
-                    const customer = doc.data();
-                    if (customer.phone === phone) {
-                        document.getElementById('total-card-amount').textContent = customer.totalCardAmount;
-                        document.getElementById('total-income').textContent = customer.totalIncome;
-                        const name = document.createElement('h3');
-                        const li = document.createElement('h5');
-                        name.textContent = `Name : ${customer.name}-  My Phone No: ${customer.phone}📞`;
-                        li.textContent = ` Extra Earning: ${customer.totalIncome}₹, Card Balance: ${customer.totalCardAmount}₹`;
-                        transactionList.appendChild(name);
-                        transactionList.appendChild(li);
-                        const transactions = customer.transactions || {};
-                        for (const [dateTime, details] of Object.entries(transactions)) {
-                            if (details.cardAmount < 0) {
-                                var temp = "❌ उधार धन राशि";
-                            } else var temp = "✅ जमा धन राशि";
-
-                            const transactionItem = document.createElement('li');
-                            transactionItem.textContent = `${dateTime}: Buy :${details.buyAmount}₹, Paid :${details.payedAmount}₹, OwnerPay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
-                            transactionList.appendChild(transactionItem);
-                        }
-                    }
-                });
-            }
-        }; */
-
+     
         window.onload = async () => {
             await loadPhoneNumbers();
             const urlParams = new URLSearchParams(window.location.search);
