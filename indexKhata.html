@@ -22,7 +22,8 @@
     </div>
     <div class="header">
         <h2 id="headerName">SalikRam Panipudi Wale </h2>
-        <p style="font-size: small;">Utarthiya sadarganj By paas road near KD Hospital <span id="datetime" style="font-size:medium;"> - Time Date</span></p>
+        <p style="font-size: small;">🏡<span id="headerAddress">Utarthiya sadarganj By paas road near KD Hospital</span></p>
+        
     </div>
     <div class="mainDiv" id="ScrollIntoView">
         <div class="leftDiv">
@@ -68,8 +69,11 @@
         </div>
         <div class="right">
             <div id="add-customer-form">
-                <input type="text" id="new-customer-phone" placeholder="Phone Number" required>
+                <input type="number" id="new-customer-phone" placeholder="Phone Number" required>
                 <input type="text" id="new-customer-name" placeholder="Customer Name" required>
+
+                <textarea id="new-customer-address" placeholder="Enter Customer Address"  rows="3"></textarea>
+
                 <button onclick="addCustomer()">Add New Customer</button>
             </div>
         </div>
@@ -78,6 +82,7 @@
 
 
     <div class="transactions">
+        <div  style="text-align: end;"><button id="seeBTNs"  >Edit ✍</button></div>
         <ul id="transaction-list"></ul>
     </div>
     <div class="space"> </div>
@@ -97,6 +102,7 @@
     <div id="myProductList">ttt</div>
     <script type="module" src="./scriptKhata.js"></script>
     <script>
+        
         function speakInnerText(value) {
             let text = 'hello';
             let selectedId = document.getElementById(value);

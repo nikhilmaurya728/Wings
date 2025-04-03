@@ -124,7 +124,7 @@ select {
   border-radius: 4px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-input {
+input, textarea {
   width: 200px;
   padding: 4px;
 }
@@ -136,6 +136,9 @@ select:hover,
 input:hover {
   border-color: #e74c3c;
   border-radius: 4px;
+}
+.transactions{
+  display: none;
 }
 .transactions,.allcustomer{
   border-radius: 6px;
@@ -173,7 +176,7 @@ padding: 10px;
 #salerName{
   display: none;
 }
-.phone-input-container{
+.name-input-container, .phone-input-container{
 margin: 15px;
 }
 .space{
@@ -184,4 +187,12 @@ margin: 15px;
 }
 h3, h5{
   text-align: center;
+}
+
+
+#new-customer-name {
+  text-transform: uppercase;
+}
+#new-customer-address {
+  text-transform: capitalize;
 }

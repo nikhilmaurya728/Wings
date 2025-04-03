@@ -14,14 +14,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+function capitalizeText(text) {
+  return text.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+}
+
 window.addCustomer = async function () {
   const phone = document.getElementById('new-customer-phone').value;
-  const name = document.getElementById('new-customer-name').value;
+  const name = capitalizeText(document.getElementById('new-customer-name').value);
+
+  const address = capitalizeText(document.getElementById('new-customer-address').value); // एड्रेस का पहला अक्षर कैपिटल
+
+
   if (phone && name) {
     const customerRef = doc(db, "customers1", phone);
     const customerSnap = await getDoc(customerRef);
     if (!customerSnap.exists()) {
-      await setDoc(customerRef, { name: name, phone: phone, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalpaid: 0 });
+      await setDoc(customerRef, { name: name, phone: phone, address: address, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalpaid: 0 });
       speakMessage("ग्राहक सफलतापूर्वक जोड़ा गया, फिर से सुनो, ग्राहक सफलतापूर्वक जोड़ा गया");
       alert("Customer Added!✅✅✅ ");
       loadCustomers();
@@ -51,6 +59,8 @@ function ownerPayMessage(ownerPay) {
 }
 
 window.loadCustomerTransactions = async function () {
+  document.querySelector('.transactions').style.display = "block";
+
   const phone = document.getElementById('customer-dropdown').value;
   const transactionList = document.getElementById('transaction-list');
   transactionList.innerHTML = '';
@@ -65,7 +75,8 @@ window.loadCustomerTransactions = async function () {
       var totalpaid = customerData.totalpaid;
 
       document.getElementById('headerName').textContent = customerData.name; //// add address
-      
+      document.getElementById('headerAddress').textContent = customerData.address; //// add address
+
       console.log("Total Card Amount:", totalCardAmount);
       console.log("Total totalIncome:", totalIncome);
       console.log("Total totalpaid:", totalpaid);
@@ -87,7 +98,23 @@ window.loadCustomerTransactions = async function () {
           const li = document.createElement('li');
           li.textContent = `${formatedDateTime}: Total Cost ${details.buyAmount}₹💸, Paid Amount ${details.paidAmount}₹💰, ${ownerPay} ${temp}: ${details.cardAmount}₹ `;
           const deleteButton = document.createElement('button');
+          deleteButton.addclass = `Delete`;
           deleteButton.textContent = `Delete`;
+
+          deleteButton.style.display = "none";
+
+          let flag = 0;
+          document.getElementById('seeBTNs').addEventListener('click', function () {
+            if (flag == 0) {
+              deleteButton.style.display = "block";
+              flag = 1;
+            } else {
+              deleteButton.style.display = "none";
+              flag = 0;
+            }
+
+          });
+
           deleteButton.addEventListener('click', async () => {
             if (confirm("Transaction ✅✅ Added! ✅✅")) {
               speakMessage('Transaction लिस्ट से, लेन-देन  मिटाया गया');
@@ -164,10 +191,6 @@ function updateDateTime() {
   const offset = now.getTimezoneOffset() * 60000; // Offset in milliseconds
   const localTime = new Date(now - offset).toISOString().slice(0, 19).replace(" ", " ");
   document.getElementById('transaction-datetime').value = localTime;
-
-
-
-  document.getElementById('datetime').innerText = formatDateTime(localTime);
 }
 function formatDateTime(isoString) {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

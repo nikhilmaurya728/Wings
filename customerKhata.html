@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <link rel="icon" href="image/logo.png" type="image/x-icon">
+    <link rel="icon" href="image/favicon.ico" type="image/x-icon">
     <title>Business Khata - Customer</title>
     <link rel="stylesheet" href="stylesKhata.css">
 </head>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="mainDiv">
-        <div class="leftDiv"> <button onclick="window.location.href='indexKhata.html'; speakMessage('Back');"> Back
+        <div class="leftDiv"> <button onclick="window.location.href='indexKhata.html';"> Back
             </button></div>
         <div class="rightDiv">
             <button
@@ -40,15 +40,16 @@
 
     <div class="Transactions">
         <h1>Transactions</h1>
-        <div class="phone-input-container">
-            <input type="text" id="customer-phone" placeholder="Enter Your Phone Number" required list="phone-list">
-            <datalist id="phone-list"></datalist>
-        </div>
-
         <div class="name-input-container">
             <input type="text" id="customer-name" placeholder="Enter Your name Number" required list="name-list">
             <datalist id="name-list"></datalist>
         </div>
+
+        <div class="phone-input-container">
+            <input type="text" id="customer-phone" placeholder="Enter Your Phone Number" required list="phone-list">
+            <datalist id="phone-list"></datalist>
+        </div></br>
+
         <button onclick="loadCustomerTransactions()">View Transactions</button>
     </div>
 
@@ -63,7 +64,7 @@
             </div>
             <div class="rightDiv">
                 <select id="transaction-filter" onchange="loadCustomerTransactions()">
-                    <option value="" disabled>Arrange The Customer</option>
+                    <option value="" disabled>Arrange Customer</option>
                     <option value="week">Last Week</option>
                     <option value="ten">10 Days</option>
                     <option value="month" selected>Last 1 Month</option>
@@ -80,6 +81,22 @@
 
 
     <script>
+        function formatDateTime(isoString) {
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            let date = new Date(isoString);
+
+            let day = String(date.getDate()).padStart(2, '0'); // 01 से 31 तक
+            let month = months[date.getMonth()]; // महीना (Jan, Feb...)
+            let year = date.getFullYear(); // साल (2025)
+
+            let hours = date.getHours();
+            let minutes = String(date.getMinutes()).padStart(2, '0'); // 00 से 59 तक
+            let ampm = hours >= 12 ? 'PM' : 'AM'; // AM या PM
+            hours = hours % 12 || 12; // 12-घंटे का फॉर्मेट
+            //document.getElementById("time").innerHTML = `${day} ${month} ${year}  ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+            return `${day} ${month} ${year}  ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+        }
         function speakMessage(text) {
             window.speechSynthesis.cancel();
             let speech = new SpeechSynthesisUtterance(text);
@@ -195,8 +212,11 @@
                             if (!filterDate || transactionDate >= filterDate) {
                                 const temp = details.cardAmount < 0 ? "❌ उधार धन राशि" : "✅ जमा धन राशि";
 
+                                let formatedDateTime = formatDateTime(dateTime);
+
+
                                 const transactionItem = document.createElement('li');
-                                transactionItem.textContent = `${dateTime}: Buy :${details.buyAmount}₹, Paid :${details.paidAmount}₹, Owner Pay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
+                                transactionItem.textContent = `${formatedDateTime}: Buy :${details.buyAmount}₹, Paid :${details.paidAmount}₹, Owner Pay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
                                 transactionList.appendChild(transactionItem);
                             }
                         }
