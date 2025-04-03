@@ -6,14 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="image/favicon.ico" type="image/x-icon">
-
-    <title>Business Khata - Admin</title>
+    <title>KhataBook - Admin</title>
     <link rel="stylesheet" href="stylesKhata.css">
-    <style>
-        .bold {
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
@@ -21,24 +15,26 @@
         <a href="indexKhata.html">
             <img class="logo" src="image/logo.png" alt="loading">
         </a>
-        <p class="bold">My Card: <span id="total-card-amount">0</span> ₹ 💳</p>
-        <p class="bold">Earning: <span id="total-income">0</span> ₹ 💵</p>
-        <p class="bold">Paid: <span id="total-paid">0</span> ₹ 🛒</p>
+        <p class="bold" onclick="speakInnerText('total-card-amount')">My Card: <span id="total-card-amount">0</span>₹
+            💳 </p>
+        <p class="bold" onclick="speakInnerText('total-income')">Earning: <span id="total-income">0</span>₹ 💲</p>
+        <p class="bold" onclick="speakInnerText('total-paid')">Paid: <span id="total-paid">0</span>₹ 🛒</p>
     </div>
     <div class="header">
-        <h2>SalikRam Panipudi Wale </h1>
-            <p style="font-size: small;">Utarthiya sadarganj By paas road near KD Hospital <span
-                    style="font-size:medium;"> - Time Date</span></p>
+        <h2 id="headerName">SalikRam Panipudi Wale </h2>
+        <p style="font-size: small;">Utarthiya sadarganj By paas road near KD Hospital <span id="datetime" style="font-size:medium;"> - Time Date</span></p>
     </div>
-    <div class="mainDiv">
+    <div class="mainDiv" id="ScrollIntoView">
         <div class="leftDiv">
-            <button
-                onclick="speakMessage('आप हमारे Chief Technical Officer को कॉल ना करें, व्हाट्स् ऐप नंबर  63, 87, 85, 16, 37, एक बार फिर से, 63, 87, 85, 16, 37,'); window.location.href='tel:6387851637';">
+            <button onclick="speakMessage('आप हमारे Chief Technical Officer को कॉल ना करें, व्हाट्स् ऐप नंबर  63, 87, 85, 16, 37, एक बार फिर से, 63, 87, 85, 16, 37,'); setTimeout(() => {window.location.href='tel:6387851637';
+              }, 13000);">
                 📞 CTO
             </button>
         </div>
         <div class="rightDiv">
-            <button onclick="speakMessage('अपने Customer का transaction, डायरेक्ट, व्हाट्स् ऐप पर शेयर करो '); window.location.href='customerKhata.html';">Go Print 🤵🏻
+            <button
+                onclick="speakMessage('अपने Customer का transaction, डायरेक्ट, व्हाट्स् ऐप पर शेयर करो '); window.location.href='customerKhata.html';">Go
+                Print 🤵🏻
             </button>
         </div>
     </div>
@@ -85,6 +81,7 @@
         <ul id="transaction-list"></ul>
     </div>
     <div class="space"> </div>
+
     <div class="allcustomer">
         <div style="text-align: end;">
             <select onchange="sortCustomers(this.value)">
@@ -97,10 +94,30 @@
 
         <ul id="customer-list"></ul>
     </div>
-
-
-    <script type="module" src="scriptKhata.js"></script>
+    <div id="myProductList">ttt</div>
+    <script type="module" src="./scriptKhata.js"></script>
     <script>
+        function speakInnerText(value) {
+            let text = 'hello';
+            let selectedId = document.getElementById(value);
+            if (value == 'total-card-amount') {
+                text = 'आपके कार्ड में कुल मिलाकर' + selectedId.textContent + 'rupees बचा';
+            } else if (value == 'total-income') {
+                text = 'आपने, एक्स्ट्रा इनकम, भी किया है जोकि है ' + selectedId.textContent + ' rupees';
+            } else if (value == 'total-paid') {
+                text = 'Total Paid Amount is ' + selectedId.textContent + ' rupees';
+            }
+            speakMessage(text);
+        }
+        //let totalCardAmount = document.getElementById('total-card-amount');
+
+        //totalCardAmount.addEventListener('click', function () {
+
+        // let text = 'Total Card Amount is ' + totalCardAmount.textContent + ' rupees';
+        //  speakMessage(text);
+        //});
+
+
         function speakMessage(text) {
             window.speechSynthesis.cancel();
             let speech = new SpeechSynthesisUtterance(text);
@@ -122,15 +139,15 @@
                 // right.style.display = 'block';
                 button.style.left = '0%';
                 button.textContent = '📋 New Transaction';
+                speakMessage('न्यू Customer Add करें');
             } else {
                 left.style.width = '100%';
                 right.style.width = '0%';
                 //right.style.display = 'none';
                 button.style.left = '91%';
                 btnClass.style.backgroundColor = '#fbd1a1b7';
-
-
                 button.textContent = '🤵🏻 New Customer';
+                speakMessage('न्यू Transaction Add करें');
             }
         }
     </script>

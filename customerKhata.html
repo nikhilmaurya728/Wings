@@ -28,10 +28,12 @@
     </div>
 
     <div class="mainDiv">
-        <div class="leftDiv"> <button onclick="window.location.href='indexKhata.html';"> Back
+        <div class="leftDiv"> <button onclick="window.location.href='indexKhata.html'; speakMessage('Back');"> Back
             </button></div>
         <div class="rightDiv">
-            <button onclick="window.location.href='tel:1234567890';"> 📞 Help
+            <button
+                onclick="window.location.href='tel:1234567890'; speakMessage('किसी भी तरह का हेल्प के लिए, कॉल करें, या व्हाट्सप्प चैट करें ');">
+                📞 Help
             </button>
         </div>
     </div>
@@ -42,14 +44,22 @@
             <input type="text" id="customer-phone" placeholder="Enter Your Phone Number" required list="phone-list">
             <datalist id="phone-list"></datalist>
         </div>
+
+        <div class="name-input-container">
+            <input type="text" id="customer-name" placeholder="Enter Your name Number" required list="name-list">
+            <datalist id="name-list"></datalist>
+        </div>
         <button onclick="loadCustomerTransactions()">View Transactions</button>
     </div>
 
     <div id="transactions" class="transactions">
         <div class="mainDiv">
             <div class="leftDiv">
-                <button onclick="takeImage()"> Print 🖨️ </button>
-                <button onclick="shareImage()"> Share ➤ </button>
+                <div id="salerName">SalikRam Panipudi Wale</div>
+                <div id="PrintBtn">
+                    <button onclick="takeImage()"> Print 🖨️ </button>
+                    <button onclick="shareImage()"> Share ➤ </button>
+                </div>
             </div>
             <div class="rightDiv">
                 <select id="transaction-filter" onchange="loadCustomerTransactions()">
@@ -69,7 +79,15 @@
 
 
 
-
+    <script>
+        function speakMessage(text) {
+            window.speechSynthesis.cancel();
+            let speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "hi-IN"; // भाषा सेट करो (English)
+            speech.rate = 1; // स्पीड नॉर्मल रखो
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
     <script type="module" defer>
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getFirestore, doc, getDocs, query, collection } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
@@ -87,7 +105,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadPhoneNumbers() {
+        async function loadPhoneNumber() {
             const phoneList = document.getElementById('phone-list');
             phoneList.innerHTML = "";  // Clear existing options
             const querySnapshot = await getDocs(collection(db, "customers1"));
@@ -98,9 +116,27 @@
                 phoneList.appendChild(option);
             });
         }
-
-
-
+        async function loadName() {
+            const nameList = document.getElementById('name-list');
+            nameList.innerHTML = "";  // Clear existing options
+            const querySnapshot = await getDocs(collection(db, "customers1"));
+            const customers = [];
+            querySnapshot.forEach((doc) => {
+                const customer = doc.data();
+                customers.push(customer); // ✅ सभी ग्राहकों को ऐरे में सेव करो
+                const option = document.createElement('option');
+                option.value = customer.name;
+                nameList.appendChild(option);
+            });
+            // ✅ जब नाम सेलेक्ट हो, तो फोन नंबर इनपुट में आ जाए
+            document.getElementById('customer-name').addEventListener('input', function () {
+                const selectedName = this.value;
+                const matchedCustomer = customers.find(c => c.name === selectedName);
+                if (matchedCustomer) {
+                    document.getElementById('customer-phone').value = matchedCustomer.phone; // ✅ सही फोन नंबर सेट कर दो
+                }
+            });
+        }
 
         window.loadCustomerTransactions = async function () {
             const phone = document.getElementById('customer-phone').value;
@@ -170,9 +206,10 @@
         };
 
 
-     
+
         window.onload = async () => {
-            await loadPhoneNumbers();
+            await loadName();
+            await loadPhoneNumber();
             const urlParams = new URLSearchParams(window.location.search);
             //const phone = window.location.pathname.split('/').pop();
             const phone = new URLSearchParams(window.location.search).get('phone');
@@ -184,16 +221,20 @@
         };
 
 
-        //share image
         function takeImage() {
-            html2canvas(document.querySelector("#transactions"), {
-                onrendered: function (canvas) {
-                    const link = document.createElement('a');
-                    link.download = 'sound-board.png';
-                    link.href = canvas.toDataURL();
-                    link.click();
-                }
+            const name = document.querySelector("#salerName");
+            const btns = document.querySelector("#PrintBtn");
+            btns.style.display = 'none';
+            name.style.display = 'block';
+            html2canvas(document.querySelector("#transactions")).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'transactions.png'; // ✅ फाइल का नाम
+                link.href = canvas.toDataURL("image/png"); // ✅ इमेज URL
+                link.click(); // ✅ इमेज डाउनलोड करो
             });
+
+            btns.style.display = 'block';
+            name.style.display = 'none';
         }
 
 
