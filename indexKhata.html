@@ -21,11 +21,9 @@
         <p class="bold" onclick="speakInnerText('total-paid')">Paid: <span id="total-paid">0</span>₹ 🛒</p>
     </div>
     <div class="header">
-        <h2 id="headerName">Vikas Iron & Wholesale Store </h2>
-        <p style="font-size: small;">🏡<span id="headerAddress">Raja Bazar, Jaunpur bypass road, near Primary School
-                (Wholesale shop 👉 Pipe, Hand Pump, Submersible, all type Hardware And Building Materials)</span>
+        <h2 id="headerName">Vikas Wholesale & Iron Store</h2>
+        <p style="font-size: small;">🏡<span id="headerAddress">Wholesale shop 👉 Pipe, Hand Pump, Submersible, all type Hardware And Building Materials</span>
         </p>
-
     </div>
     <div id="internet-status"
         style="display: none; color: red; text-align: center; font-weight: bold; background-color: yellow; padding: 10px;">
@@ -34,7 +32,7 @@
     <div class="mainDiv" id="ScrollIntoView">
         <div class="leftDiv">
             <button id="forCall" onclick="makeCall(6387851637);">
-                📞 CTO
+                📞 Call CTO
             </button>
         </div>
         <div class="rightDiv">
@@ -109,7 +107,7 @@
             if (phone) {
                 window.location.href = `tel:${phone}`;
                 console.log('phone');
-                
+
             } else {
                 speakMessage('आप हमारे Chief Technical Officer को कॉल ना करें, व्हाट्स् ऐप नंबर  63, 87, 85, 16, 37, एक बार फिर से, 63, 87, 85, 16, 37,');
                 setTimeout(() => { window.location.href = `tel:${number}`; }, 13000);
@@ -175,14 +173,14 @@
         }
         window.loadCustomerTransactions = async function () {
             document.querySelector('.transactions').style.display = "block";
-            
+
 
             const phone = document.getElementById('customer-dropdown').value;
             const transactionList = document.getElementById('transaction-list');
             transactionList.innerHTML = '';
             if (phone) {
                 let forCallbtn = document.getElementById('forCall');
-            forCallbtn.innerText = `📞 Call ${phone}`;
+                forCallbtn.innerText = `📞 Call ${phone}`;
                 const customerRef = doc(db, "dataKhata", phone);
                 const customerSnap = await getDoc(customerRef);
                 if (customerSnap.exists()) {

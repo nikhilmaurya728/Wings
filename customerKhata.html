@@ -22,11 +22,10 @@
 
     </div>
     <div class="header">
-        <h2 id="headerName">Vikas Iron & Wholesale Store </h2>
-        <p style="font-size: small;">🏡<span id="headerAddress">Raja Bazar, Jaunpur bypass road, near Primary School
-                (Wholesale shop 👉 Pipe, Hand Pump, Submersible, all type Hardware And Building Materials)</span>
+        <h2 id="headerName">Vikas Wholesale & Iron Store</h2>
+        <p style="font-size: small;">🏡<span id="headerAddress">Wholesale shop 👉 Pipe, Hand Pump, Submersible, all type
+                Hardware And Building Materials</span>
         </p>
-
     </div>
     <div id="internet-status"
         style="display: none; color: red; text-align: center; font-weight: bold; background-color: yellow; padding: 10px;">
@@ -54,26 +53,32 @@
             <datalist id="phone-list"></datalist>
         </div></br>
 
-        <button onclick="loadCustomerTransactions()">View Transactions</button>
-        <label class="flat-check">
-            <input type="checkbox" id="includeQR" /><span></span>
-        </label>
+        <div style="display: flex;">
+            <label class="flat-check">
+                <input type="checkbox" id="includeQR" onclick="showQR()"  /><span></span>
+            </label>
+            <div style="width: 100%;  padding-right: 40px;">
+                <button onclick="loadCustomerTransactions()">View Transactions</button>
+            </div>
+        </div>
     </div>
 
 
 
- 
+
 
 
 
     <div id="transactions" class="transactions">
         <div id="salerName" style="display: none;">
             <img class="logo" src="image/logo.png" alt="loading">
-            <h2> Vikas Iron & Wholesale Store </h2>
+            <h2> Vikas Wholesale & Iron Store </h2>
         </div>
+
         <p style="font-size: small; display: flex;
-  justify-content: center;" id="slogan">🏪 हमारे यहाँ आप 👉 पाइप, हैंड पंप, सबमर्सिबल, सभी प्रकार के हार्डवेयर और
-            बिल्डिंग मटेरियल थोक रेट पर ले सकते हैं*</p>
+  justify-content: center;" id="slogan">Address: Rajabajar by paas road Near primary School, Rajabajar, Jaunpur, ☎
+            Phone:
+            3687851637</p>
         <div class="mainDiv" id="printBtn">
             <div class="leftDiv">
                 <button onclick="takeImage()"> Print 🖨️ </button>
@@ -98,23 +103,40 @@
         <div class="line"></div>
         <div class="space"></div>
 
-        <ul id="transaction-list"></ul>
-        <p id="transaction-datetime"></p><!--Temp -->
+        <ul id="transaction-list"></ul></br>
+        <p id="transaction-datetime">
+            🏪 हमारे यहाँ आप 👉 पाइप, हैंड पंप, सबमर्सिबल, सभी प्रकार के हार्डवेयर और
+            बिल्डिंग मटेरियल थोक रेट पर ले सकते हैं*
+        </p><!--Temp -->
     </div>
 
-    <div class="cardDiv" id="myQR">
+    <div class="QRcardDiv" id="myQR">
         <h2>Scan QR to Pay</h2>
         <div class="space"></div>
         <div class="qr-card">
 
-            <h4>Vikas Iron & Wholesale Store</h4>
+            <h4>Vikas Wholesale & Iron Store</h4>
 
             <img src="image/QR.jpg" alt="QR Code" />
             <p>Pay quickly using any UPI app</p>
         </div>
     </div>
 
-
+<script>
+    let flagQR = 1;
+    function showQR(){
+        const QRcardDiv= document.getElementById('myQR');
+        if (flagQR) {
+            QRcardDiv.style.display = "block";
+            console.log('Show QR');
+            flagQR=0;
+        } else {
+            QRcardDiv.style.display = "none";
+            console.log('Hide QR');
+            flagQR=1;
+        }
+    }
+</script>
 
     <script src="functionKhata.js"></script>
     <script type="module" defer>

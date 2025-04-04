@@ -62,7 +62,7 @@ body {
 
 .slide {
   display: flex;
-  height: 275px;
+  height: 300px;
   border: none;
   border-radius: 5px;
   overflow: hidden;
@@ -256,8 +256,8 @@ h5 {
 /* start QR and Check Box*/
 .flat-check {
   display: flex;
-  align-items: center;
-  cursor: pointer; 
+  cursor: pointer;
+  width: 50px; 
 }
 .flat-check input {
   display: none;
@@ -279,7 +279,8 @@ h5 {
 
 
 
-.cardDiv {
+.QRcardDiv {
+  display: none;
   margin: auto;
   width: 350px;
   height: 450px;
