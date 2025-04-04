@@ -21,8 +21,9 @@
         <p class="bold" onclick="speakInnerText('total-paid')">Paid: <span id="total-paid">0</span>₹ 🛒</p>
     </div>
     <div class="header">
-        <h2 id="headerName">SalikRam Panipudi Wale </h2>
-        <p style="font-size: small;">🏡<span id="headerAddress">Utarthiya sadarganj By paas road near KD Hospital</span>
+        <h2 id="headerName">Vikas Iron & Wholesale Store </h2>
+        <p style="font-size: small;">🏡<span id="headerAddress">Raja Bazar, Jaunpur bypass road, near Primary School
+                (Wholesale shop 👉 Pipe, Hand Pump, Submersible, all type Hardware And Building Materials)</span>
         </p>
 
     </div>
@@ -32,8 +33,7 @@
     </div>
     <div class="mainDiv" id="ScrollIntoView">
         <div class="leftDiv">
-            <button onclick="speakMessage('आप हमारे Chief Technical Officer को कॉल ना करें, व्हाट्स् ऐप नंबर  63, 87, 85, 16, 37, एक बार फिर से, 63, 87, 85, 16, 37,'); setTimeout(() => {window.location.href='tel:6387851637';
-              }, 13000);">
+            <button id="forCall" onclick="makeCall(6387851637);">
                 📞 CTO
             </button>
         </div>
@@ -55,12 +55,13 @@
 
             <div id="transaction-form">
                 <select id="product-name">
-                    <option value="Many">🧆🥤🍔🍗🍟 Many Item</option>
-                    <option value="Paneer">🧀 Paneer</option>
-                    <option value="Milk">🥛 Milk</option>
-                    <option value="Curd">🍯 Curd</option>
-                    <option value="Curd">☕ Tea</option>
-                    <option value="Curd">🍩 Donut</option>
+                    <option value="Buy Many Item">🧆🥤🍔🍗🍟 Many Item</option>
+                    <option value="Buy Paneer">🧀 Paneer</option>
+                    <option value="Buy Milk 🥛">🥛 Milk</option>
+                    <option value="Buy Curd">🍯 Curd</option>
+                    <option value="Buy Curd">☕ Tea</option>
+                    <option value="Buy Donut">🍩 Donut</option>
+                    <option value="Set Previous Transactions📌❓">❓❓ Set Transactions ❓❓</option>
                 </select>
                 <input type="datetime-local" id="transaction-datetime" required onchange="stopInterval()">
                 <input type="number" id="buy-amount" placeholder="Total Amount + Tax">
@@ -100,7 +101,23 @@
         <ul id="customer-list"></ul>
     </div>
     <div id="myProductList" class="space"></div>
+    <script>
+        function makeCall(number) {
+            const phone = document.getElementById('customer-dropdown').value;
+            console.log(phone);
 
+            if (phone) {
+                window.location.href = `tel:${phone}`;
+                console.log('phone');
+                
+            } else {
+                speakMessage('आप हमारे Chief Technical Officer को कॉल ना करें, व्हाट्स् ऐप नंबर  63, 87, 85, 16, 37, एक बार फिर से, 63, 87, 85, 16, 37,');
+                setTimeout(() => { window.location.href = `tel:${number}`; }, 13000);
+                console.log('number');
+
+            }
+        }
+    </script>
     <script src="./functionKhata.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
@@ -126,7 +143,7 @@
             const address = capitalizeText(document.getElementById('new-customer-address').value);
 
             if (phone && name) {
-                const customerRef = doc(db, "customers1", phone);
+                const customerRef = doc(db, "dataKhata", phone);
                 const customerSnap = await getDoc(customerRef);
                 if (!customerSnap.exists()) {
                     await setDoc(customerRef, { name: name, phone: phone, address: address, transactions: {}, totalCardAmount: 0, totalIncome: 0, totalpaid: 0 });
@@ -143,7 +160,7 @@
         async function loadCustomers() {
             const customerDropdown = document.getElementById('customer-dropdown');
             customerDropdown.innerHTML = '<option value="" disabled selected>Select My Customer</option>';
-            const querySnapshot = await getDocs(collection(db, "customers1"));
+            const querySnapshot = await getDocs(collection(db, "dataKhata"));
             querySnapshot.forEach((doc) => {
                 const customer = doc.data();
                 const option = document.createElement('option');
@@ -154,15 +171,19 @@
         }
 
         function ownerPayMessage(ownerPay) {
-            return ownerPay !== 0 ? ` Payed by Owner is ${ownerPay}₹💲, ` : ' ';
+            return ownerPay !== 0 ? ` Payed by Owner is ${ownerPay}₹💲 ꊞ ` : ' ';
         }
         window.loadCustomerTransactions = async function () {
             document.querySelector('.transactions').style.display = "block";
+            
+
             const phone = document.getElementById('customer-dropdown').value;
             const transactionList = document.getElementById('transaction-list');
             transactionList.innerHTML = '';
             if (phone) {
-                const customerRef = doc(db, "customers1", phone);
+                let forCallbtn = document.getElementById('forCall');
+            forCallbtn.innerText = `📞 Call ${phone}`;
+                const customerRef = doc(db, "dataKhata", phone);
                 const customerSnap = await getDoc(customerRef);
                 if (customerSnap.exists()) {
                     const customerData = customerSnap.data();
@@ -188,7 +209,7 @@
                             let formatedDateTime = formatDateTime(dateTime);
                             let ownerPay = ownerPayMessage(details.ownerPay);
                             const li = document.createElement('li');
-                            li.textContent = `${formatedDateTime}: Total Cost ${details.buyAmount}₹💸, Paid Amount ${details.paidAmount}₹💰, ${ownerPay} ${temp}: ${details.cardAmount}₹ `;
+                            li.textContent = `${formatedDateTime}  ꊞ Transaction Reason: ${details.productName} ꊞ Total Cost ${details.buyAmount}₹💸 ꊞ Paid Amount ${details.paidAmount}₹💰 ꊞ ${ownerPay} ${temp} ${details.cardAmount}₹ `;
                             const deleteButton = document.createElement('button');
                             deleteButton.addclass = `Delete`;
                             deleteButton.textContent = `Delete`;
@@ -248,7 +269,7 @@
             document.getElementById('paid-amount').value = "";
             document.getElementById('owner-pay').value = "";
             if (phone && dateTime) {
-                const customerRef = doc(db, "customers1", phone);
+                const customerRef = doc(db, "dataKhata", phone);
                 const customerSnap = await getDoc(customerRef);
                 if (customerSnap.exists()) {
                     const customerData = customerSnap.data();
@@ -280,7 +301,7 @@
 
         let allCustomers = [];
         async function loadAllCustomers() {
-            const querySnapshot = await getDocs(collection(db, "customers1"));
+            const querySnapshot = await getDocs(collection(db, "dataKhata"));
             allCustomers = [];
             querySnapshot.forEach((doc) => {
                 const customer = doc.data();

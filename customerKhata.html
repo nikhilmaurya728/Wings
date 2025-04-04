@@ -22,8 +22,9 @@
 
     </div>
     <div class="header">
-        <h2 id="headerName">SalikRam Panipudi Wale </h2>
-        <p style="font-size: small;">🏡<span id="headerAddress">Utarthiya sadarganj By paas road near KD Hospital</span>
+        <h2 id="headerName">Vikas Iron & Wholesale Store </h2>
+        <p style="font-size: small;">🏡<span id="headerAddress">Raja Bazar, Jaunpur bypass road, near Primary School
+                (Wholesale shop 👉 Pipe, Hand Pump, Submersible, all type Hardware And Building Materials)</span>
         </p>
 
     </div>
@@ -44,7 +45,7 @@
     <div class="transactionsInput">
         <h1>Transactions</h1>
         <div class="name-input-container">
-            <input type="text" id="customer-name" placeholder="Enter Your name Number" required list="name-list">
+            <input type="text" id="customer-name" placeholder="Enter Your Name" required list="name-list">
             <datalist id="name-list"></datalist>
         </div>
 
@@ -54,16 +55,30 @@
         </div></br>
 
         <button onclick="loadCustomerTransactions()">View Transactions</button>
+        <label class="flat-check">
+            <input type="checkbox" id="includeQR" /><span></span>
+        </label>
     </div>
+
+
+
+ 
+
+
+
     <div id="transactions" class="transactions">
         <div id="salerName" style="display: none;">
             <img class="logo" src="image/logo.png" alt="loading">
-            <h2> SalikRam Panipudi Wale </h2>
+            <h2> Vikas Iron & Wholesale Store </h2>
         </div>
+        <p style="font-size: small; display: flex;
+  justify-content: center;" id="slogan">🏪 हमारे यहाँ आप 👉 पाइप, हैंड पंप, सबमर्सिबल, सभी प्रकार के हार्डवेयर और
+            बिल्डिंग मटेरियल थोक रेट पर ले सकते हैं*</p>
         <div class="mainDiv" id="printBtn">
             <div class="leftDiv">
                 <button onclick="takeImage()"> Print 🖨️ </button>
                 <button onclick="shareImage()"> Share ➤ </button>
+
             </div>
             <div class="rightDiv">
                 <select id="transaction-filter" onchange="loadCustomerTransactions()">
@@ -87,6 +102,19 @@
         <p id="transaction-datetime"></p><!--Temp -->
     </div>
 
+    <div class="cardDiv" id="myQR">
+        <h2>Scan QR to Pay</h2>
+        <div class="space"></div>
+        <div class="qr-card">
+
+            <h4>Vikas Iron & Wholesale Store</h4>
+
+            <img src="image/QR.jpg" alt="QR Code" />
+            <p>Pay quickly using any UPI app</p>
+        </div>
+    </div>
+
+
 
     <script src="functionKhata.js"></script>
     <script type="module" defer>
@@ -109,7 +137,7 @@
         async function loadPhoneNumber() {
             const phoneList = document.getElementById('phone-list');
             phoneList.innerHTML = "";  // Clear existing options
-            const querySnapshot = await getDocs(collection(db, "customers1"));
+            const querySnapshot = await getDocs(collection(db, "dataKhata"));
             querySnapshot.forEach((doc) => {
                 const customer = doc.data();
                 const option = document.createElement('option');
@@ -120,7 +148,7 @@
         async function loadName() {
             const nameList = document.getElementById('name-list');
             nameList.innerHTML = "";  // Clear existing options
-            const querySnapshot = await getDocs(collection(db, "customers1"));
+            const querySnapshot = await getDocs(collection(db, "dataKhata"));
             const customers = [];
             querySnapshot.forEach((doc) => {
                 const customer = doc.data();
@@ -144,7 +172,7 @@
             const phone = document.getElementById('customer-phone').value;
             const filter = document.getElementById('transaction-filter').value; // Get selected filter
             if (phone) {
-                const q = query(collection(db, "customers1"));
+                const q = query(collection(db, "dataKhata"));
                 const querySnapshot = await getDocs(q);
                 const transactionList = document.getElementById('transaction-list');
                 transactionList.innerHTML = "";
@@ -194,8 +222,12 @@
                             filterDate.setFullYear(now.getFullYear() - 5);
                         }
 
+                        //const transactions = customer.transactions || {};
+                        //for (const [dateTime, details] of Object.entries(transactions)) 
+
                         const transactions = customer.transactions || {};
-                        for (const [dateTime, details] of Object.entries(transactions)) {
+                        const sortedTransactions = Object.entries(transactions).sort(([a], [b]) => new Date(b) - new Date(a));
+                        for (const [dateTime, details] of sortedTransactions) {
                             const transactionDate = new Date(dateTime);
 
                             // Show only transactions within the selected time range
@@ -205,7 +237,7 @@
                                 let ownerPay = ownerPayMessage(details.ownerPay);
 
                                 const transactionItem = document.createElement('li');
-                                transactionItem.textContent = `${formatedDateTime}:  Total Cost :${details.buyAmount}₹💸, Paid Amount :${details.paidAmount}₹💰, ${ownerPay}  ${temp}: ${details.cardAmount}₹`;
+                                transactionItem.textContent = `${formatedDateTime} ꊞ Transaction Reason: ${details.productName} ꊞ Total Cost :${details.buyAmount}₹💸 ꊞ Paid Amount :${details.paidAmount}₹💰 ꊞ ${ownerPay}  ${temp} ${details.cardAmount}₹`;
                                 transactionList.appendChild(transactionItem);
                             }
                         }
@@ -215,7 +247,7 @@
         };
 
         function ownerPayMessage(ownerPay) {
-            return ownerPay !== 0 ? ` Payed by Owner is ${ownerPay}₹💲, ` : ' ';
+            return ownerPay !== 0 ? ` Payed by Owner is ${ownerPay}₹💲 ꊞ ` : ' ';
         }
 
         window.onload = async () => {
@@ -247,40 +279,66 @@
             name.style.display = 'none';
         }
 
-        function dataURLToBlob(dataURL) {
-            let arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
-                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new Blob([u8arr], { type: mime });
-        }
+
 
         function shareImage() {
+            const includeQR = document.getElementById("includeQR").checked;
+
             const btns = document.querySelector("#printBtn");
             const name = document.querySelector("#salerName");
+
             btns.style.display = 'none';
             name.style.display = 'flex';
 
-            html2canvas(document.querySelector("#transactions")).then(canvas => {
-                let imgData = canvas.toDataURL("image/png");
-                let blob = dataURLToBlob(imgData);
-                let file = new File([blob], 'transaction.png', { type: 'image/png' });
+            // 1st Image (transactions)
+            html2canvas(document.querySelector("#transactions")).then(canvas1 => {
+                const imgData1 = canvas1.toDataURL("image/png");
+                const blob1 = dataURLToBlob(imgData1);
+                const file1 = new File([blob1], "transaction.png", { type: "image/png" });
 
-                let shareData = {
-                    files: [file],
-                    title: "Transaction Details",
-                    text: "Check out this transaction details!"
-                };
+                if (includeQR) {
+                    // 2nd Image (myQR)
+                    html2canvas(document.querySelector("#myQR")).then(canvas2 => {
+                        const imgData2 = canvas2.toDataURL("image/png");
+                        const blob2 = dataURLToBlob(imgData2);
+                        const file2 = new File([blob2], "qr.png", { type: "image/png" });
 
-                if (navigator.canShare && navigator.canShare(shareData)) {
-                    navigator.share(shareData).catch(err => console.error("Error sharing image: ", err));
+                        shareFiles([file1, file2]);
+                    });
                 } else {
-                    alert("Sharing not supported, please download and share manually.");
+                    shareFiles([file1]);
                 }
+
+                btns.style.display = 'flex';
+                name.style.display = 'none';
             });
-            btns.style.display = 'flex';
-            name.style.display = 'none';
+        }
+
+        function shareFiles(fileArray) {
+            const shareData = {
+                files: fileArray,
+                title: "Transaction Details",
+                text: "Check out these details!"
+            };
+
+            if (navigator.canShare && navigator.canShare(shareData)) {
+                navigator.share(shareData)
+                    .catch(err => console.error("Error sharing: ", err));
+            } else {
+                alert("Sharing not supported. Please download manually.");
+            }
+        }
+
+        function dataURLToBlob(dataURL) {
+            const parts = dataURL.split(',');
+            const byteString = atob(parts[1]);
+            const mimeString = parts[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
         }
         window.shareImage = shareImage;
         window.takeImage = takeImage;
