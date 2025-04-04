@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f9;
@@ -10,6 +11,7 @@ body {
   align-items: center;
   margin: auto;
 }
+
 .topHeader {
   position: fixed;
   top: 0;
@@ -24,9 +26,11 @@ body {
   flex-direction: row;
   justify-content: space-around;
 }
+
 .logo {
   width: 90px;
 }
+
 .header {
   background: #4a0000;
   color: white;
@@ -35,23 +39,27 @@ body {
   font-size: 24px;
   margin-top: 55px;
 }
+
 .mainDiv {
   display: flex;
   flex-direction: row;
   padding: 10px;
   width: 100%;
 }
+
 .leftDiv {
   flex: 1;
   display: flex;
   font-size: 24px;
 }
+
 .rightDiv {
   flex: 1;
   display: flex;
-  justify-content:end;
+  justify-content: end;
   font-size: 24px;
 }
+
 .slide {
   display: flex;
   height: 275px;
@@ -61,6 +69,7 @@ body {
   position: relative;
   margin: 5px;
 }
+
 .left,
 .right {
   flex-grow: 1;
@@ -70,14 +79,17 @@ body {
   justify-content: center;
   color: white;
 }
+
 .left {
   background: #fbd1a1b7;
   width: 100%;
 }
+
 .right {
   background: #8ec1ffb9;
   width: 0%;
 }
+
 .btnClass {
   display: flex;
   justify-content: center;
@@ -87,6 +99,7 @@ body {
   background-color: #fbd1a1b7;
   transition: background-color 0.5s ease;
 }
+
 button {
   transition: left 01s ease, right 1s ease;
   background-color: #c2fbd7;
@@ -105,16 +118,20 @@ button {
   -webkit-user-select: none;
   touch-action: manipulation;
 }
+
 button:hover {
   box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
   transform: scale(1.05) rotate(-1deg);
 }
-.button{
+
+.button {
   font-size: 14px;
 }
+
 .button:hover {
   box-shadow: rgba(0, 12, 5, 0.35) 0 -25px 18px -14px inset, rgba(0, 2, 1, 0.25) 0 1px 2px;
 }
+
 select {
   width: 200px;
   padding: 4px;
@@ -124,75 +141,123 @@ select {
   border-radius: 4px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-input, textarea {
+
+input,
+textarea {
   width: 200px;
   padding: 4px;
 }
+
 #customer-dropdown {
   padding: 8px;
   border-radius: 4px;
 }
+
 select:hover,
 input:hover {
   border-color: #e74c3c;
   border-radius: 4px;
 }
-.transactions{
-  display: none;
+
+.transactionsInput {
+  background: #a1effb93;
+  width: 100%;
+  padding: 15px;
+  text-align: center;
 }
-.transactions,.allcustomer{
+
+.transactions,
+.allcustomer {
   border-radius: 6px;
   margin: 5px;
   padding: 10px;
   gap: 20px;
 }
-.transactions{
+
+.transactions {
+  display: none;
   background-color: rgba(136, 255, 227, 0.607);
 }
-.allcustomer{
+
+.allcustomer {
   background-color: rgba(208, 255, 151, 0.534);
 }
-#transaction-list li,#customer-list li{
-padding: 10px;
+
+#transaction-list li,
+#customer-list li {
+  padding: 10px;
 }
-#transaction-form, .left, .right, #add-customer-form {
+
+#transaction-form,
+.left,
+.right,
+#add-customer-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 #add-customer-form {
   gap: 20px;
 }
- li::marker {
-  color: rgb(3, 0, 159); /* Change color of bullet points */
-}
-.Transactions {
-  background: #a1effb93;
-  width: 100%;
 
-  padding: 15px;
-  text-align: center;
+li::marker {
+  color: rgb(3, 0, 159);
+  /* Change color of bullet points */
 }
-#salerName{
-  display: none;
+
+#salerName {
+  display: block;
+  display: flex;
+  /* Flexbox यूज़ करो */
+  align-items: center;
+  /* वर्टिकली सेंटर करो */
+  justify-content: center;
+  /* हॉरिजॉन्टली सेंटर करो */
+  gap: 10px;
+  color: #4a0000;
+  font-family: cursive;
+  font-style: italic;
+  /* इमेज और H2 के बीच गैप */
 }
-.name-input-container, .phone-input-container{
-margin: 15px;
-}
-.space{
+
+#salerName img {
+  width: 60px;
+  /* अपनी ज़रूरत के हिसाब से साइज़ सेट करो */
   height: 20px;
 }
+
+.name-input-container,
+.phone-input-container {
+  margin: 15px;
+}
+
+.space {
+  height: 20px;
+}
+
+.line {
+  background-color: rgba(0, 142, 26, 0.626);
+  width: 100%;
+  height: 2px;
+  border-radius: 5px;
+}
+
 .bold {
   font-weight: bold;
 }
-h3, h5{
+
+h3,
+h5 {
   text-align: center;
 }
+
 
 
 #new-customer-name {
   text-transform: uppercase;
 }
+
 #new-customer-address {
   text-transform: capitalize;
 }

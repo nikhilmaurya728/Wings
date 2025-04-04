@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <link rel="icon" href="image/favicon.ico" type="image/x-icon">
-    <title>Business Khata - Customer</title>
+    <title>KhataBook - Customer</title>
     <link rel="stylesheet" href="stylesKhata.css">
 </head>
 
@@ -22,11 +22,15 @@
 
     </div>
     <div class="header">
-        <h2>SalikRam Panipudi Wale </h1>
-            <p style="font-size: small;">Utarthiya sadarganj By paas road near KD Hospital <span
-                    style="font-size:medium;"> - Time Date</span></p>
-    </div>
+        <h2 id="headerName">SalikRam Panipudi Wale </h2>
+        <p style="font-size: small;">🏡<span id="headerAddress">Utarthiya sadarganj By paas road near KD Hospital</span>
+        </p>
 
+    </div>
+    <div id="internet-status"
+        style="display: none; color: red; text-align: center; font-weight: bold; background-color: yellow; padding: 10px;">
+        ⚠️ You're offline or internet is slow.
+    </div>
     <div class="mainDiv">
         <div class="leftDiv"> <button onclick="window.location.href='indexKhata.html';"> Back
             </button></div>
@@ -37,8 +41,7 @@
             </button>
         </div>
     </div>
-
-    <div class="Transactions">
+    <div class="transactionsInput">
         <h1>Transactions</h1>
         <div class="name-input-container">
             <input type="text" id="customer-name" placeholder="Enter Your name Number" required list="name-list">
@@ -52,15 +55,15 @@
 
         <button onclick="loadCustomerTransactions()">View Transactions</button>
     </div>
-
     <div id="transactions" class="transactions">
-        <div class="mainDiv">
+        <div id="salerName" style="display: none;">
+            <img class="logo" src="image/logo.png" alt="loading">
+            <h2> SalikRam Panipudi Wale </h2>
+        </div>
+        <div class="mainDiv" id="printBtn">
             <div class="leftDiv">
-                <div id="salerName">SalikRam Panipudi Wale</div>
-                <div id="PrintBtn">
-                    <button onclick="takeImage()"> Print 🖨️ </button>
-                    <button onclick="shareImage()"> Share ➤ </button>
-                </div>
+                <button onclick="takeImage()"> Print 🖨️ </button>
+                <button onclick="shareImage()"> Share ➤ </button>
             </div>
             <div class="rightDiv">
                 <select id="transaction-filter" onchange="loadCustomerTransactions()">
@@ -75,36 +78,17 @@
                 </select>
             </div>
         </div>
+
+        <div class="space"></div>
+        <div class="line"></div>
+        <div class="space"></div>
+
         <ul id="transaction-list"></ul>
+        <p id="transaction-datetime"></p><!--Temp -->
     </div>
 
 
-
-    <script>
-        function formatDateTime(isoString) {
-            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-            let date = new Date(isoString);
-
-            let day = String(date.getDate()).padStart(2, '0'); // 01 से 31 तक
-            let month = months[date.getMonth()]; // महीना (Jan, Feb...)
-            let year = date.getFullYear(); // साल (2025)
-
-            let hours = date.getHours();
-            let minutes = String(date.getMinutes()).padStart(2, '0'); // 00 से 59 तक
-            let ampm = hours >= 12 ? 'PM' : 'AM'; // AM या PM
-            hours = hours % 12 || 12; // 12-घंटे का फॉर्मेट
-            //document.getElementById("time").innerHTML = `${day} ${month} ${year}  ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
-            return `${day} ${month} ${year}  ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
-        }
-        function speakMessage(text) {
-            window.speechSynthesis.cancel();
-            let speech = new SpeechSynthesisUtterance(text);
-            speech.lang = "hi-IN"; // भाषा सेट करो (English)
-            speech.rate = 1; // स्पीड नॉर्मल रखो
-            window.speechSynthesis.speak(speech);
-        }
-    </script>
+    <script src="functionKhata.js"></script>
     <script type="module" defer>
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getFirestore, doc, getDocs, query, collection } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
@@ -156,6 +140,7 @@
         }
 
         window.loadCustomerTransactions = async function () {
+            document.querySelector('.transactions').style.display = "block";
             const phone = document.getElementById('customer-phone').value;
             const filter = document.getElementById('transaction-filter').value; // Get selected filter
             if (phone) {
@@ -173,6 +158,11 @@
                         const name = document.createElement('h3');
                         const li = document.createElement('h5');
                         name.textContent = `Name : ${customer.name}-  My Phone No: ${customer.phone}📞`;
+
+
+                        document.getElementById('headerName').textContent = customer.name; //// add address
+                        document.getElementById('headerAddress').textContent = customer.address; //// add address
+
                         li.textContent = ` Extra Earning: ${customer.totalIncome}₹, Card Balance: ${customer.totalCardAmount}₹`;
                         transactionList.appendChild(name);
                         transactionList.appendChild(li);
@@ -210,13 +200,12 @@
 
                             // Show only transactions within the selected time range
                             if (!filterDate || transactionDate >= filterDate) {
-                                const temp = details.cardAmount < 0 ? "❌ उधार धन राशि" : "✅ जमा धन राशि";
-
+                                const temp = details.cardAmount < 0 ? " उधार धन राशि 🔻" : " जमा धन राशि 💹";
                                 let formatedDateTime = formatDateTime(dateTime);
-
+                                let ownerPay = ownerPayMessage(details.ownerPay);
 
                                 const transactionItem = document.createElement('li');
-                                transactionItem.textContent = `${formatedDateTime}: Buy :${details.buyAmount}₹, Paid :${details.paidAmount}₹, Owner Pay: ${details.ownerPay}₹,  ${temp}: ${details.cardAmount}₹`;
+                                transactionItem.textContent = `${formatedDateTime}:  Total Cost :${details.buyAmount}₹💸, Paid Amount :${details.paidAmount}₹💰, ${ownerPay}  ${temp}: ${details.cardAmount}₹`;
                                 transactionList.appendChild(transactionItem);
                             }
                         }
@@ -225,7 +214,9 @@
             }
         };
 
-
+        function ownerPayMessage(ownerPay) {
+            return ownerPay !== 0 ? ` Payed by Owner is ${ownerPay}₹💲, ` : ' ';
+        }
 
         window.onload = async () => {
             await loadName();
@@ -240,12 +231,11 @@
             }
         };
 
-
         function takeImage() {
             const name = document.querySelector("#salerName");
-            const btns = document.querySelector("#PrintBtn");
+            const btns = document.querySelector("#printBtn");
             btns.style.display = 'none';
-            name.style.display = 'block';
+            name.style.display = 'flex';
             html2canvas(document.querySelector("#transactions")).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'transactions.png'; // ✅ फाइल का नाम
@@ -253,10 +243,9 @@
                 link.click(); // ✅ इमेज डाउनलोड करो
             });
 
-            btns.style.display = 'block';
+            btns.style.display = 'flex';
             name.style.display = 'none';
         }
-
 
         function dataURLToBlob(dataURL) {
             let arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -268,6 +257,11 @@
         }
 
         function shareImage() {
+            const btns = document.querySelector("#printBtn");
+            const name = document.querySelector("#salerName");
+            btns.style.display = 'none';
+            name.style.display = 'flex';
+
             html2canvas(document.querySelector("#transactions")).then(canvas => {
                 let imgData = canvas.toDataURL("image/png");
                 let blob = dataURLToBlob(imgData);
@@ -285,9 +279,9 @@
                     alert("Sharing not supported, please download and share manually.");
                 }
             });
+            btns.style.display = 'flex';
+            name.style.display = 'none';
         }
-
-        // Expose to global scope
         window.shareImage = shareImage;
         window.takeImage = takeImage;
     </script>
