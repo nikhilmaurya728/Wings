@@ -1,10 +1,16 @@
 {
   "name": "MilkMan App",
   "short_name": "MilkMan",
+  "description": "MilkMan is a simple web app for milk collection and delivery tracking.",
+  "id": "/",
   "start_url": "index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
+  "launch_handler": {
+    "client_mode": "auto"
+  },
   "icons": [
     {
       "src": "icon.png",
@@ -14,6 +20,18 @@
     {
       "src": "icon.png",
       "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshot2.png",
+      "sizes": "540x720",
       "type": "image/png"
     }
   ]
