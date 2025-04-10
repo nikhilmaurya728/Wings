@@ -5,7 +5,7 @@
   "id": "/",
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "natural",//"portrait",
+  "orientation": "natural",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "launch_handler": {
