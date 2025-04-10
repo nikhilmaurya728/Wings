@@ -1,134 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wings2</title>
-    <link rel="icon" href="image/favicon.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#4CAF50" />
-    
-    <!-- For Android -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <!-- For iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="MilkMan App">
-    <link rel="apple-touch-icon" href="image/logo.png">
-    
-
-    <link rel="stylesheet" href="style.css">
-
+    <title>Dino Runner Game</title>
+    <style>
+        body {
+            text-align: center;
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .game-container {
+            position: relative;
+            width: 600px;
+            height: 200px;
+            margin: auto;
+            border: 2px solid black;
+            overflow: hidden;
+            background: white;
+        }
+        .dino {
+            width: 40px;
+            height: 40px;
+            background: green;
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+        }
+        .obstacle {
+            width: 20px;
+            height: 40px;
+            background: red;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            animation: moveObstacle 2s infinite linear;
+        }
+        @keyframes moveObstacle {
+            from { right: 0; }
+            to { right: 600px; }
+        }
+        .jump {
+            animation: jump 0.5s linear;
+        }
+        @keyframes jump {
+            0% { bottom: 0; }
+            50% { bottom: 80px; }
+            100% { bottom: 0; }
+        }
+    </style>
 </head>
-
 <body>
-    <header>
-        <nav>
-            <div class="nav-left"> <a href="index.html">
-                    <img class="logo" src="image/logo.png" alt="loading">
-                </a>
-                <select id="classDropdown">
-                    <option value="home">Home</option>
-                    <!--<option value="KG">KG Class</option>
-                    <option value="class12">Class 1</option>
-                    <option value="class12">Class 2</option> -->
-                    <option value="class34">Class 3</option>
-                    <option value="class34">Class 4</option>
-                    <!-- <option value="class56">Class 5</option>
-                    <option value="class56">Class 6</option>
-                    <option value="class78">Class 7</option>
-                    <option value="class78">Class 8</option>
-                    <option value="class9th">Class 9th</option>
-                    <option value="class10th">Class 10th</option>
-                    <option value="class11th">Class 11th</option>
-                    <option value="class12th">Class 12th</option> -->
-                </select>
-            </div>
-            <div class="nav-right">
-                <div class="search-bar">
-                    <span class="search-icon" onclick="toggleSearch()">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <button
-                        title="You can search any topic or chapter, also Search about your class, Fees, Exams, Van timings"
-                        onclick="performSearch()">Go</button>
-                </div>
-                <button class="fullscreen-btn" id="fullscreen-btn" title="Go Full Screen">
-                    <img id="fullscreen-icon" src="image/full.png" alt="Full Screen Icon">
-                </button>
-            </div>
-        </nav>
-        <div class="subnavBG">
-            <div class="subnav" id="subjectList">
-            </div>
-        </div>
-    </header>
-    <div class="material" id="material">
-        <button class="toggle-button" onclick="toggleSidebar()"><b>☰</b></button>
-
-
-        <div class="sidebar" id="sidebar">
-        </div>
-
-        <div class="main" id="main">
-        </div>
-
-
-        <div class="right-bar">
-            <h3>Important Topics</h3>
-            <p>In this chapter we will learn about 🤖</p>
-            <ul>
-                <li>Introduction to HTML</li>
-                <li>Basics of CSS</li>
-                <li>JavaScript Basics</li>
-            </ul>
-            <div class="audiocontent">
-                <p class="bold" style="flex: 2;">Notes</p>
-                <p style="flex: 1;"></p>
-                <button style="flex: 3;" onclick="playMusic('song2.mp3', this)">Play Audio</button>
-            </div>
-
-        </div>
-        <div class="music-player" id="musicPlayer">
-            <div>
-                <button class="minimize" id="minimize" onclick="toggleMinimize()">-</button>
-                <button class="close" onclick="closePlayer()">&times;</button>
-            </div>
-
-            <div id="fullPlayer" class="full-player">
-                <p id="trackName">Now Playing: </p>
-                <audio id="audioPlayer" controls>
-                    <source id="audioSource" src="" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-
-                <div class="controls">
-                    <button onclick="previousSong()">Previous</button>
-                    <button onclick="skipTime(-5)">&laquo; 5s</button>
-                    <button class="mode-button" onclick="toggleMode()" id="modeButton">Stop Mode</button>
-                    <button onclick="skipTime(5)">5s &raquo;</button>
-                    <button onclick="nextSong()">Next</button>
-                </div>
-            </div>
-            <div id="minimizedPlayer" class="minimized-controls">
-                <button onclick="skipTime(-5)">&laquo;</button>
-                <button id="playpause" onclick="togglePlayPause('button')">⏯</button>
-                <button onclick="skipTime(5)">&raquo;</button>
-            </div>
-        </div>
-
-
-        
-
+    <h1>Dino Runner 🦖</h1>
+    <p>Press SPACE to Jump</p>
+    <button onclick="toggleGame()">Play/Pause</button>
+    <button onclick="setSpeed(3)">Low Level</button>
+    <button onclick="setSpeed(1)">High Level</button>
+    <div class="game-container">
+        <div class="dino" id="dino"></div>
+        <div class="obstacle" id="obstacle"></div>
     </div>
-    <script src="audio.js"></script>
-    <script src="aCard.js"></script>
-    <script src="aTable.js"></script>
-    <script src="script.js"></script>
+    <script>
+        let dino = document.getElementById("dino");
+        let obstacle = document.getElementById("obstacle");
+        let isPaused = false;
+        let speed = 2;
 
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "Space" && !dino.classList.contains("jump")) {
+                dino.classList.add("jump");
+                setTimeout(() => dino.classList.remove("jump"), 500);
+            }
+        });
+
+        function toggleGame() {
+            isPaused = !isPaused;
+            obstacle.style.animationPlayState = isPaused ? "paused" : "running";
+        }
+
+        function setSpeed(level) {
+            speed = level;
+            obstacle.style.animation = `moveObstacle ${speed}s infinite linear`;
+        }
+
+        setInterval(() => {
+            if (isPaused) return;
+            let dinoBottom = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
+            let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
+
+            if (obstacleLeft > 550 && obstacleLeft < 580 && dinoBottom < 40) {
+                alert("Game Over!");
+                document.location.reload();
+            }
+        }, 50);
+    </script>
 </body>
-
 </html>
