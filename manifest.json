@@ -25,12 +25,12 @@
   ],
   "screenshots": [
     {
-      "src": "QR.jpg",
+      "src": "image/QR.png",
       "sizes": "540x540",
       "type": "image/png"
     },
     {
-      "src": "QR.jpg",
+      "src": "image/QR.png",
       "sizes": "540x540",
       "type": "image/png"
     }
