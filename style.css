@@ -1,10 +1,848 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin-top: 100px;
-  background-color: #f0f0f0;
-  color: #333;
+* {
+
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgb(242, 247, 242);
+}
+
+/* Responsive styling */
+header {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1000;
+}
+
+nav {
+  background-color: aliceblue;
+  padding: 5px;
+  height: 42px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  /* Stack items vertically */
+  align-items: center;
+
+}
+
+.nav-left,
+.nav-right {
+
+  display: flex;
+  /* Stack items vertically */
+  align-items: center;
+}
+
+.logo {
+  margin: 0 10px 0;
+  height: 30px;
+  width: 100px;
+}
+
+.nav-left select {
+  margin-top: 0px;
+  padding: 5px;
+  border-color: white;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #a1c4a1;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-bar button {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid green;
+  border-radius: 0 4px 4px 0;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+}
+
+.search-icon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  display: none;
+}
+
+.fullscreen-btn {
+  border: none;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+}
+
+button img {
+
+  filter: invert(1);
+  margin: 0px;
+  width: 30px;
+  /* Icon size */
+  height: 30px;
+}
+
+button.fullscreen {
+  background-color: firebrick;
+  /* Full-screen mode background */
+}
+
+.fullscreen-btn:hover,
+.search-bar button:hover {
+  opacity: 80%;
+}
+
+
+
+
+.subnavBG{
+  background-color: #000000;
+}
+.subnav {
+  display: flex;
+  overflow-x: hidden;
+  /* Hide native scrollbar */
+  white-space: nowrap;
+  background-color: #000000;
+}
+
+.subject {
+  flex: 0 0 auto;
+  padding: 2px 20px;
+  font-weight: bold;
+  line-height: 1.3;
+  text-align: center;
+  user-select: none;
+  color: white;
+  cursor: pointer;
+}
+
+.subject:hover {
+  background-color: #cb00008d;
+}
+
+.material {
+  height: 100vh;
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+  /* Enables vertical scrolling */
+
+  /* Full viewport height */
+
+}
+
+
+
+#sidebar {
+  padding-top: 66px;
+  width: 25%;
+  min-width: 170px;
+  background-color: rgb(231, 236, 231);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  height: calc(30px + 100%);
+  z-index: 1;
+
+  /* Full height */
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+#sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+
+.main { 
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  /* Enables vertical scrolling */
+  overflow-x: hidden;
+  /* Hides horizontal scrolling */
+  width: 75%;
+  /* Hide scrollbar for modern browsers */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  
+  font-size: 20px ;
+}
+
+.main::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, and Opera */
+}
+
+.right-bar {
+  display: none;
+}
+
+.contenttopic {
+  height: 100px;
+  padding: 2px 10px 2px;
+  margin: 1px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.topic {
+  color: firebrick;
+}
+
+.topic,
+.subtopic {
+  padding: 2px 10px 2px;
+  margin-top: 1px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.topic:hover,
+.subtopic:hover {
+  background-color: #cb00003e;
+}
+
+.topic.active {
+  color: rgb(110, 0, 0);
+  ;
+  background-color: #cb000047;
+}
+
+.subtopic.active {
+
+  background-color: #a90000;
+  color: #fff;
+}
+
+
+
+.toggle-button {
+  position: fixed;
+  line-height: 1;
+  font-size: larger;
+  background-color:transparent;
+  color: #ffffff;
+  top: 36px;
+  left: 0px;
+  z-index: 1001;
+  border: none;
+  border-top-right-radius:  30%;
+  border-bottom-right-radius:   30%;
+  cursor: pointer;
+  display: none;
+  padding: 10px;
+  padding-left: 6px;
+}
+.toggle-button:hover {
+  
+  color: #ff0000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Start CSS for A4 pages */
+
+.page {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+
+
+.a4page {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 h1 {
-  color: #4CAF50;
+  color: #2c3e50;
+  text-align: center;
+}
+
+h2 {
+  color: #e74c3c;
+  text-align: center;
+}
+
+h3 {
+  color: #3498db;
+}
+h4 {
+  color: #3498db;
+}
+
+ul {
+  margin: 10px 0;
+  padding: 0 20px;
+}
+
+ul li {
+  margin-bottom: 5px;
+}
+
+p {
+  margin: 10px 0;
+}
+
+strong {
+  color: #e74c3c;
+  ;
+}
+
+em {
+  color: #8e44ad;
+}
+
+textarea {
+  color: blue;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: 1.4px solid black;
+}
+.formula {
+  background: #f4f4f4;
+  padding: 10px;
+  margin: 10px 0;
+  border-left: 5px solid #2c3e50;
+}
+ul,
+ol {
+  margin: 10px 0;
+  padding: 0 20px;
+}
+
+img {
+  display: block;
+  margin: 15px auto;
+  width: 100%;
+}
+
+.red {
+  font-weight: bolder;
+  color: #e74c3c;
+}
+.green {
+  font-weight: bolder;
+  color: #00bd0d;
+}
+
+.center {
+  text-align: center;
+}
+
+.heading {
+  margin-top: 30px;
+  font-weight: bolder;
+}
+
+.definition {
+  background-color: rgb(212, 253, 240);
+  padding: 5px;
+}
+
+.bg-lightgreen {
+  background-color: rgb(212, 253, 240);
+  padding: 5px;
+}
+
+.bold {
+  font-weight: bolder;
+}
+
+.image-text {
+
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.image-caption {
+  text-align: center;
+  font-size: 12px;
+  color: #910000;
+}
+
+.section-title {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.w80 {
+  width: 80%;
+}
+.tablediv{
+  overflow-x: auto; /* तभी स्क्रॉल आएगा जब ज़रूरत होगी */
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-weight: bolder;
+}
+
+th,
+td {
+
+  border: 0px solid rgb(255, 0, 0);
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #ff7b7b;
+}
+
+tr:nth-child(even) {
+  background-color: #f7fff7;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffeaea;
+}
+
+.boxtable th,
+.boxtable td {
+  border-collapse: collapse;
+  border: 1px solid rgb(69, 69, 69);
+}
+/* end CSS for A4 pages */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* start audio player */
+.audiocontent {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  width: 100%;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.audiocontent button {
+  max-width: 120px;
+  max-height: fit-content;
+  padding: 8px 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #000000;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  border-radius: 50%;
+}
+
+.audiocontent button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.audiocontent button.active {
+  background-color: #ffa500;
+}
+
+.music-player {
+  z-index: 2;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 350px;
+  max-width: 85vw;
+  background: #004810;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  display: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.music-player.active {
+  display: block;
+}
+
+.music-player audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.music-player .minimize {
+  position: absolute;
+  top: 2px;
+  right: 30px;
+  padding: 0 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+.minimized-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  display: none;
+
+}
+
+.music-player.minimized {
+  width: 150px;
+  height: fit-content;
+  padding: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.minimized-controls button {
+  background-color: white;
+  padding: 0 5px;
+  border-radius: 2px;
+  margin: 0 2px;
+}
+
+.music-player .close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 0 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+.music-player .close:hover,
+.minimize:hover {
+  color: #ff4d4d;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.controls button:hover {
+  background-color: #777;
+}
+
+.mode-button {
+  background-color: #444;
+  margin: 0 5px;
+}
+
+.mode-button:hover {
+  background-color: #666;
+}
+/* end audio player */
+
+
+
+.help {
+  z-index: 2;
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  height: 20px;
+}
+
+.button {
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  min-width: 60px;
+  padding:3px 10px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '6387851637';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -30px;
+  transition: 0.2s;
+}
+
+
+.button:hover span {
+  padding-right: 80px;
+  
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+
+
+
+/* start card */
+.space{
+  height: 85vh;
+}
+.side-space{
+  height: 75px;
+}
+.cards, .cards1, .cards2, .cards3, .cards4 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 95%;
+  max-width: 300px;
+  padding: 0px 5px 0px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uniCode {
+  text-align: center;
+  color: coral;
+  font-size: small;
+  font-weight: bold;
+  display: none;
+}
+
+.cardlogo {
+  width: 50px;
+  display: block;
+}
+
+.buttons {
+  display: block;
+}
+
+
+.buttons button {
+  font-size: large;
+  height: 30px;
+  width: 30px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgb(174, 0, 0);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.rotate {
+  transform: rotate(90deg);
+}
+
+
+
+.middle-section {
+  flex-grow: 1;
+  text-align: center;
+  
+  padding: 0px 5px 0px;
+}
+
+.question {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.image-container img {
+  max-width: 80%;
+  max-height: 100px;
+}
+
+.bottom-section {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.bottom-section-col {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.left-options,
+.right-options {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 2px;
+}
+
+.option {
+  padding: 8px;
+  background: #eee;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.see-answer{
+  font-size: large;
+  height: 30px;
+  width: 30px;
+  border: none;
+  margin-right: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgb(174, 0, 0);
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* end card */
+
+
+
+
+
+
+@media (max-width: 700px) {
+  .sidebar {
+    position: absolute;
+    left: 0;
+    width: 25%;
+    z-index: 1000;
+  }
+
+  .main {
+    width: 100%;
+  }
+
+  .toggle-button {
+    display: block;
+  }
+
+  .material {
+    flex-direction: column;
+  }
+
+  .subnav {
+    margin-left: 30px;
+  }
+
+  .search-bar input,
+  .search-bar button {
+    display: none;
+    /* Show input and button on larger screens */
+  }
+
+  .search-icon {
+    display: block;
+    /* Hide search icon on larger screens */
+  }
+
+}
+
+@media (min-width: 1000px) {
+  .right-bar {
+    display: block;
+    padding-top: 70px;
+  }
+
 }
