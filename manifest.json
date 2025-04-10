@@ -7,7 +7,7 @@
   "display": "standalone",
   "orientation": "any",
   "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
+  "theme_color": "#200f00",
   "launch_handler": {
     "client_mode": "auto"
   },
