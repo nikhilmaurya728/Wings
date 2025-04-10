@@ -1,11 +1,11 @@
 {
-  "name": "MilkMan App",
-  "short_name": "MilkMan",
-  "description": "MilkMan is a simple web app for milk collection and delivery tracking.",
+  "name": "Wings junior App",
+  "short_name": "Wings junior",
+  "description": "Wings junior is a simple web app for school going Student.",
   "id": "/",
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "natural",//"portrait",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "launch_handler": {
