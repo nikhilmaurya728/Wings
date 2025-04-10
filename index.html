@@ -1,98 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Runner Game</title>
-    <style>
-        body {
-            text-align: center;
-            background: #f4f4f4;
-            font-family: Arial, sans-serif;
-        }
-        .game-container {
-            position: relative;
-            width: 600px;
-            height: 200px;
-            margin: auto;
-            border: 2px solid black;
-            overflow: hidden;
-            background: white;
-        }
-        .dino {
-            width: 40px;
-            height: 40px;
-            background: green;
-            position: absolute;
-            bottom: 0;
-            left: 50px;
-        }
-        .obstacle {
-            width: 20px;
-            height: 40px;
-            background: red;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            animation: moveObstacle 2s infinite linear;
-        }
-        @keyframes moveObstacle {
-            from { right: 0; }
-            to { right: 600px; }
-        }
-        .jump {
-            animation: jump 0.5s linear;
-        }
-        @keyframes jump {
-            0% { bottom: 0; }
-            50% { bottom: 80px; }
-            100% { bottom: 0; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4CAF50" />
+  <title>MilkMan App</title>
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="MilkMan App" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Dino Runner 🦖</h1>
-    <p>Press SPACE to Jump</p>
-    <button onclick="toggleGame()">Play/Pause</button>
-    <button onclick="setSpeed(3)">Low Level</button>
-    <button onclick="setSpeed(1)">High Level</button>
-    <div class="game-container">
-        <div class="dino" id="dino"></div>
-        <div class="obstacle" id="obstacle"></div>
-    </div>
-    <script>
-        let dino = document.getElementById("dino");
-        let obstacle = document.getElementById("obstacle");
-        let isPaused = false;
-        let speed = 2;
+  <h1>MilkMan Web App</h1>
+  <p>This is a sample PWA setup!</p>
 
-        document.addEventListener("keydown", function(event) {
-            if (event.code === "Space" && !dino.classList.contains("jump")) {
-                dino.classList.add("jump");
-                setTimeout(() => dino.classList.remove("jump"), 500);
-            }
-        });
-
-        function toggleGame() {
-            isPaused = !isPaused;
-            obstacle.style.animationPlayState = isPaused ? "paused" : "running";
-        }
-
-        function setSpeed(level) {
-            speed = level;
-            obstacle.style.animation = `moveObstacle ${speed}s infinite linear`;
-        }
-
-        setInterval(() => {
-            if (isPaused) return;
-            let dinoBottom = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
-            let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
-
-            if (obstacleLeft > 550 && obstacleLeft < 580 && dinoBottom < 40) {
-                alert("Game Over!");
-                document.location.reload();
-            }
-        }, 50);
-    </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
 </body>
 </html>
