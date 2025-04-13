@@ -11,8 +11,6 @@ var data = {
   },
   
 
-
-
   "Antonyms": {
     "": '<div class="page"> <div class="a4page"><div class="tablediv"><h2>Antonyms विलोम शब्द</h2><div id="table1" class="tablediv"><button class= "auto-click-btn" onclick="generateTable(Antonyms,\'#table1\')">Show Table</button></div></div></div></div>',
 
