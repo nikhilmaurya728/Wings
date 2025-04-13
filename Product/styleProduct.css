@@ -1,0 +1,174 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00bbbb;
+  text-align: start;
+  padding: 10px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 1000;
+}
+.goLeft{
+  display: none;
+}
+
+.slide {
+  display: flex;
+  border: none;
+  height: fit-content;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.left,
+.right {
+  transition: width 1s ease;
+  color: white;
+}
+.left {
+  background: #d3f7ffb7;
+  width: 100%;
+}
+.right {
+  background: #eafcff;
+  width: 0%;
+}
+
+
+.space{
+  height: 100px;
+}
+
+/* Headings */
+h2 {
+  color: #333;
+  text-align: center;
+}
+
+/* Input Fields */
+input {
+  width:100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: block;
+}
+
+/* Button */
+button {
+  padding: 10px;
+  background-color: #008700;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+.button:hover{
+  
+  background-color: #004f00;
+}
+
+
+/* Table */
+table {
+  width: 90%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  text-align: center;
+  color: rgb(44, 0, 0);
+}
+
+th {
+  background-color: #98f8ff;
+}
+
+/* Links */
+
+a{
+  text-decoration: none;
+  color: blue;
+  font-weight: bold;
+}
+a:hover {
+  text-decoration: underline;
+  color: rgb(106, 0, 255);
+}
+
+/* Product Image */
+td img {
+  max-width: 150px;
+  height: auto;
+}
+
+/* Action Buttons */
+
+td button:last-child {
+  background-color: #ca1f30;
+}
+
+td button:last-child:hover {
+  background-color: #a80919;
+}
+
+/* iFrame */
+iframe {
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.expandable-div {
+    max-width: 500px;
+    width: 90%;
+    padding: 20px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    background-color: lightblue;
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    transition: height 1s ease, opacity 0.8s ease;
+}
+
+.expanded {
+    height: 410px;
+    /* Approx height of content */
+    opacity: 1;
+}
+
+.header-btn {
+    width: 75px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 14px;
+}
+
