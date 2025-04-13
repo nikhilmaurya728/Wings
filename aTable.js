@@ -805,7 +805,7 @@ const Homophones2 = [
     ["119", "Summery / Summary", "Summery = गर्मियों जैसा, Summary = सारांश", "Her dress was summery; the report was a summary."],
     ["120", "Bury / Berry", "Bury = दफनाना, Berry = जामुन", "Bury the berries deep in the soil."],
     ["121", "Presence / Presents", "Presence = उपस्थिति, Presents = उपहार", "Your presence is the best of all presents."],
-    ["122", "Higher / Hire", "Higher = ऊँचा, Hire = किराए पर लेना", "They hire workers for higher buildings."]
+    ["122", "Higher / Hire", "Higher = ऊँचा, Hire = किराए पर लेना", "They hire workers for higher buildings."],
     ["123", "Moose / Mousse", "Moose = एक जानवर, Mousse = डेज़र्ट", "The moose looked at the chocolate mousse curiously."],
     ["124", "Cellar / Seller", "Cellar = तहखाना, Seller = बेचने वाला", "The seller kept the wine bottles in the cellar."],
     ["125", "Phase / Faze", "Phase = चरण, Faze = परेशान करना", "This difficult phase didn’t faze her at all."],
