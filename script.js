@@ -1,7 +1,7 @@
 
 const classData = {
     home: ['Basic', 'Names English to Hindi', 'Word Power', 'MCQs', '📚 कौन हूं मैं', ' पहेलियाँ', 'Entrance Exam'],
-    class34: ['Grammar', 'Math',],
+    class34: ['Home Work', 'Grammar', 'Math',],
     /*
     class56: ['Sports', 'Civics', 'Art'],
     class78: ['Sports', 'Civics', 'Art'],
@@ -9,6 +9,7 @@ const classData = {
     class10th: ['Sports', 'Civics', 'Art'],
     class11th: ['Sports', 'Civics', 'Art'], 
     class12th: ['Sports', 'Civics', 'Art'],*/
+    entranceExam: ['Navodaya Vidyalaya'],
 };
 
 const classDropdown = document.getElementById('classDropdown');
@@ -206,6 +207,7 @@ window.addEventListener('resize', () => {
         sidebar.classList.add('hidden');
         searchInput.style.display = 'none';
         searchButton.style.display = 'none';
+        classDropdown.style.display = 'block';
     }
 
 });

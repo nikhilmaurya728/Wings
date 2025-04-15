@@ -1,8 +1,6 @@
 songs = ["audio/chapter1.mp3", "song2.mp3", "song3.mp3"];
 var data = {
   "Mathematics": {
-    "Basic Math": '<div class="page"> <div class="a4page"><div class="tablediv"><h2>Basic Math </h2><div id="table1" class="tablediv"><button class= "auto-click-btn" onclick="generateTable(Tables0To30,\'#table1\')">Show Table</button></div></div></div></div>',
-
     "Table 0 to 30": '<div class="page"> <div class="a4page"><div class="tablediv"><h2> Learn 0 to 30 Table </h2><div id="table2" class="tablediv"><button class= "auto-click-btn" onclick="generateTable(Tables0To30,\'#table2\')">Show Table</button></div></div></div></div>',
   },
 
@@ -29,21 +27,11 @@ var data = {
 
     "मुहावरे": '<div class="page"> <div class="a4page"><div class="tablediv"><h2>Idioms मुहावरे</h2><div id="table2" class="tablediv"><button class= "auto-click-btn" onclick="generateTable(IdiomsHindi,\'#table2\')">Show Table</button></div></div></div></div>',
   },
-
-
-
-
-  "Proverbs": {
-    "Proverbs": '',
-    "लोकोक्तियाँ": '',
-  },
-
-
-
   
+
   "Homophones होमोफोन्स": {
     " ": '',
-    "समध्वनिक शब्द": '',
+    "समध्वनिक शब्द": '<div class="page"> <div class="a4page"><div class="tablediv"><h2>Homophones होमोफोन्स</h2><div id="table1" class="tablediv"><button class= "auto-click-btn" onclick="generateTable(Homophones,\'#table1\')">Show Table</button></div></div></div></div>',
   },
 
 

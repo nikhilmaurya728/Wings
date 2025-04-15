@@ -5,7 +5,7 @@ const cardsData = [
         question: 'What is the capital of France?',
         options: ['Madrid', 'Paris',],
         rightAnswer: 'A',
-        image: 'image/pic.png',
+        image: '',
         optionBig: 'y',
         istrueFalse: 'y'
     }, {
