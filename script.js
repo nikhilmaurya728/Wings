@@ -1,6 +1,6 @@
 
 const classData = {
-    home: ['Basic', 'Names English to Hindi', 'Word Power', 'MCQs', '📚 कौन हूं मैं', ' पहेलियाँ', 'Entrance Exam'],
+    home: ['Basic', 'Names English to Hindi', 'Word Power', 'MCQs', '📚 कौन हूं मैं', ' पहेलियाँ',],
     class34: ['Home Work', 'Grammar', 'Math',],
     /*
     class56: ['Sports', 'Civics', 'Art'],
