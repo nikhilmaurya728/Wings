@@ -1,6 +1,6 @@
 
 const classData = {
-    home: ['_Basic', 'Names English to Hindi', 'Word Power', 'MCQs', '📚 कौन हूं मैं', ' पहेलियाँ', 'Entrance Exam'],
+    home: ['Basic', 'Names English to Hindi', 'Word Power', 'MCQs', '📚 कौन हूं मैं', ' पहेलियाँ', 'Entrance Exam'],
     class34: ['Home Work', 'Grammar', 'Math',],
     /*
     class56: ['Sports', 'Civics', 'Art'],
@@ -58,7 +58,10 @@ classDropdown.addEventListener('change', () => {
 
 // Function to dynamically load the script file
 function loadScript(className, subjectName) {
-    const scriptName = `${className.toLowerCase()}${subjectName.toLowerCase().replace(/\s+/g, '')}`;
+    //const scriptName = `${className.toLowerCase()}${subjectName.toLowerCase().replace(/\s+/g, '')}`;
+    const scriptName = `${className.trim().toLowerCase()}_${subjectName.trim().toLowerCase().replace(/\s+/g, '_')}`;
+
+
     const script = document.createElement('script');
     script.src = `${scriptName}.js`;
     script.type = 'text/javascript';
