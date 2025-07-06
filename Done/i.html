@@ -7,6 +7,7 @@
   <title>Voice Quiz</title>
   <style>
     body {
+
       font-family: sans-serif;
       background: #f0f4f8;
       padding: 20px;
@@ -16,8 +17,7 @@
       font-weight: bold;
     }
 
-    .scroll {
-      margin-top: 30px;
+    .scroll{
       height: 600px;
       width: 1060px;
       text-align: left;
@@ -25,7 +25,6 @@
       border: 8px solid #de0000;
       border-radius: 10px;
     }
-
     #background {
       position: fixed;
       top: 0;
@@ -41,7 +40,7 @@
       bottom: -100px;
       width: 40px;
       height: 40px;
-      background: rgba(156, 0, 0, 0.5);
+      background: rgba(173, 216, 230, 0.5);
       border-radius: 50%;
       animation: floatUp 10s linear infinite;
     }
@@ -63,6 +62,7 @@
       display: inline-block;
       padding: 10px 20px;
       animation: slideIn 1s ease;
+
     }
 
     @keyframes slideIn {
@@ -81,11 +81,10 @@
       opacity: 0;
       transform: translateY(30px);
       background: transparent;
-      border-color: red;
-
       padding: 15px;
       margin: 10px;
       width: 250px;
+
       border-radius: 10px;
       transition: all 0.5s ease;
       cursor: pointer;
@@ -95,27 +94,10 @@
     .option.show {
       opacity: 1;
       transform: translateY(0);
-
-      animation: slideFade 1s ease;
     }
-
-    @keyframes slideFade {
-      0% {
-        transform: translateX(100px);
-        opacity: 0;
-      }
-
-      100% {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-
-
-
 
     #startBtn {
+      
       background: #007bff;
       color: white;
       border: none;
@@ -129,52 +111,54 @@
       color: #333;
     }
 
+
+
+
     #navButtons {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      display: none;
-      z-index: 100;
-    }
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  display: none;
+  z-index: 100;
+}
 
-    #navButtons button {
-      font-size: 16px;
-      margin: 5px;
-      background-color: #b4ffc6;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #dragImage {
-      position: fixed;
-      top: 100px;
-      left: 100px;
-      width: 250px;
-      height: 250px;
-      z-index: 9999;
-      cursor: move;
+#navButtons button {
+  
+  font-size: 16px;
+  margin: 5px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
 
-      display: none;
-      opacity: 0;
-      transition: all 0.8s ease;
-    }
+#dragImage {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  width: 250px;
+  height: 250px;
+  z-index: 9999;
+  cursor: move;
+  display: none;
+}
 
-    #dragImage.show {
-      display: block;
-      opacity: 1;
-      animation: slideFade 1s ease;
-    }
   </style>
 </head>
 
 <body>
-  <img id="dragImage" src="" alt="draggable" />
+
+
+<img id="dragImage" src="CLMLogo.png" alt="draggable" />
+
 
   <div class="scroll">
-    <div id="navButtons">
+
+    <div id="navButtons" style="margin-top: 20px; display: none;">
+
+
       <button id="startBtn">Start Quiz 🎤</button>
       <button id="prevBtn">⏪ Previous</button>
       <button id="nextBtn">Next ⏩</button>
@@ -190,12 +174,32 @@
     <div class="option" id="opt3"></div>
 
     <div id="countdown"></div>
-  </div>
 
+    
+  </div>
   <script src="questions.js"></script>
   <script>
-    const dragImage = document.getElementById("dragImage");
-    let isDragging = false, offsetX = 0, offsetY = 0;
+
+
+const dragImage = document.getElementById("dragImage");
+let isDragging = false, offsetX = 0, offsetY = 0;
+
+dragImage.addEventListener("mousedown", function (e) {
+  isDragging = true;
+  offsetX = e.clientX - dragImage.offsetLeft;
+  offsetY = e.clientY - dragImage.offsetTop;
+});
+
+document.addEventListener("mousemove", function (e) {
+  if (isDragging) {
+    dragImage.style.left = (e.clientX - offsetX) + "px";
+    dragImage.style.top = (e.clientY - offsetY) + "px";
+  }
+});
+
+document.addEventListener("mouseup", function () {
+  isDragging = false;
+});
 
 
 
@@ -204,25 +208,6 @@
 
 
 
-
-
-
-    dragImage.addEventListener("mousedown", function (e) {
-      isDragging = true;
-      offsetX = e.clientX - dragImage.offsetLeft;
-      offsetY = e.clientY - dragImage.offsetTop;
-    });
-
-    document.addEventListener("mousemove", function (e) {
-      if (isDragging) {
-        dragImage.style.left = (e.clientX - offsetX) + "px";
-        dragImage.style.top = (e.clientY - offsetY) + "px";
-      }
-    });
-
-    document.addEventListener("mouseup", function () {
-      isDragging = false;
-    });
 
     const read = true;
     let currentIndex = 0;
@@ -235,7 +220,7 @@
         bubble.style.left = Math.random() * 100 + "%";
         bubble.style.width = bubble.style.height = Math.random() * 40 + 20 + "px";
         bubble.style.animationDuration = (Math.random() * 5 + 5) + "s";
-        bubble.style.background = `rgba(256, 100, 100, ${Math.random() * 0.5 + 0.3})`;
+        bubble.style.background = `rgba(173, 216, 230, ${Math.random() * 0.5 + 0.3})`;
         bg.appendChild(bubble);
       }
     }
@@ -256,16 +241,13 @@
       }
     }
 
+
+
     function showQuestion(index) {
       const q = cardsData[index];
       const questionBox = document.getElementById("questionBox");
-      const image = document.getElementById("dragImage");
-
-      image.src = q.image || "";
-      image.style.display = q.image ? "block" : "none";
-
       questionBox.style.animation = 'none';
-      void questionBox.offsetWidth;
+      void questionBox.offsetWidth; // trigger reflow
       questionBox.style.animation = null;
       questionBox.textContent = `Q${index + 1}: ${q.question}`;
 
@@ -276,19 +258,6 @@
         el.style.backgroundColor = "transparent";
         el.style.color = "black";
       });
-
-
-      if (q.image) {
-        dragImage.src = q.image;
-        dragImage.classList.remove("show"); // Reset
-        void dragImage.offsetWidth;
-        dragImage.classList.add("show");
-      } else {
-        dragImage.classList.remove("show");
-        dragImage.style.display = "none";
-      }
-
-
 
       speakText(q.question, () => {
         showAndSpeakOptions(q.options, 0);
@@ -312,7 +281,7 @@
       let seconds = 5;
       const countdownEl = document.getElementById("countdown");
       countdownEl.textContent = `उत्तर दिख रहा है ${seconds} सेकंड में...`;
-      speakText("Five... Four... Three... Two... One...", () => { });
+
       const timer = setInterval(() => {
         seconds--;
         if (seconds > 0) {
@@ -333,7 +302,6 @@
                 document.getElementById(id).style.display = 'none';
               });
               countdownEl.textContent = "";
-              dragImage.style.display = "none";
             }
           }, 2000);
         }
@@ -344,8 +312,8 @@
       const correct = cardsData[currentIndex].rightAnswer;
       const index = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 }[correct];
       const el = document.getElementById("opt" + index);
-      el.style.backgroundColor = "#b4ffc6";
-      el.style.color = "darkred";
+      el.style.backgroundColor = "#28a745";
+      el.style.color = "white";
       speakText(el.textContent);
     }
 
@@ -354,14 +322,16 @@
       createBubbles();
 
       speakText(
-        'स्वागत है आपके अपने GK Quiz में।  ... नमस्सकार दोस्तों! स्वागत है आपके अपने GK Quiz में। ' +
-        'यहाँ आपको मिलेंगे मज़ेदार और दिमागी सवाल, हर सवाल के साथ चार ऑप्शन। ' +
-        'ध्यान से सुनिए... सोच समझकर जवाब दीजिए। ' +
-        'अगर आपको हमारा क्विज़ पसंद आए, तो वीडियो को लाइक जरूर कीजिए... ' +
-        'और ऐसे ही कमाल के सवालों के लिए चैनल को सब्सक्राइब करना मत भूलिए। ' +
+        'नमस्सकार दोस्तों! स्वागत है आपके अपने GK Quiz में।\n' +
+        'यहाँ आपको मिलेंगे मज़ेदार और दिमागी सवाल, हर सवाल के साथ चार ऑप्शन।\n' +
+        'ध्यान से सुनिए... सोच समझकर जवाब दीजिए।\n' +
+
+        'अगर आपको हमारा क्विज़ पसंद आए, तो वीडियो को लाइक जरूर कीजिए...\n' +
+        'और ऐसे ही कमाल के सवालों के लिए चैनल को सब्सक्राइब करना मत भूलिए।\n' +
         'तो चलिए शुरू करते हैं... आपका आज का GK Quiz!', () => {
           showQuestion(currentIndex);
         });
+
     });
 
     document.getElementById("navButtons").style.display = "block";
@@ -381,6 +351,9 @@
         showQuestion(currentIndex);
       }
     });
+
+
+
   </script>
 </body>
 
