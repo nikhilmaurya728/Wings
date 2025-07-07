@@ -1,10 +1,10 @@
 const qaData = [
-// Fruits Names
-// Animals Names
-// Domestic Animals Names
+// Fruits Name
+// Animals Name
+// Domestic Animals Name
+// Wild Animals Name
 
-
-// Colors Names
+// Colors Name
 
 
 
