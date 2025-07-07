@@ -453,6 +453,15 @@ const qaData = [
     answer: "we"
   },
 
+ {
+    keywords: [["what","how much"], ["you know", "you no"],  ],
+    answer: "We Know Only\n"+
+    "Fruits Name\nAnimals Name\nDomestic Animals Name\nWild Animals Name\nColors Names\n"+
+    "But we learn daily some thing new"
+  },
+
+
+
  // Birth Day 
 {
     keywords: [["vish", "wish","say", "bolo", "kaho", "kho", "bolo", "is my happy birthday","is my birthday", ""], ["happy", ""],["birthday", "bday",]  ],
