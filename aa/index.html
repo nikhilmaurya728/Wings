@@ -12,7 +12,8 @@
       text-align: center;
     }
 
-    input, button {
+    input,
+    button {
       font-size: 18px;
       padding: 10px;
       margin: 10px auto;
@@ -40,7 +41,7 @@
       background: #fff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
       white-space: pre-line;
       text-align: left;
     }
@@ -72,7 +73,19 @@
       {
         keywords: [["hello", "hi"], ["teacher"]],
         answer: "Hello! I am your teacher assistant. How can I help you?"
-      }
+      },
+      {
+        keywords: [["greeting", "hello"]],
+        answer: "Hello! How may I help you today?"
+      },
+      {
+        keywords: [["what is", "what"], ["your name", "call you"],],
+        answer: "I am AI, Created by your School "
+      },
+      {
+        keywords: [["what", "how much"], ["we know", "we no"],],
+        answer: "we"
+      },
     ];
 
     function matchesInput(input, keywordGroups) {
@@ -135,4 +148,5 @@
     }
   </script>
 </body>
+
 </html>
