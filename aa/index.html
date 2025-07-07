@@ -51,6 +51,9 @@
 <body>
 
   <h2>🎙️ Teacher Voice Assistant</h2>
+  <button onclick="stopSpeaking()">
+    stop
+  </button>
   <input id="userQuestion" type="text" placeholder="Ask something to Teacher..." />
   <button onclick="startListening()">🎤 Start Listening</button>
   <button onclick="stopListening()">🛑 Stop Listening</button>
@@ -60,7 +63,7 @@
   <script>
     const qaData = [
       {
-        keywords: [["10", "ten", "20", "twenty", ""], ["fruit", "fruits", "falon", "fal"], ["name", "names", "ke naam"],["teacher"]],
+        keywords: [["10", "ten", "20", "twenty", ""], ["fruit", "fruits", "falon", "fal"], ["name", "names", "ke naam"], ["teacher"]],
         answer:
           "Here are 30 fruits:\n" +
           " 1. Apple - सेब\n 2. Banana - केला\n 3. Mango - आम\n 4. Orange - संतरा\n 5. Papaya - पपीता\n" +
@@ -83,12 +86,19 @@
         keywords: [["what", "how much"], ["we know", "we no"], ["teacher"]],
         answer: "we"
       },
-            {
+      {
         keywords: [["hello", "hi"], ["teacher"]],
         answer: "Hello! I am your teacher assistant. How can I help you?"
       },
     ];
 
+
+
+    function stopSpeaking() {
+      window.speechSynthesis.cancel();
+      document.getElementById("stopSpeechBtn").style.display = "none";
+      console.log("🛑 Assistant voice stopped by user.");
+    }
     function matchesInput(input, keywordGroups) {
       return keywordGroups.every(group =>
         group.some(word => input.includes(word))
