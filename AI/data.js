@@ -11,7 +11,7 @@ const qaData = [
 
   // 30, 20, 10 Fruits Names
   {
-    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams"]],
+    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 30 fruits:\n" +
       " 1. Apple - सेब\n" +
       " 2. Banana - केला\n" +
@@ -46,7 +46,7 @@ const qaData = [
   },
 
   {
-    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams"]],
+    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams",] ["teacher"]],
     answer: "Here are 20 fruits:\n" +
       " 1. Apple - सेब\n" +
       " 2. Banana - केला\n" +
@@ -71,7 +71,7 @@ const qaData = [
   },
 
   {
-    keywords: [["10", "ten", ""], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams"]],
+    keywords: [["10", "ten", ""], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 10 fruits:\n" +
       " 1. Apple - सेब\n" +
       " 2. Banana - केला\n" +
@@ -89,7 +89,7 @@ const qaData = [
 // 30, 20, 10 Animals Names
 
   {
-    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 30 animals:\n" +
       " 1. Dog - कुत्ता\n" +
       " 2. Cat - बिल्ली\n" +
@@ -123,7 +123,7 @@ const qaData = [
       "30. Peacock - मोर"
   },
   {
-    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 20 animals:\n" +
       " 1. Dog - कुत्ता\n" +
       " 2. Cat - बिल्ली\n" +
@@ -147,7 +147,7 @@ const qaData = [
       "20. Fish - मछली"
   },
   {
-    keywords: [["10", "ten", ""], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["10", "ten", ""], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 10 animals:\n" +
       " 1. Dog - कुत्ता\n" +
       " 2. Cat - बिल्ली\n" +
@@ -167,7 +167,7 @@ const qaData = [
 
 //30, 20, 10 Domestic Animals Names
   {
-    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], [ "domestic","gharelu", "ghargharelu", "paaltu"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], [ "domestic","gharelu", "ghargharelu", "paaltu"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 30 domestic animals:\n" +
       " 1. Dog - कुत्ता\n" +
       " 2. Cat - बिल्ली\n" +
@@ -201,7 +201,7 @@ const qaData = [
       "30. Calf -	गाय का बछड़ा"
   },
   {
-    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"],[ "domestic","gharelu", "ghargharelu", "paaltu"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"],[ "domestic","gharelu", "ghargharelu", "paaltu"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 20 domestic animals:\n" +
       " 1. Dog - कुत्ता\n" +
       " 2. Cat - बिल्ली\n" +
@@ -225,7 +225,7 @@ const qaData = [
       "20. She-Donkey - गधिनी"
   },
   {
-    keywords: [["10", "ten", ""],[ "domestic","gharelu", "ghargharelu", "paaltu"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["10", "ten", ""],[ "domestic","gharelu", "ghargharelu", "paaltu"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 10 domestic animals:\n" +
       " 1. Dog - कुत्ता\n" +
       " 2. Cat - बिल्ली\n" +
@@ -244,7 +244,7 @@ const qaData = [
 
   // 40, 30, 20, 10 Wild Animal Names
   {
-    keywords: [["40", "forty", "chalis"], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["40", "forty", "chalis"], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 40 wild animals:\n" +
       " 1. Lion - शेर\n" +
       " 2. Tiger - बाघ\n" +
@@ -288,7 +288,7 @@ const qaData = [
       "40. Armadillo - आर्माडिलो"
   },
   {
-    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 30 wild animals:\n" +
       " 1. Lion - शेर\n" +
       " 2. Tiger - बाघ\n" +
@@ -322,7 +322,7 @@ const qaData = [
       "30. Wild Goat - जंगली बकरी"
   },
   {
-    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 20 wild animals:\n" +
       " 1. Lion - शेर\n" +
       " 2. Tiger - बाघ\n" +
@@ -346,7 +346,7 @@ const qaData = [
       "20. Rhinoceros - गैंडा"
   },
   {
-    keywords: [["10", "ten", ""], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"]],
+    keywords: [["10", "ten", ""], ["wild", "jangli", "jungle","forest"], ["animal", "animals", "janwar", "janwaro"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 10 wild animals:\n" +
       " 1. Lion - शेर\n" +
       " 2. Tiger - बाघ\n" +
@@ -364,7 +364,7 @@ const qaData = [
 // 30, 20, 10 Colors Names
 
   {
-    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["color", "colors", "colour","colours", "rang", "rangon", "rango"], ["name", "names", "naam", "naams"]],
+    keywords: [["30", "thirty", "twenty plus", "20 plus", "20 +", "tees"], ["color", "colors", "colour","colours", "rang", "rangon", "rango"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 30 colors:\n" +
       " 1. Red - लाल\n" +
       " 2. Blue - नीला\n" +
@@ -398,7 +398,7 @@ const qaData = [
       "30. Tan - टैन / हल्का भूरा"
   },
   {
-    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["color", "colors", "colour","colours", "rang", "rangon", "rango"], ["name", "names", "naam", "naams"]],
+    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["color", "colors", "colour","colours", "rang", "rangon", "rango"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 20 colors:\n" +
       " 1. Red - लाल\n" +
       " 2. Blue - नीला\n" +
@@ -422,7 +422,7 @@ const qaData = [
       "20. Lavender - लैवेंडर / हल्का बैंगनी"
   },
   {
-    keywords: [["10", "ten", ""], ["color", "colors", "colour","colours", "rang", "rangon", "rango"], ["name", "names", "naam", "naams"]],
+    keywords: [["10", "ten", ""], ["color", "colors", "colour","colours", "rang", "rangon", "rango"], ["name", "names", "naam", "naams"], ["teacher"]],
     answer: "Here are 10 colors:\n" +
       " 1. Red - लाल\n" +
       " 2. Blue - नीला\n" +
@@ -441,20 +441,20 @@ const qaData = [
 
 
   {
-    keywords: [ ["greeting", "hello"]],
+    keywords: [ ["greeting", "hello"], ["teacher"]],
     answer: "Hello! How may I help you today?"
   },
   {
-    keywords: [ ["what is","what"], ["your name", "call you"], ],
+    keywords: [ ["what is","what"], ["your name", "call you"], ["teacher"]],
     answer: "I am AI, Created by your School "
   },
    {
-    keywords: [["what","how much"], ["we know", "we no"],  ],
+    keywords: [["what","how much"], ["we know", "we no"], ["teacher"] ],
     answer: "we"
   },
 
  {
-    keywords: [["what","how much"], ["you know", "you no"],  ],
+    keywords: [["what","how much"], ["you know", "you no"], ["teacher"] ],
     answer: "We Know Only\n"+
     "Fruits Name\nAnimals Name\nDomestic Animals Name\nWild Animals Name\nColors Names\n"+
     "But we learn daily some thing new"
@@ -464,7 +464,7 @@ const qaData = [
 
  // Birth Day 
 {
-    keywords: [["vish", "wish","say", "bolo", "kaho", "kho", "bolo", "is my happy birthday","is my birthday", ""], ["happy", ""],["birthday", "bday",]  ],
+    keywords: [["vish", "wish","say", "bolo", "kaho", "kho", "bolo", "is my happy birthday","is my birthday", ""], ["happy", ""],["birthday", "bday",], ["teacher"] ],
     answer: "Happy Birthday, Champ!\n\n" +
     "तुम्हारी मेहनत, लगन और सीखने की चाह हमेशा तुम्हें ऊँचाइयों तक पहुँचाएगी। \n भगवान तुम्हें लंबी उम्र दे, ढेर सारी खुशियाँ दे और सफलता के हर पायदान पर तुम्हारा स्वागत हो। \n 🙌📖 पढ़ते रहो, बढ़ते रहो और मुस्कुराते रहो! \n\n" + "Once again, Happy Birthday to our bright little star! "
   },

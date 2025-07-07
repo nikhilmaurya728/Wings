@@ -105,30 +105,6 @@
     .chat-input button.send {
       background: #128c7e;
     }
-
-    .stopBtn {
-      display: flex;
-      justify-content: flex-end;
-      /* ✅ भेज दो दाईं ओर */
-      margin-top: 10px;
-      margin-right: 20px;
-      /* थोड़ा अंदर */
-    }
-
-    .stopBtn button {
-      background: #25d366;
-      border: none;
-      color: white;
-      font-size: 16px;
-      padding: 8px;
-      border-radius: 50%;
-      cursor: pointer;
-      width: 35px;
-      height: 35px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   </style>
 </head>
 
@@ -136,9 +112,6 @@
 
   <h2>🎙️ Auto-Listening AI Teacher</h2>
 
-  <div class="stopBtn" id="stopSpeechBtn">
-    <button onclick="stopSpeaking()">🔇</button>
-  </div>
 
 
   <div id="answerBox">
@@ -259,10 +232,7 @@
       window.speechSynthesis.speak(msg);
     }
 
-    function stopSpeaking() {
-      window.speechSynthesis.cancel();
-      console.log("🛑 Assistant voice stopped by user.");
-    }
+
   </script>
 
 </body>
