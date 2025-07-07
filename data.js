@@ -46,7 +46,7 @@ const qaData = [
   },
 
   {
-    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams",] ["teacher"]],
+    keywords: [["20", "twenty", "10 plus", "ten plus", "10 +", "bees"], ["fruit", "fruits", "falon", "fal"], ["name", "names", "naam", "naams",], ["teacher"]],
     answer: "Here are 20 fruits:\n" +
       " 1. Apple - सेब\n" +
       " 2. Banana - केला\n" +
