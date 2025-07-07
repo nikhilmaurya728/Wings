@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Chat Input</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #e5ddd5;
+    }
+
+    .chat-input {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border-radius: 30px;
+      padding: 5px 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .chat-input button {
+      background: #25d366;
+      border: none;
+      color: white;
+      font-size: 16px;
+      padding: 8px;
+      margin: 0 3px;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 35px;
+      height: 35px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 8px 12px;
+      margin: 0 5px;
+      border-radius: 20px;
+      background: #f0f0f0;
+    }
+
+    .chat-input button.send {
+      background: #128c7e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-input">
+    <button onclick="startListening()">🎤</button>
+    <button onclick="stopListening()">🛑</button>
+    <input id="userQuestion" type="text" placeholder="Type or speak your question..." />
+    <button class="send" onclick="getAnswer()">➤</button>
+  </div>
+
+  <script>
+    function startListening() {
+      alert("🎤 Voice listening started...");
+    }
+
+    function stopListening() {
+      alert("🛑 Voice listening stopped.");
+    }
+
+    function getAnswer() {
+      const question = document.getElementById("userQuestion").value;
+      alert("📩 You asked: " + question);
+    }
+  </script>
+
+</body>
+</html>

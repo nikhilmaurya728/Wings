@@ -7,7 +7,7 @@ const cardsData = [
     question: 'भारत के वर्तमान प्रधान मंत्री कौन हैं?',
     options: ['अमित शाह', 'नरेंद्र मोदी', 'राहुल गांधी', 'योगी आदित्यनाथ'],
     rightAnswer: 'B', // नरेंद्र मोदी
-    image: '',
+    image: '2.jpeg',
     optionBig: 'n',
     istrueFalse: 'n'
   },
@@ -16,7 +16,7 @@ const cardsData = [
     question: 'हमारे देश का नाम क्या है?',
     options: ['उत्तर प्रदेश', 'भारत', 'दिल्ली', 'पाकिस्तान'],
     rightAnswer: 'B', // भारत
-    image: '',
+    image: '2.jpeg',
     optionBig: 'n',
     istrueFalse: 'n'
   },
@@ -25,7 +25,7 @@ const cardsData = [
     question: 'भारत का राष्ट्रीय पशु कौन सा है?',
     options: ['मोर', 'हाथी', 'बाघ', 'शेर'],
     rightAnswer: 'C', // बाघ
-    image: '',
+    image: '2.jpeg',
     optionBig: 'n',
     istrueFalse: 'n'
   },
@@ -34,7 +34,7 @@ const cardsData = [
     question: 'भारत का राष्ट्रीय पक्षी कौन सा है?',
     options: ['गौरैया', 'मोर', 'कौवा', 'तोता'],
     rightAnswer: 'B', // मोर
-    image: '',
+    image: '2.jpeg',
     optionBig: 'n',
     istrueFalse: 'n'
   },
@@ -43,7 +43,7 @@ const cardsData = [
     question: 'भारत का राष्ट्रीय फूल कौन सा है?',
     options: ['गुलाब', 'कमल', 'सूरजमुखी', 'गेंदा'],
     rightAnswer: 'B', // कमल
-    image: '',
+    image: '2.jpeg',
     optionBig: 'n',
     istrueFalse: 'n'
   },
@@ -52,7 +52,7 @@ const cardsData = [
     question: 'भारत का राष्ट्रीय गान कौन सा है?',
     options: ['वंदे मातरम', 'जन गण मन', 'सारे जहाँ से अच्छा', 'जय हे'],
     rightAnswer: 'B', // जन गण मन
-    image: '',
+    image: '2.jpeg',
     optionBig: 'n',
     istrueFalse: 'n'
   },
