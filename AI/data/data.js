@@ -715,7 +715,7 @@ const qaData = [
   },
   {
     keywords: [["hey", "hello", "hi"], ["teacher"]],
-    answer: "Hey! Good morning, How may I help you today?"
+    answer: "Hey! How may I help you today?"
   },
 
   {
