@@ -129,11 +129,6 @@
       align-items: center;
       justify-content: center;
     }
-
-
-    #stopLis {
-      display: none;
-    }
   </style>
 </head>
 
@@ -156,9 +151,8 @@
 
 
   <div class="chat-input">
-    <button id="startLis" onclick="startListening()">🎤</button>
-    <button id="stopLis" onclick="stopListening()">🛑</button>
-    <button onclick="stopSpeaking()">🔇</button>
+    <button onclick="startListening()">🎤</button>
+    <button onclick="stopListening()">🛑</button>
     <input id="userQuestion" type="text" placeholder="Type or speak your question..." />
     <button class="send" onclick="getAnswer()">➤</button>
   </div>
@@ -175,9 +169,6 @@
     let isRecognitionRunning = false;
 
     function startListening() {
-      document.getElementById('stopLis').style.display = 'block';
-      document.getElementById('startLis').style.display = 'none';
-
       if (isListening || isRecognitionRunning) return;
       isListening = true;
       recognition.start();
@@ -186,9 +177,6 @@
     }
 
     function stopListening() {
-      document.getElementById('stopLis').style.display = 'none';
-      document.getElementById('startLis').style.display = 'block';
-
       isListening = false;
       if (isRecognitionRunning) {
         recognition.stop();
