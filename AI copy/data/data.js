@@ -1,11 +1,4 @@
-let randomNum10 = Math.floor(Math.random() * 10) + 1;
-function runFun() {
-  randomNum10 = Math.floor(Math.random() * 10) + 1;
-  console.log("run\n");
-}
-
-let aaa;
-
+let aaa = "123";
 
 
 const qaData = [
@@ -94,166 +87,6 @@ const qaData = [
       " 9. Muskmelon - खरबूज\n" +
       "10. Grapes - अंगूर"
   },
-
-
-  // 30, 20, 10 vegetables Name
-{
-  keywords: [["30", "thirty", "tees", "20+", "25+", "thirty plus"], ["vegetable", "vegetables", "sabji", "sabzian", "sabjiyan", "sabjiyo"], ["name", "names", "naam"]],
-  answer: "Here are 30 vegetables:\n" +
-    " 1. Potato - आलू\n" +
-    " 2. Tomato - टमाटर\n" +
-    " 3. Onion - प्याज़\n" +
-    " 4. Garlic - लहसुन\n" +
-    " 5. Ginger - अदरक\n" +
-    " 6. Carrot - गाजर\n" +
-    " 7. Radish - मूली\n" +
-    " 8. Cabbage - पत्ता गोभी\n" +
-    " 9. Cauliflower - फूलगोभी\n" +
-    "10. Brinjal - बैंगन\n" +
-    "11. Bottle Gourd - लौकी\n" +
-    "12. Bitter Gourd - करेला\n" +
-    "13. Sponge Gourd - तोरई\n" +
-    "14. Pointed Gourd - परवल\n" +
-    "15. Pumpkin - कद्दू\n" +
-    "16. Lady Finger - भिंडी\n" +
-    "17. Green Peas - मटर\n" +
-    "18. Corn - मक्का\n" +
-    "19. Spinach - पालक\n" +
-    "20. Fenugreek - मेथी\n" +
-    "21. Mustard Leaves - सरसों का साग\n" +
-    "22. Spring Onion - हरा प्याज़\n" +
-    "23. Curry Leaves - करी पत्ता\n" +
-    "24. Coriander - धनिया\n" +
-    "25. Mint - पुदीना\n" +
-    "26. Raw Banana - कच्चा केला\n" +
-    "27. Jackfruit - कटहल\n" +
-    "28. Turnip - शलजम\n" +
-    "29. Yam - जिमीकंद\n" +
-    "30. Red Chilli - लाल मिर्च"
-},
-{
-  keywords: [["20", "twenty", "20 plus", "bees", "10+"], ["vegetable", "vegetables", "sabji", "sabzian"], ["name", "names", "naam"]],
-  answer: "Here are 20 vegetables:\n" +
-    " 1. Potato - आलू\n" +
-    " 2. Tomato - टमाटर\n" +
-    " 3. Onion - प्याज़\n" +
-    " 4. Garlic - लहसुन\n" +
-    " 5. Ginger - अदरक\n" +
-    " 6. Carrot - गाजर\n" +
-    " 7. Radish - मूली\n" +
-    " 8. Cabbage - पत्ता गोभी\n" +
-    " 9. Cauliflower - फूलगोभी\n" +
-    "10. Brinjal - बैंगन\n" +
-    "11. Bottle Gourd - लौकी\n" +
-    "12. Bitter Gourd - करेला\n" +
-    "13. Pointed Gourd - परवल\n" +
-    "14. Lady Finger - भिंडी\n" +
-    "15. Spinach - पालक\n" +
-    "16. Fenugreek - मेथी\n" +
-    "17. Coriander - धनिया\n" +
-    "18. Mint - पुदीना\n" +
-    "19. Raw Banana - कच्चा केला\n" +
-    "20. Jackfruit - कटहल"
-},
-{
-  keywords: [["10", "ten", "das"], ["vegetable", "vegetables", "sabji", "sabzian"], ["name", "names", "naam"]],
-  answer: "Here are 10 vegetables:\n" +
-    " 1. Potato - आलू\n" +
-    " 2. Tomato - टमाटर\n" +
-    " 3. Onion - प्याज़\n" +
-    " 4. Carrot - गाजर\n" +
-    " 5. Brinjal - बैंगन\n" +
-    " 6. Cauliflower - फूलगोभी\n" +
-    " 7. Cabbage - पत्ता गोभी\n" +
-    " 8. Spinach - पालक\n" +
-    " 9. Lady Finger - भिंडी\n" +
-    "10. Radish - मूली"
-},
-
-
-
-
-
-
-  // 30, 20, 10 Dry Fruit Name
-{
-  keywords: [["30", "thirty", "30+", "तीस"], ["dry fruit", "dry fruits", "मेवा", "ड्राय फ्रूट"], ["name", "names", "naam"]],
-  answer: "Here are 30 dry fruits:\n" +
-    " 1. Almond - बादाम (Almond)\n" +
-    " 2. Cashew - काजू (Cashew)\n" +
-    " 3. Walnut - अखरोट (Walnut)\n" +
-    " 4. Raisin - किशमिश (Raisin)\n" +
-    " 5. Date - खजूर (Date)\n" +
-    " 6. Fig - अंजीर (Fig)\n" +
-    " 7. Apricot - खुबानी (Apricot)\n" +
-    " 8. Pistachio - पिस्ता (Pistachio)\n" +
-    " 9. Peanut - मूंगफली (Peanut)\n" +
-    "10. Hazelnut - हेजलनट (Hazelnut)\n" +
-    "11. Macadamia - मैकाडामिया (Macadamia)\n" +
-    "12. Pecan - पेकान (Pecan)\n" +
-    "13. Brazil Nut - ब्राजील नट (Brazil Nut)\n" +
-    "14. Pine Nut - चिलगोजा (Pine Nut)\n" +
-    "15. Dried Cranberry - सूखी क्रैनबेरी (Cranberry)\n" +
-    "16. Dried Blueberry - सूखी ब्लूबेरी (Blueberry)\n" +
-    "17. Dried Cherry - सूखी चेरी (Cherry)\n" +
-    "18. Dried Mango - सूखा आम (Mango)\n" +
-    "19. Dried Pineapple - सूखा अनानास (Pineapple)\n" +
-    "20. Dried Apple - सूखा सेब (Apple)\n" +
-    "21. Dried Pear - सूखा नाशपाती (Pear)\n" +
-    "22. Dried Banana - सूखा केला (Banana)\n" +
-    "23. Dried Coconut - सूखा नारियल (Coconut)\n" +
-    "24. Prune - आलूबुखारा (Prune)\n" +
-    "25. Sultana - सुल्ताना किशमिश (Sultana)\n" +
-    "26. Currant - करंट (Currant)\n" +
-    "27. Golden Raisin - सुनहरी किशमिश (Golden Raisin)\n" +
-    "28. Black Raisin - काली किशमिश (Black Raisin)\n" +
-    "29. Dried Kiwi - सूखा कीवी (Kiwi)\n" +
-    "30. Dried Papaya - सूखा पपीता (Papaya)"
-},
-{
-  keywords: [["20", "twenty", "20+", "बीस"], ["dry fruit", "dry fruits", "मेवा", "ड्राय फ्रूट"], ["name", "names", "naam"]],
-  answer: "Here are 20 dry fruits:\n" +
-    " 1. Almond - बादाम (Almond)\n" +
-    " 2. Cashew - काजू (Cashew)\n" +
-    " 3. Walnut - अखरोट (Walnut)\n" +
-    " 4. Raisin - किशमिश (Raisin)\n" +
-    " 5. Date - खजूर (Date)\n" +
-    " 6. Fig - अंजीर (Fig)\n" +
-    " 7. Apricot - खुबानी (Apricot)\n" +
-    " 8. Pistachio - पिस्ता (Pistachio)\n" +
-    " 9. Peanut - मूंगफली (Peanut)\n" +
-    "10. Hazelnut - हेजलनट (Hazelnut)\n" +
-    "11. Macadamia - मैकाडामिया (Macadamia)\n" +
-    "12. Pecan - पेकान (Pecan)\n" +
-    "13. Brazil Nut - ब्राजील नट (Brazil Nut)\n" +
-    "14. Pine Nut - चिलगोजा (Pine Nut)\n" +
-    "15. Dried Cranberry - सूखी क्रैनबेरी (Cranberry)\n" +
-    "16. Dried Blueberry - सूखी ब्लूबेरी (Blueberry)\n" +
-    "17. Dried Cherry - सूखी चेरी (Cherry)\n" +
-    "18. Dried Mango - सूखा आम (Mango)\n" +
-    "19. Dried Pineapple - सूखा अनानास (Pineapple)\n" +
-    "20. Dried Apple - सूखा सेब (Apple)"
-},
-{
-  keywords: [["10", "ten", "10+", "दस"], ["dry fruit", "dry fruits", "सूखे मेवे", "ड्राय फ्रूट", "मेवा"], ["name", "names", "naam"]],
-  answer: "Here are 10 dry fruits:\n" +
-    " 1. Almond - बादाम (Almond)\n" +
-    " 2. Cashew - काजू (Cashew)\n" +
-    " 3. Walnut - अखरोट (Walnut)\n" +
-    " 4. Raisin - किशमिश (Raisin)\n" +
-    " 5. Date - खजूर (Date)\n" +
-    " 6. Fig - अंजीर (Fig)\n" +
-    " 7. Apricot - खुबानी (Apricot)\n" +
-    " 8. Pistachio - पिस्ता (Pistachio)\n" +
-    " 9. Peanut - मूंगफली (Peanut)\n" +
-    "10. Hazelnut - हेजलनट (Hazelnut)"
-},
-
-
-
-
-
-
 
 
   // 30, 20, 10 Animals Names
@@ -723,10 +556,6 @@ const qaData = [
     keywords: [["hey", "hello", "hi"], ["good morning", "morning"], ["teacher"]],
     answer: "Hey! Good morning, How may I help you today?"
   },
-  {
-    keywords: [["hey", "hello", "hi"], ["teacher"]],
-    answer: "Hey! Good morning, How may I help you today?"
-  },
 
   {
     keywords: [["good", "best", "achha", "achchha", "achcha"], ["school", "vidyalay", "vidyalaya"], ["kaun", "kiska", "which", "what", "tell"], ["teacher"]],
@@ -743,59 +572,8 @@ const qaData = [
       "तुम बहुत lucky हो इस स्कूल में पढ़ने के लिए। Proud of you! ✨"
   },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // random Numbers
   {
-    keywords: [["tell", "what"], ["tell", "bolo", "de", "do", "give", "kya hoga", "batao"], ["random number", "sankhya", "number"], ["teacher"]],
-    answer: `मै random number बता सकती हू जैसे की one or two or three digite random number\n 1 to 10, or 1 to 100 or 1 to 6 \n `
+    keywords: [["tell", "bolo", "give",], ["random number", "sankhya", "number"], ["teacher"]],
+    answer: "${aaa}"
   },
-
-
-  {
-    keywords: [["upto", "up to", "tak", "ke andar"], ["hundred", "1 to 100", "ek se sau", "100", "sau"], ["tell", "bolo", "de", "do", "give", "kya hoga", "batao"], ["random number", "sankhya", "number"], ["teacher", "madam"]],
-    answer: `Yeh lo ek random number from 1 to 100: randomHundredOne`
-  },
-
-  {
-    keywords: [["1210", "upto 10", "below 10", "1 to 10", "under 10", "10 tak", "10 ke andar", "number upto 10"], ["tell", "bolo", "de", "do", "give", "kya hoga", "batao"], ["random number", "sankhya", "number"], ["teacher"]],
-    answer: `Yeh lo ek random Number: randomTenOne`
-  },
-
-  {
-    keywords: [["126", "1 se 6", "one to six", "dice", "chhakka", "chakka", "six tak", "six ke andar", "under six"], ["tell", "bolo", "de", "do", "give", "kya hoga"], ["random number", "sankhya", "number"], ["teacher"]],
-    answer: `🎲 Dice number is: <b>randomSixOne</b>`
-  },
-
-  {
-    keywords: [["one digit", "single digit", "ek ank", "1 digit", "0 to 9", "1 ank"], ["random number", "number", "sankhya"], ["teacher", "madam"]],
-    answer: `Yeh lo ek random one-digit number: randomOneDigi`
-  },
-
-  {
-    keywords: [["two digit", "do digit", "2 digit", "10 to 99", "do ank", "do hansi sankhya"], ["random number", "number", "sankhya"], ["teacher", "madam"]],
-    answer: `Yeh lo ek random two-digit number: randomTwoDigi`
-  },
-
-  {
-    keywords: [["three digit", "3 digit", "100 to 999", "teen ank", "teen hansi sankhya"], ["random number", "number", "sankhya"], ["teacher", "madam"]],
-    answer: `Yeh lo ek random three-digit number: randomThreeDigi`
-  },
-
-  {
-    keywords: [["next", " nest", "agla", "agala", "more"], ["random number", "sankhya", "number"], ["teacher"]],
-    answer: `Next:<b>nextNumber</b>`
-  }
 ];
-
