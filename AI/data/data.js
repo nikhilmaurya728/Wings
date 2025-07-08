@@ -1,13 +1,3 @@
-let randomNum10 = Math.floor(Math.random() * 10) + 1;
-function runFun() {
-  randomNum10 = Math.floor(Math.random() * 10) + 1;
-  console.log("run\n");
-}
-
-let aaa;
-
-
-
 const qaData = [
   // Fruits Name
   // Animals Name
@@ -794,7 +784,7 @@ const qaData = [
   },
 
   {
-    keywords: [["next", " nest", "agla", "agala", "more"], ["random number", "sankhya", "number"], ["teacher"]],
+    keywords: [["next", "nest", "agla", "agala", "more"], ["random number", "sankhya", "number"], ["teacher"]],
     answer: `Next:<b>nextNumber</b>`
   }
 ];
