@@ -88,7 +88,7 @@ const qaData = [
 
   // 30, 20, 10 vegetables Name
 {
-  keywords: [["30", "thirty", "tees", "20+", "25+", "thirty plus"], ["vegetable", "vegetables", "sabji", "sabzian", "sabjiyan", "sabjiyo"], ["name", "names", "naam"]],
+  keywords: [["30", "thirty", "tees", "20+", "25+", "thirty plus"], ["vegetable", "vegetables", "sabji", "sabzian", "sabjiyan", "sabjiyo","vegitable", "vegitables"], ["name", "names", "naam"]],
   answer: "Here are 30 vegetables:\n" +
     " 1. Potato - आलू\n" +
     " 2. Tomato - टमाटर\n" +
@@ -122,7 +122,7 @@ const qaData = [
     "30. Red Chilli - लाल मिर्च"
 },
 {
-  keywords: [["20", "twenty", "20 plus", "bees", "10+"], ["vegetable", "vegetables", "sabji", "sabzian"], ["name", "names", "naam"]],
+  keywords: [["20", "twenty", "20 plus", "bees", "10+"], ["vegetable", "vegetables", "sabji", "sabzian", "vegitable", "vegitables"], ["name", "names", "naam"]],
   answer: "Here are 20 vegetables:\n" +
     " 1. Potato - आलू\n" +
     " 2. Tomato - टमाटर\n" +
@@ -146,7 +146,7 @@ const qaData = [
     "20. Jackfruit - कटहल"
 },
 {
-  keywords: [["10", "ten", "das"], ["vegetable", "vegetables", "sabji", "sabzian"], ["name", "names", "naam"]],
+  keywords: [["10", "ten", "das"], ["vegetable", "vegetables", "sabji", "sabzian", "vegitable", "vegitables"], ["name", "names", "naam"]],
   answer: "Here are 10 vegetables:\n" +
     " 1. Potato - आलू\n" +
     " 2. Tomato - टमाटर\n" +
