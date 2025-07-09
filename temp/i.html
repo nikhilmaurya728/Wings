@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voice Based GK Assistant</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .category {
+      display: none;
+      margin-top: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .category h2 {
+      color: #007BFF;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎙️ Voice-Controlled Knowledge Page</h1>
+  <p>Say: <b>"teacher show fruits"</b>, <b>"teacher show animals"</b>, <b>"teacher show colors"</b></p>
+
+  <button onclick="startListening()">🎤 Start Listening</button>
+
+  <div id="fruits" class="category">
+    <h2>🍎 Fruits</h2>
+    <p id="fruitList"></p>
+  </div>
+
+  <div id="animals" class="category">
+    <h2>🦁 Animals</h2>
+    <p id="animalList"></p>
+  </div>
+
+  <div id="colors" class="category">
+    <h2>🎨 Colors</h2>
+    <p id="colorList"></p>
+  </div>
+
+  <script>
+    const fruits = ["Apple", "Banana", "Mango", "Papaya", "Pineapple", "Orange", "Grapes", "Watermelon", "Guava", "Litchi"];
+    const animals = ["Lion", "Tiger", "Elephant", "Monkey", "Dog", "Cat", "Deer", "Zebra", "Bear", "Fox"];
+    const colors = ["Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Black", "White", "Brown"];
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+
+    function startListening() {
+      recognition.start();
+    }
+
+    recognition.onresult = function(event) {
+      const speech = event.results[0][0].transcript.toLowerCase();
+      console.log("Heard:", speech);
+      if (speech.includes("teacher") && speech.includes("fruits")) {
+        showCategory("fruits", fruits);
+        speak("Showing fruits");
+      } else if (speech.includes("teacher") && speech.includes("animals")) {
+        showCategory("animals", animals);
+        speak("Showing animals");
+      } else if (speech.includes("teacher") && speech.includes("colors")) {
+        showCategory("colors", colors);
+        speak("Showing colors");
+      } else {
+        speak("Sorry, I did not understand that.");
+      }
+    };
+
+    function showCategory(type, list) {
+      document.querySelectorAll(".category").forEach(div => div.style.display = "none");
+      const el = document.getElementById(type);
+      el.querySelector("p").innerText = list.join(", ");
+      el.style.display = "block";
+    }
+
+    function speak(text) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-IN";
+      window.speechSynthesis.speak(utter);
+    }
+  </script>
+</body>
+</html>
