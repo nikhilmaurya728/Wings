@@ -83,37 +83,40 @@
       ["10", "Brinjal", "बैंगन", "ब्रिंजल"]
     ];
 
-const extraAnswers = [
-  {
-    keywords: [["what is", "kya hota", "meaning", "ka matlab"], ["fruit", "fruits"]],
-    action: () => answerShow("🍎 Fruits are natural food items that grow on trees or plants and are usually sweet and juicy.")
-  },
-  {
-    keywords: [["what is", "kya hota", "meaning", "ka matlab"], ["mango", "aam"]],
-    action: () => answerShow("🥭 Mango is a sweet yellow tropical fruit. In Hindi, it's called आम.")
-  },
-  {
-    keywords: [["show", "give", "image", "photo"], ["fruit", "fruits"]],
-    action: () => imageShow("🍉 Fruits Image", "https://i.ibb.co/vJxbNGx/fruits.jpg")
-  },
-  {
-    keywords: [["show", "give", "image", "photo"], ["mango", "aam"]],
-    action: () => imageShow("🥭 Mango Image", "https://i.ibb.co/zh7rm1m/mango.jpg")
-  }
-];
-
-
-    const fruitMode = [
+    const extraAnswers = [
       {
-        keywords: [["fruit", "fruits", "fal"], ["means", "kya hota", "ke baare me", "kaisa hota hai", "what is"]],
-        action: (count = 10) => answerShow("Fruits is a thing that.........")
+        keywords: [["what is", "kya hota", "meaning", "ka matlab"], ["fruit", "fruits"]],
+        action: () => {
+          answerShow("🍎 Fruits are natural food items that grow on trees or plants and are usually sweet and juicy.");
+          setMode("fruit");
+        }
+      },
+
+      {
+        keywords: [["show", "give", "image", "photo"], ["fruit", "fruits"]],
+        action: () => imageShow("🍉 Fruits Image", "https://i.ibb.co/vJxbNGx/fruits.jpg")
       },
       {
-        keywords: [["what is", "kya hota", "ke baare me", "kaisa hota hai",], ["mango", "aam", "am"]],
-        action: (count = 10) => answerShow("Mango means 'आम' is a Fruits that is.........")
-      },
+        keywords: [["show", "give", "image", "photo"], ["mango", "aam"]],
+        action: () => {
+          imageShow("🥭 Mango Image", "https://i.ibb.co/zh7rm1m/mango.jpg")
+
+        }
+      }
     ];
 
+    /*
+        const fruitMode = [
+          {
+            keywords: [["fruit", "fruits", "fal"], ["means", "kya hota", "ke baare me", "kaisa hota hai", "what is"]],
+            action: (count = 10) => answerShow("Fruits is a thing that.........")
+          },
+          {
+            keywords: [["what is", "kya hota", "ke baare me", "kaisa hota hai",], ["mango", "aam", "am"]],
+            action: (count = 10) => answerShow("Mango means 'आम' is a Fruits that is.........")
+          },
+        ];
+    */
 
     const allModes = [
       {
@@ -122,10 +125,22 @@ const extraAnswers = [
         action: (count = 10) => printTable("Fruits", Fruits, count)
       },
       {
+        name: "fruit",
+        keywords: [["what is", "kya hota", "meaning", "ka matlab"], ["Banana", "kela"]],
+        action: () => answerShow("Banana is a fruit, which is very tasty, color is yellow")
+      },
+
+      {
         name: "vegetable",
         keywords: [["vegetable", "vegetables", "sabji"], ["name", "list", "show", "print"]],
         action: (count = 10) => printTable("Vegetables", Vegetables, count)
-      }
+      },
+      {
+        name: "vegetable",
+        keywords: [["what is", "kya hota", "meaning", "ka matlab"], ["Banana", "kela"]],
+        action: () => answerShow("Banana is a Vegetable, which is use to make food and also teasty chips, banana color is green")
+      },
+
     ];
 
 
@@ -143,68 +158,68 @@ const extraAnswers = [
     }
 
     // Handle voice command
-   function handleVoice(message) {
-  document.getElementById("output").innerText = `🎧 You said: "${message}"`;
+    function handleVoice(message) {
+      document.getElementById("output").innerText = `🎧 You said: "${message}"`;
 
-  // 🔍 First, check for direct answer/image responses
-  for (let item of extraAnswers) {
-    const matched = item.keywords.every(kwGroup =>
-      kwGroup.some(k => message.includes(k))
-    );
-    if (matched) {
-      item.action();
-      return;
+      // 🔍 First, check for direct answer/image responses
+      for (let item of extraAnswers) {
+        const matched = item.keywords.every(kwGroup =>
+          kwGroup.some(k => message.includes(k))
+        );
+        if (matched) {
+          item.action();
+          return;
+        }
+      }
+
+      // 🔢 number finder
+      let count = 10;
+      const digitMatch = message.match(/\d+/);
+      if (digitMatch) {
+        count = parseInt(digitMatch[0]);
+      } else {
+        const wordMap = {
+          one: 1, two: 2, three: 3, four: 4, five: 5,
+          six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+          eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15
+        };
+        const found = Object.keys(wordMap).find(w => message.includes(w));
+        if (found) count = wordMap[found];
+      }
+
+      // 🧠 Try match with exact mode
+      let matchedMode = null;
+
+      for (let mode of allModes) {
+        const match = mode.keywords.every(keywordSet =>
+          keywordSet.some(k => message.includes(k))
+        );
+        if (match) {
+          matchedMode = mode;
+          lastMode = mode;
+          break;
+        }
+      }
+
+      const genericWords = ["name", "names", "list", "give", "show", "print"];
+      const hasGeneric = genericWords.some(word => message.includes(word));
+
+      if (!matchedMode && hasGeneric && lastMode) {
+        matchedMode = lastMode;
+      }
+
+      if (matchedMode) {
+        reorderModes(matchedMode.name);
+        matchedMode.action(count);
+      } else {
+        speak("Sorry, I didn't understand.");
+        document.getElementById("output").innerHTML = "❌ No match found.";
+      }
     }
-  }
-
-  // 🔢 number finder
-  let count = 10;
-  const digitMatch = message.match(/\d+/);
-  if (digitMatch) {
-    count = parseInt(digitMatch[0]);
-  } else {
-    const wordMap = {
-      one: 1, two: 2, three: 3, four: 4, five: 5,
-      six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
-      eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15
-    };
-    const found = Object.keys(wordMap).find(w => message.includes(w));
-    if (found) count = wordMap[found];
-  }
-
-  // 🧠 Try match with exact mode
-  let matchedMode = null;
-
-  for (let mode of allModes) {
-    const match = mode.keywords.every(keywordSet =>
-      keywordSet.some(k => message.includes(k))
-    );
-    if (match) {
-      matchedMode = mode;
-      lastMode = mode;
-      break;
-    }
-  }
-
-  const genericWords = ["name", "names", "list", "give", "show", "print"];
-  const hasGeneric = genericWords.some(word => message.includes(word));
-
-  if (!matchedMode && hasGeneric && lastMode) {
-    matchedMode = lastMode;
-  }
-
-  if (matchedMode) {
-    reorderModes(matchedMode.name);
-    matchedMode.action(count);
-  } else {
-    speak("Sorry, I didn't understand.");
-    document.getElementById("output").innerHTML = "❌ No match found.";
-  }
-}
 
 
 
-        function answerShow(text) {
+    function answerShow(text) {
       document.getElementById("output").innerHTML = `<div style="font-size:18px; color:#333;">💬 ${text}</div>`;
       speak(text);
     }
@@ -241,6 +256,11 @@ const extraAnswers = [
 
       modeStack = newStack;
       updateModeListDisplay();
+    }
+
+    function setMode(modeName) {
+      reorderModes(modeName);
+      lastMode = allModes.find(m => m.name === modeName);
     }
 
     // Display table output
