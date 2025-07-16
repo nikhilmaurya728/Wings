@@ -18,7 +18,6 @@
       padding: 15px;
       border-radius: 10px;
       min-height: 100px;
-      background-color: #ff9595;
     }
 
     #modeList {
@@ -47,114 +46,27 @@
 
 
 
-    .chat-input {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fff;
-      border-radius: 30px;
-      padding: 5px 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      width: 90%;
-      z-index: 999;
-    }
-
-    .chat-input button {
-      background: #25d366;
-      border: none;
-      color: white;
-      font-size: 16px;
-      padding: 8px;
-      margin: 0 3px;
-      border-radius: 50%;
-      cursor: pointer;
-      width: 35px;
-      height: 35px;
-    }
-
-    .chat-input input {
-      flex: 1;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      padding: 8px 12px;
-      margin: 0 5px;
-      border-radius: 20px;
-      background: #f0f0f0;
-    }
-
-    .chat-input button.send {
-      background: #128c7e;
-    }
-
-    .stopBtn {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 10px;
-      margin-right: 20px;
-    }
-
-    .stopBtn button {
-      background: #25d366;
-      border: none;
-      color: white;
-      font-size: 16px;
-      padding: 8px;
-      border-radius: 50%;
-      cursor: pointer;
-      width: 35px;
-      height: 35px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #stopLis {
-      display: none;
-    }
   </style>
 </head>
 
 <body>
-  <h1> Smart Teacher <img src="https://i.pinimg.com/originals/72/d1/0f/72d10f76cf3020b51725ecf7df888c59.gif" alt="" width="30px">
-  </h1>
+  <h1>🎤 Smart Personal Assistant</h1>
+  <button onclick="startListening()">🎙 Start Listening</button>
+  <input id="input" type="text" placeholder="Type something like 'Show 5 fruits'"
+    onkeypress="if(event.key === 'Enter') handleTypedInput()"
+    style="width: 70%; padding: 10px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc;" />
+  <button onclick="handleTypedInput()"
+    style="padding: 10px 15px; font-size: 16px; border-radius: 8px; background-color: #2196F3; color: white; border: none; margin-left: 10px;">
+    🔍 Search
+  </button>
 
-
-
+  
 
   <div class="outputs">
     <div id="output">Say something like "Show 5 fruits" or "Give 3 vegetables, Comedy-joke-Cat Video-Videos, what is
-      cat-dog-banana-vegetable-vegetables-fruit-fruits, fruit-fruits-vegetable-vegetables name-names"</div></br>
-    <div id="output2">gg</div></br>
-    <div id="output3">gfd</div></br>
-    <div id="output4">dg</div></br>
-    <div id="output5">rdgd</div></br>
+      cat-dog-banana-vegetable-vegetables-fruit-fruits, fruit-fruits-vegetable-vegetables name-names"</div>
+    <div id="output2"></div>
   </div>
-
-
-
-
-
-  <div class="chat-input">
-    <button id="startLis" onclick="startListening()">🎤</button>
-    <button id="stopLis" onclick="stopListening()">🛑</button>
-    <button onclick="stopSpeaking()">🔇</button>
-    <input id="userQuestion" type="text" placeholder="Type or speak your question..."
-      onkeypress="if(event.key === 'Enter') handleTypedInput()" />
-    <button class="send" onclick="handleTypedInput()">➤</button>
-  </div>
-
-
-
-
-
-
-
   <br>
   <h3>🎛 Active Modes:</h3>
   <div id="modeList"></div>
@@ -408,73 +320,26 @@
 
 
 
-    let recognition;
-    let isRecognitionRunning = false;
-
     function startListening() {
-      document.getElementById('stopLis').style.display = 'block';
-      document.getElementById('startLis').style.display = 'none';
-
-      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.lang = "en-IN";
-      recognition.continuous = true; // ✅ यह हमेशा सुनते रहेगा
-      recognition.interimResults = false;
-
       recognition.start();
-      isRecognitionRunning = true;
 
       recognition.onresult = (e) => {
-        const lastResultIndex = e.results.length - 1;
-        const msg = e.results[lastResultIndex][0].transcript.toLowerCase();
-        document.getElementById("userQuestion").value = msg;
+        const msg = e.results[0][0].transcript.toLowerCase();
+        document.getElementById("input").value = msg;
+
         document.getElementById("output").innerText = `🎧 You said: "${msg}"`;
         handleVoice(msg);
-      };
 
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        stopListening(); // Optional: Error आने पर बंद करो
-      };
-
-      recognition.onend = () => {
-        console.log("Speech recognition ended.");
-        if (isRecognitionRunning) {
-          // 🔁 Restart if user hasn't clicked Stop
-          recognition.start();
-          console.log("Restarting recognition...");
-        }
       };
     }
-
-    function stopListening() {
-      document.getElementById('stopLis').style.display = 'none';
-      document.getElementById('startLis').style.display = 'block';
-
-      if (recognition && isRecognitionRunning) {
-        isRecognitionRunning = false;
-        recognition.stop();
-        console.log("Stopped listening.");
-      }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     function handleTypedInput() {
-      const userMessage = document.getElementById("userQuestion").value.trim();
+      const userMessage = document.getElementById("input").value.trim();
       if (userMessage.length > 0) {
         handleVoice(userMessage.toLowerCase());
-        document.getElementById("userQuestion").value = "";
+        document.getElementById("input").value = "";
       } else {
         speak("Please type something.");
       }
