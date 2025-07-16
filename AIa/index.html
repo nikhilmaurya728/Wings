@@ -8,17 +8,17 @@
   <style>
     body {
       font-family: sans-serif;
-      padding: 20px;
+
       text-align: center;
     }
 
     .outputs {
+      max-width: 750px;
       margin-top: 20px;
       border: 1px solid #ccc;
-      padding: 15px;
+      padding: 10px;
       border-radius: 10px;
-      min-height: 100px;
-      background-color: #ff9595;
+      margin: auto;
     }
 
     #modeList {
@@ -117,23 +117,38 @@
     #stopLis {
       display: none;
     }
+
+
+    #output1,
+    #output2,
+    #output3,
+    #output4,
+    #output5 {
+      padding-top: 10px;
+    }
   </style>
 </head>
 
 <body>
-  <h1> Smart Teacher <img src="https://i.pinimg.com/originals/72/d1/0f/72d10f76cf3020b51725ecf7df888c59.gif" alt="" width="30px">
+  <h1> Smart Teacher <img src="https://i.pinimg.com/originals/72/d1/0f/72d10f76cf3020b51725ecf7df888c59.gif" alt=""
+      width="30px">
   </h1>
 
 
 
 
   <div class="outputs">
-    <div id="output">Say something like "Show 5 fruits" or "Give 3 vegetables, Comedy-joke-Cat Video-Videos, what is
-      cat-dog-banana-vegetable-vegetables-fruit-fruits, fruit-fruits-vegetable-vegetables name-names"</div></br>
-    <div id="output2">gg</div></br>
-    <div id="output3">gfd</div></br>
-    <div id="output4">dg</div></br>
-    <div id="output5">rdgd</div></br>
+    <div id="output">
+      <img src="image/CLMLogo.png" alt="" width="50%">
+
+      <p> Say something like "Show 5 fruits" or "Give 3 vegetables, Comedy-joke-Cat Video-Videos, what is
+        cat-dog-banana-vegetable-vegetables-fruit-fruits, fruit-fruits-vegetable-vegetables name-names"</p>
+    </div>
+    <div id="output1"></div>
+    <div id="output2"></div>
+    <div id="output3"></div>
+    <div id="output4"></div>
+    <div id="output5"></div>
   </div>
 
 
@@ -155,9 +170,9 @@
 
 
 
-  <br>
+  </br></br>
   <h3>🎛 Active Modes:</h3>
-  <div id="modeList"></div>
+  <div id="modeList"></div></br></br></br>
   <script>
 
 
@@ -507,14 +522,6 @@
       }
 
 
-
-
-
-
-
-
-
-
       const genericWords = ["name", "names", "list", "give", "show", "print"];
       const hasGeneric = genericWords.some(word => message.includes(word));
 
@@ -530,14 +537,15 @@
       }
 
 
+      answerShow(" 🤷‍♂️ माफ करना, मुझे इसके बारे में पता नहीं है।");
 
 
-
-      answerShow("❌ No matching keyword found.");
     }
 
 
     function reorderModes(modeName) {
+      answerHide()
+
       modeStack = modeStack.filter(name => name !== modeName);
       modeStack.unshift(modeName);
       updateModeListDisplay();
@@ -554,10 +562,17 @@
       });
     }
 
+    function answerHide() {
+      document.getElementById("output1").innerHTML = "";
+      document.getElementById("output2").innerHTML = "";
+      document.getElementById("output3").innerHTML = "";
+      document.getElementById("output4").innerHTML = "";
+      document.getElementById("output5").innerHTML = "";
+    }
 
 
     function answerShow(text) {
-      document.getElementById("output").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
+      document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
       speak(text);
     }
 
@@ -588,15 +603,15 @@
       box.style.borderRadius = "10px";
       box.style.background = "#f9f9f9";
 
-      document.getElementById("output").innerHTML = "";
-      document.getElementById("output").appendChild(box);
+      document.getElementById("output2").innerHTML = "";
+      document.getElementById("output2").appendChild(box);
 
       const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
       speak(`${title} are: ${speakList}`);
     }
 
     function imageShow(title, imgUrl) {
-      document.getElementById("output2").innerHTML = `
+      document.getElementById("output3").innerHTML = `
         <h3>${title}</h3>
         <img src="${imgUrl}" alt="${title}" style="max-width:90%; border-radius:10px; box-shadow:0 0 10px #aaa;" />
       `;
@@ -610,7 +625,7 @@
       fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
         .then(res => res.json())
         .then(data => {
-          const container = document.getElementById('output');
+          const container = document.getElementById('output4');
           container.innerHTML = `
         <div class="video-containerYT">
           <iframe 
@@ -619,7 +634,7 @@
             frameborder="0"
             style=" border-radius: 10px; box-shadow: 0 0 10px #aaa;">
           </iframe>
-          <p style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;"><span style="font-size: 0.9rem; color: #555;">👤 ${data.author_name}</span> 🎬 ${data.title}</p>
+          <p style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;"><span style="font-size: 0.9rem; color: #555;">👤 ${data.author_name} -</span> 🎬 ${data.title}</p>
           <p style="font-size: 1rem; color: #333;">📜 ${description}</p>
         
           
@@ -645,7 +660,11 @@
 
 
     function speak(text) {
-      const plainText = text.replace(/<[^>]+>/g, '');
+      let plainText = text.replace(/<[^>]+>/g, '');
+      
+      // don't read emoji
+      plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
+
 
       const voices = availableVoices;
 
