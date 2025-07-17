@@ -109,15 +109,19 @@
       }
     ];
 
+let recognition = null;
+let isRecognitionRunning = false;
 
-    // Start voice recognition
-    function startListening() {
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+function startListening() {
+  if (isRecognitionRunning) return; // 🔁 already running, don't restart
+
+  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
   recognition.lang = "en-IN";
-  recognition.continuous = true; // 🎯 ये लाइन जरूरी है!
+  recognition.continuous = true;
   recognition.interimResults = false;
 
   recognition.start();
+  isRecognitionRunning = true;
 
   recognition.onresult = (e) => {
     const msg = e.results[e.results.length - 1][0].transcript.toLowerCase();
@@ -129,23 +133,26 @@
     console.error("Recognition error:", e.error);
     speak("कुछ गड़बड़ हो गई, फिर से कोशिश कर रहा हूँ...");
     recognition.stop();
-    setTimeout(() => startListening(), 1000); // ⏳ एक सेकेंड बाद फिर चालू
+    isRecognitionRunning = false;
+    setTimeout(() => startListening(), 1000);
   };
 
   recognition.onend = () => {
-    console.log("Speech recognition ended, restarting...");
-    startListening(); // 🔁 फिर से स्टार्ट करो
+    console.log("Speech recognition ended.");
+    isRecognitionRunning = false;
+    
   };
 }
-
 
 function stopListening() {
   if (recognition && isRecognitionRunning) {
     isRecognitionRunning = false;
     recognition.stop();
     console.log("Stopped listening.");
+    speak("माइक बंद कर दिया गया है।");
   }
 }
+
 
 
     // Handle voice command
