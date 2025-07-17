@@ -384,10 +384,11 @@ window.speechSynthesis.onvoiceschanged = () => {
   availableVoices = window.speechSynthesis.getVoices();
 };
 
-
+const synth = window.speechSynthesis;
 function speak(text) {
   const utter = new SpeechSynthesisUtterance(text);
   synth.speak(utter);
+  console.log("Speaking");
 }
 
 /*
