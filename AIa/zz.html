@@ -42,8 +42,14 @@
 
 <body>
   <h1>🎤 Smart Personal Assistant</h1>
-  <button onclick="startListening()">🎙 Start Listening</button>
-  <button onclick="stopListening()">🎙 stop Listening</button>
+  <div class="chat-input">
+    <button id="startLis" onclick="startListening()">🎤</button>
+    <button id="stopLis" onclick="stopListening()">🛑</button>
+    <button>🔇</button>
+    <input id="userQuestion" type="text" placeholder="Type or speak your question..."
+      onkeypress="if(event.key === 'Enter') handleTypedInput()" />
+    <button class="send" onclick="handleTypedInput()">➤</button>
+  </div>
 
   <h3>🎛 Active Modes:</h3>
   <div id="modeList"></div>
@@ -109,52 +115,53 @@
       }
     ];
 
-let recognition = null;
-let isRecognitionRunning = false;
-let isStop = false;
-function startListening() {
-  if (isRecognitionRunning) return; // 🔁 already running, don't restart
+    let recognition = null;
+    let isRecognitionRunning = false;
+    let isStop = false;
+    function startListening() {
+      if (isRecognitionRunning) return; // 🔁 already running, don't restart
 
-  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  recognition.lang = "en-IN";
-  recognition.continuous = true;
-  recognition.interimResults = false;
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-IN";
+      recognition.continuous = true;
+      recognition.interimResults = false;
 
-  recognition.start();
-  isRecognitionRunning = true;
+      recognition.start();
+      isRecognitionRunning = true;
 
-  recognition.onresult = (e) => {
-    const msg = e.results[e.results.length - 1][0].transcript.toLowerCase();
-    document.getElementById("output").innerText = `🎧 You said: "${msg}"`;
-    handleVoice(msg);
-  };
+      recognition.onresult = (e) => {
+        const msg = e.results[e.results.length - 1][0].transcript.toLowerCase();
+         document.getElementById("userQuestion").value = msg;
+        document.getElementById("output").innerText = `🎧 You said: "${msg}"`;
+        handleVoice(msg);
+      };
 
-  recognition.onerror = (e) => {
-    console.error("Recognition error:", e.error);
-    speak("कुछ गड़बड़ हो गई, फिर से कोशिश कर रहा हूँ...");
-    recognition.stop();
-    isRecognitionRunning = false;
-    setTimeout(() => startListening(), 1000);
-  };
+      recognition.onerror = (e) => {
+        console.error("Recognition error:", e.error);
+        speak("कुछ गड़बड़ हो गई, फिर से कोशिश कर रहा हूँ...");
+        recognition.stop();
+        isRecognitionRunning = false;
+        setTimeout(() => startListening(), 1000);
+      };
 
-  recognition.onend = () => {
-    console.log("Speech recognition ended.");
-    isRecognitionRunning = false;
-    if (recognition && !isStop) {
-      setTimeout(() => startListening(), 1000);
+      recognition.onend = () => {
+        console.log("Speech recognition ended.");
+        isRecognitionRunning = false;
+        if (recognition && !isStop) {
+          setTimeout(() => startListening(), 1000);
+        }
+      };
     }
-  };
-}
 
-function stopListening() {
-  isStop = true;
-  if (recognition && isRecognitionRunning) {
-    isRecognitionRunning = false;
-    recognition.stop();
-    console.log("Stopped listening.");
-    speak("माइक बंद कर दिया गया है।");
-  }
-}
+    function stopListening() {
+      isStop = true;
+      if (recognition && isRecognitionRunning) {
+        isRecognitionRunning = false;
+        recognition.stop();
+        console.log("Stopped listening.");
+        speak("माइक बंद कर दिया गया है।");
+      }
+    }
 
 
 
