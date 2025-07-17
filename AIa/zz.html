@@ -111,7 +111,7 @@
 
 let recognition = null;
 let isRecognitionRunning = false;
-
+let isStop = false;
 function startListening() {
   if (isRecognitionRunning) return; // 🔁 already running, don't restart
 
@@ -140,11 +140,14 @@ function startListening() {
   recognition.onend = () => {
     console.log("Speech recognition ended.");
     isRecognitionRunning = false;
-    
+    if (recognition && !isStop) {
+      setTimeout(() => startListening(), 1000);
+    }
   };
 }
 
 function stopListening() {
+  isStop = true;
   if (recognition && isRecognitionRunning) {
     isRecognitionRunning = false;
     recognition.stop();
