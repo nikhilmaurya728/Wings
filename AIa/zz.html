@@ -43,6 +43,7 @@
 <body>
   <h1>🎤 Smart Personal Assistant</h1>
   <button onclick="startListening()">🎙 Start Listening</button>
+  <button onclick="stopListening()">🎙 stop Listening</button>
 
   <h3>🎛 Active Modes:</h3>
   <div id="modeList"></div>
@@ -135,6 +136,15 @@
     console.log("Speech recognition ended, restarting...");
     startListening(); // 🔁 फिर से स्टार्ट करो
   };
+}
+
+
+function stopListening() {
+  if (recognition && isRecognitionRunning) {
+    isRecognitionRunning = false;
+    recognition.stop();
+    console.log("Stopped listening.");
+  }
 }
 
 
