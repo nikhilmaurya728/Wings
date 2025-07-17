@@ -386,6 +386,12 @@ window.speechSynthesis.onvoiceschanged = () => {
 
 
 function speak(text) {
+  const utter = new SpeechSynthesisUtterance(text);
+  synth.speak(utter);
+}
+
+/*
+function speak(text) {
   let plainText = text.replace(/<[^>]+>/g, '');
 
   // don't read emoji
@@ -410,6 +416,6 @@ function speak(text) {
 
   window.speechSynthesis.speak(msg);
 }
-
+*/
 
 reorderModes("fruit");
