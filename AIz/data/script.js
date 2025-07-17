@@ -57,6 +57,22 @@
       }
     ];
 
+
+
+function handleTypedInput() {
+  const userMessage = document.getElementById("userQuestion").value.trim();
+  if (userMessage.length > 0) {
+    handleVoice(userMessage.toLowerCase());
+    document.getElementById("userQuestion").value = "";
+  } else {
+    speak("Please type something.");
+  }
+}
+
+
+
+
+
     let recognition = null;
     let isRecognitionRunning = false;
     let isStop = false;
