@@ -54,7 +54,9 @@
     #userQuestion {
   width: 70%;
 }
-
+#stopLis{
+  display: none;
+}
     .chat-input button {
       background: #25d366;
       border: none;
