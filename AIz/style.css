@@ -51,6 +51,9 @@
       width: 90%;
       z-index: 999;
     }
+    #userQuestion {
+  width: 70%;
+}
 
     .chat-input button {
       background: #25d366;
