@@ -111,10 +111,6 @@ background: linear-gradient(to right, #f0f0f0, #dcdcdc);
       display: none;
     }
 
-#userQuestion{
-  width: 70%;
-}
-
 
     #output1,
     #output2,
