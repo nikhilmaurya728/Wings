@@ -1,415 +1,243 @@
 
-let lastModeName = null;
-let modeStack = ["fruit", "vegetable", "animalM", "cat"];
-const allModeData = { fruit, vegetable, animalM, cat };
+    const synth = window.speechSynthesis;
+    let modeStack = [];
+    let lastMode = null; // 🔁 to remember recent mode
+
+    // Master Arrays
+    const Fruits = [
+      ["𓆩⚝𓆪", "Fruit Name", "Meaning", "Pronunciation"],
+      ["1", "Mango", "आम", "मैंगो"],
+      ["2", "Banana", "केला", "बनाना"],
+      ["3", "Apple", "सेब", "एप्पल"],
+      ["4", "Orange", "संतरा", "ऑरेंज"],
+      ["5", "Guava", "अमरूद", "ग्वावा"],
+      ["6", "Pineapple", "अनानास", "पाइनएप्पल"],
+      ["7", "Papaya", "पपीता", "पपाया"],
+      ["8", "Watermelon", "तरबूज", "वॉटरमेलन"],
+      ["9", "Muskmelon", "खरबूजा", "मस्कमेलन"],
+      ["10", "Litchi", "लीची", "लीची"]
+    ];
+
+    const Vegetables = [
+      ["𓆩⚝𓆪", "Vegetable Name", "Meaning", "Pronunciation"],
+      ["1", "Carrot", "गाजर", "कैरेट"],
+      ["2", "Potato", "आलू", "पोटैटो"],
+      ["3", "Tomato", "टमाटर", "टोमेटो"],
+      ["4", "Onion", "प्याज", "अनियन"],
+      ["5", "Cabbage", "पत्ता गोभी", "कैबेज"],
+      ["6", "Spinach", "पालक", "स्पिनच"],
+      ["7", "Peas", "मटर", "पीज"],
+      ["8", "Cauliflower", "फूलगोभी", "कॉलीफ्लावर"],
+      ["9", "Radish", "मूली", "रैडिश"],
+      ["10", "Brinjal", "बैंगन", "ब्रिंजल"]
+    ];
+
+    const fruitMode = [
+      {
+        keywords: [["fruit", "fruits", "fal"], ["means", "kya hota", "ke baare me", "kaisa hota hai", "what is"]],
+        action: (count = 10) => answerShow("Fruits is a thing that.........")
+      },
+      {
+        keywords: [["what is", "kya hota", "ke baare me", "kaisa hota hai",], ["mango", "aam", "am"]],
+        action: (count = 10) => answerShow("Mango means 'आम' is a Fruits that is.........")
+      },
+    ];
 
 
-
-
-
-
-
-const wordMap = {
-  1: ["one", "ek"],
-  2: ["two", "do"],
-  3: ["three", "teen"],
-  4: ["four", "chaar"],
-  5: ["five", "paanch"],
-  6: ["six", "chhah", "chha", "chheh", "chhe", "cheh", "che"],
-  7: ["seven", "sat", "saat"],
-  8: ["eight", "aath"],
-  9: ["nine", "nau"],
-  10: ["ten", "dus"],
-
-  11: ["eleven", "gyarah"],
-  12: ["twelve", "baarah", "bara"],
-  13: ["thirteen", "terah", "tera"],
-  14: ["fourteen", "chaudah"],
-  15: ["fifteen", "pandrah"],
-  16: ["sixteen", "solah"],
-  17: ["seventeen", "satrah"],
-  18: ["eighteen", "atharah"],
-  19: ["nineteen", "unnis"],
-  20: ["twenty", "bees"],
-
-  21: ["twenty one", "ikkees"],
-  22: ["twenty two", "baees"],
-  23: ["twenty three", "teyis"],
-  24: ["twenty four", "chaubees"],
-  25: ["twenty five", "pachis"],
-  26: ["twenty six", "chhabbees"],
-  27: ["twenty seven", "sattaees"],
-  28: ["twenty eight", "athais"],
-  29: ["twenty nine", "untis"],
-  30: ["thirty", "tees"],
-
-  31: ["thirty one", "ikattis"],
-  32: ["thirty two", "battis"],
-  33: ["thirty three", "taitis"],
-  34: ["thirty four", "chauntis"],
-  35: ["thirty five", "paintis"],
-  36: ["thirty six", "chhattis"],
-  37: ["thirty seven", "saintees"],
-  38: ["thirty eight", "arthis"],
-  39: ["thirty nine", "untalis"],
-  40: ["forty", "chalis"],
-
-  41: ["forty one", "iktalis"],
-  42: ["forty two", "bayalis"],
-  43: ["forty three", "taitalis"],
-  44: ["forty four", "chaulis"],
-  45: ["forty five", "paintalis"],
-  46: ["forty six", "chhayalis"],
-  47: ["forty seven", "saitalis"],
-  48: ["forty eight", "arthalis"],
-  49: ["forty nine", "unchaas"],
-  50: ["fifty", "pachaas"],
-
-  51: ["fifty one", "ikyaavan"],
-  52: ["fifty two", "bawan"],
-  53: ["fifty three", "tirpan"],
-  54: ["fifty four", "chauvan"],
-  55: ["fifty five", "pachpan"],
-  56: ["fifty six", "chhappan"],
-  57: ["fifty seven", "sattavan"],
-  58: ["fifty eight", "aththavan"],
-  59: ["fifty nine", "unsath"],
-  60: ["sixty", "saath"],
-
-  61: ["sixty one", "iksaath"],
-  62: ["sixty two", "basaath"],
-  63: ["sixty three", "tresaath"],
-  64: ["sixty four", "chausath"],
-  65: ["sixty five", "painsath"],
-  66: ["sixty six", "chhiyasath"],
-  67: ["sixty seven", "sadsath"],
-  68: ["sixty eight", "arsath"],
-  69: ["sixty nine", "unsattar"],
-  70: ["seventy", "sattar"],
-
-  71: ["seventy one", "ikahattar"],
-  72: ["seventy two", "bahattar"],
-  73: ["seventy three", "tihattar"],
-  74: ["seventy four", "chauhattar"],
-  75: ["seventy five", "pachattar"],
-  76: ["seventy six", "chhihattar"],
-  77: ["seventy seven", "sattattar"],
-  78: ["seventy eight", "athhattar"],
-  79: ["seventy nine", "unnasi"],
-  80: ["eighty", "assi"],
-
-  81: ["eighty one", "ikyaasi"],
-  82: ["eighty two", "bayaasi"],
-  83: ["eighty three", "tirasi"],
-  84: ["eighty four", "chauraasi"],
-  85: ["eighty five", "pachasi"],
-  86: ["eighty six", "chhiyaasi"],
-  87: ["eighty seven", "sattasi"],
-  88: ["eighty eight", "athasi"],
-  89: ["eighty nine", "navasi"],
-  90: ["ninety", "nabbe"],
-
-  91: ["ninety one", "ikyanabe"],
-  92: ["ninety two", "bayanabe"],
-  93: ["ninety three", "tiryanabe"],
-  94: ["ninety four", "chauranabe"],
-  95: ["ninety five", "pachyanabe"],
-  96: ["ninety six", "chhiyanabe"],
-  97: ["ninety seven", "sattayanabe"],
-  98: ["ninety eight", "athyanabe"],
-  99: ["ninety nine", "ninyanabe"],
-  100: ["hundred", "sau"]
-};
-
-
-function getNumberFromWords(message) {
-  message = message.toLowerCase();
-  for (let num in wordMap) {
-    if (wordMap[num].some(word => message.includes(word))) {
-      return parseInt(num);
-    }
-  }
-  return null;
-}
-
-
-
-let recognition;
-let isRecognitionRunning = false;
-
-/*  function startListening() {
-    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = "en-IN";
-    recognition.continuous = true; // ✅ यह हमेशा सुनते रहेगा
-    recognition.interimResults = false;
-
-    recognition.start();
-    isRecognitionRunning = true;
-
-    recognition.onresult = (e) => {
-      const lastResultIndex = e.results.length - 1;
-      const msg = e.results[lastResultIndex][0].transcript.toLowerCase();
-      document.getElementById("userQuestion").value = msg;
-      document.getElementById("output").innerText = `🎧 You said: "${msg}"`;
-      handleVoice(msg);
-    };
-
-    
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      stopListening(); // Optional: Error आने पर बंद करो
-    };
-
-    recognition.onend = () => {
-      console.log("Speech recognition ended.");
-      if (isRecognitionRunning) {
-        // 🔁 Restart if user hasn't clicked Stop
-        recognition.start();
-        console.log("Restarting recognition...");
+    const allModes = [
+      {
+        name: "fruit",
+        keywords: [["fruit", "fruits", "fal"], ["name", "list", "show", "print"]],
+        action: (count = 10) => printTable("Fruits", Fruits, count)
+      },
+      {
+        name: "vegetable",
+        keywords: [["vegetable", "vegetables", "sabji"], ["name", "list", "show", "print"]],
+        action: (count = 10) => printTable("Vegetables", Vegetables, count)
       }
-    };
-  } */
+    ];
 
+    let recognition = null;
+    let isRecognitionRunning = false;
+    let isStop = false;
+    function startListening() {
+      if (isRecognitionRunning) return; // 🔁 already running, don't restart
 
-function startListening() {
-  {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = "en-IN";
-    recognition.start();
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-IN";
+      recognition.continuous = true;
+      recognition.interimResults = false;
 
-    recognition.onresult = (e) => {
-      const msg = e.results[0][0].transcript.toLowerCase();
-      document.getElementById("userQuestion").value = msg;
-      document.getElementById("output").innerText = `🎧 You said: "${msg}"`;
-      handleVoice(msg);
-    };
-  }
-}
+      recognition.start();
+      isRecognitionRunning = true;
 
+      recognition.onresult = (e) => {
+        const msg = e.results[e.results.length - 1][0].transcript.toLowerCase();
+        document.getElementById("userQuestion").value = msg;
+        document.getElementById("output").innerText = `🎧 You said: "${msg}"`;
+        handleVoice(msg);
+      };
 
-function stopListening() {
+      recognition.onerror = (e) => {
+        console.error("Recognition error:", e.error);
+        speak("कुछ गड़बड़ हो गई, फिर से कोशिश कर रहा हूँ...");
+        recognition.stop();
+        isRecognitionRunning = false;
+        setTimeout(() => startListening(), 1000);
+      };
 
+      recognition.onend = () => {
+        console.log("Speech recognition ended.");
+        isRecognitionRunning = false;
+        if (recognition && !isStop) {
+          setTimeout(() => startListening(), 1000);
+        }
+      };
+    }
 
-  if (recognition && isRecognitionRunning) {
-    isRecognitionRunning = false;
-    recognition.stop();
-    console.log("Stopped listening.");
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function handleTypedInput() {
-  const userMessage = document.getElementById("userQuestion").value.trim();
-  if (userMessage.length > 0) {
-    handleVoice(userMessage.toLowerCase());
-    document.getElementById("userQuestion").value = "";
-  } else {
-    speak("Please type something.");
-  }
-}
-
-
-function handleVoice(message) {
-  let count = 5;
-
-  const digitMatch = message.match(/\d+/);
-  if (digitMatch) {
-    count = parseInt(digitMatch[0]);
-  } else {
-    const wordNumber = getNumberFromWords(message);
-    if (wordNumber) count = wordNumber;
-  }
-
-  for (let modeName of modeStack) {
-    const modeArray = allModeData[modeName];
-    if (!modeArray) continue;
-
-    for (let item of modeArray) {
-      const match = item.keywords.every(group => group.some(k => message.includes(k)));
-      if (match) {
-        reorderModes(modeName);
-        item.action(count);
-        return;
+    function stopListening() {
+      isStop = true;
+      if (recognition && isRecognitionRunning) {
+        isRecognitionRunning = false;
+        recognition.stop();
+        console.log("Stopped listening.");
+        speak("माइक बंद कर दिया गया है।");
       }
     }
-  }
 
 
-  const genericWords = ["name", "names", "list", "give", "show", "print"];
-  const hasGeneric = genericWords.some(word => message.includes(word));
 
-  if (hasGeneric && lastModeName && allModeData[lastModeName]) {
-    const modeArray = allModeData[lastModeName];
-    for (let item of modeArray) {
-      if (typeof item.action === "function") {
-        reorderModes(lastModeName);
-        item.action(count);
-        return;
+    // Handle voice command
+    function handleVoice(message) {
+      document.getElementById("output").innerText = `🎧 You said: "${message}"`;
+
+      // 🔢 number finder
+      let count = 10;
+      const digitMatch = message.match(/\d+/);
+      if (digitMatch) {
+        count = parseInt(digitMatch[0]);
+      } else {
+        const wordMap = {
+          one: 1, two: 2, three: 3, four: 4, five: 5,
+          six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+          eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15
+        };
+        const found = Object.keys(wordMap).find(w => message.includes(w));
+        if (found) count = wordMap[found];
+      }
+
+      // 🧠 Try match with exact mode
+      let matchedMode = null;
+
+      for (let mode of allModes) {
+        const match = mode.keywords.every(keywordSet =>
+          keywordSet.some(k => message.includes(k))
+        );
+        if (match) {
+          matchedMode = mode;
+          lastMode = mode; // ✅ Save as last mode
+          break;
+        }
+      }
+
+      // 🤔 if no mode matched, but still contains generic request
+      const genericWords = ["name", "names", "list", "give", "show", "print"];
+      const hasGeneric = genericWords.some(word => message.includes(word));
+
+      if (!matchedMode && hasGeneric && lastMode) {
+        matchedMode = lastMode;
+      }
+
+      if (matchedMode) {
+        reorderModes(matchedMode.name);
+        matchedMode.action(count);
+      } else {
+        speak("Sorry, I didn't understand.");
+        document.getElementById("output").innerHTML = "❌ No match found.";
       }
     }
-  }
 
 
-  answerShow(" 🤷‍♂️ माफ करना, मुझे इसके बारे में पता नहीं है।");
 
-
-}
-
-
-function reorderModes(modeName) {
-  answerHide()
-
-  modeStack = modeStack.filter(name => name !== modeName);
-  modeStack.unshift(modeName);
-  updateModeListDisplay();
-}
-
-function updateModeListDisplay() {
-  const list = document.getElementById("modeList");
-  list.innerHTML = "";
-  modeStack.forEach(name => {
-    const chip = document.createElement("div");
-    chip.innerText = name.toUpperCase();
-    chip.className = "modeChip";
-    list.appendChild(chip);
-  });
-}
-
-function answerHide() {
-  document.getElementById("output1").innerHTML = "";
-  document.getElementById("output2").innerHTML = "";
-  document.getElementById("output3").innerHTML = "";
-  document.getElementById("output4").innerHTML = "";
-  document.getElementById("output5").innerHTML = "";
-}
-
-
-function answerShow(text) {
-  document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
-  speak(text);
-}
-
-function printTable(title, arr, count = 10) {
-  const limited = [arr[0], ...arr.slice(1, count + 1)];
-  let rows = "";
-
-  for (let i = 0; i < limited.length; i++) {
-    const cols = limited[i];
-    if (Array.isArray(cols)) {
-      const row = `<tr>${cols.map(col => `<td>${col}</td>`).join('')}</tr>`;
-      rows += row;
+    // Match keywords
+    function matchKeywords(mode, msg) {
+      const match = mode.keywords.every(keywordSet =>
+        keywordSet.some(k => msg.includes(k))
+      );
+      return match ? mode : null;
     }
-  }
 
-  const tableHTML = `
+    // Reorder mode stack
+    function reorderModes(modeName) {
+      const found = allModes.find(m => m.name === modeName);
+      const oldTop = modeStack[0];
+      modeStack = modeStack.filter(m => m.name !== modeName);
+
+      const newStack = [found];
+      if (oldTop && oldTop.name !== modeName) newStack.push(oldTop);
+
+      for (let m of allModes) {
+        if (!newStack.find(n => n.name === m.name)) newStack.push(m);
+      }
+
+      modeStack = newStack;
+      updateModeListDisplay();
+    }
+
+    // Display table output
+    function printTable(title, arr, count = 10) {
+      const limited = [arr[0], ...arr.slice(1, count + 1)];
+      let rows = "";
+
+      for (let i = 0; i < limited.length; i++) {
+        const cols = limited[i];
+        if (Array.isArray(cols)) {
+          const row = `<tr>${cols.map(col => `<td>${col}</td>`).join('')}</tr>`;
+          rows += row;
+        }
+      }
+
+      const tableHTML = `
     <h3>${title} List (${count})</h3>
     <table border="1" cellpadding="8" style="margin:auto; border-collapse: collapse;">
       ${rows}
     </table>`;
 
-  const box = document.createElement("div");
-  box.innerHTML = `<div style="overflow-x: auto;">${tableHTML}</div>`;
+      const box = document.createElement("div");
+      box.innerHTML = tableHTML;
+      box.style.marginBottom = "15px";
+      box.style.border = "1px solid #ccc";
+      box.style.padding = "10px";
+      box.style.borderRadius = "10px";
+      box.style.background = "#f9f9f9";
 
-  box.style.marginBottom = "15px";
-  box.style.border = "1px solid #ccc";
-  box.style.padding = "10px";
-  box.style.borderRadius = "10px";
-  box.style.background = "#f9f9f9";
+      document.getElementById("output").innerHTML = "";
+      document.getElementById("output").appendChild(box);
 
-  document.getElementById("output2").innerHTML = "";
-  document.getElementById("output2").appendChild(box);
-
-  const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
-  speak(`${title} are: ${speakList}`);
-}
-
-function imageShow(title, imgUrl) {
-  document.getElementById("output3").innerHTML = `
-        <h3>${title}</h3>
-        <img src="${imgUrl}" alt="${title}" style="max-width:90%; border-radius:10px; box-shadow:0 0 10px #aaa;" />
-      `;
-  speak(title);
-}
+      const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
+      speak(`${title} are: ${speakList}`);
+    }
 
 
 
-// yt video
-function showYoutubeVideo(description, videoId) {
-  fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById('output4');
-      container.innerHTML = `
-        <div class="video-containerYT">
-          <iframe 
-            src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
-            allowfullscreen 
-            frameborder="0"
-            style=" border-radius: 10px; box-shadow: 0 0 10px #aaa;">
-          </iframe>
-          <p style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;"><span style="font-size: 0.9rem; color: #555;">👤 ${data.author_name} -</span> 🎬 ${data.title}</p>
-          <p style="font-size: 1rem; color: #333;">📜 ${description}</p>
-        
-          
-        </div>
-      `;
-      speak(description); // बोलेगा custom message
-    })
-    .catch(() => {
-      document.getElementById("output").innerHTML = `
-        <p style="color:red;">❌ Sorry, video not found.</p>
-      `;
-      speak("Sorry, video not found");
-    });
-}
 
-// Text to Speech
+    // Text to Speech
+    function speak(text) {
+      const utter = new SpeechSynthesisUtterance(text);
+      synth.speak(utter);
+    }
 
-let availableVoices = [];
+    // Show mode chips
+    function updateModeListDisplay() {
+      const modeListDiv = document.getElementById("modeList");
+      modeListDiv.innerHTML = "";
+      modeStack.forEach(mode => {
+        const chip = document.createElement("div");
+        chip.innerText = mode.name.toUpperCase();
+        chip.className = "modeChip";
+        modeListDiv.appendChild(chip);
+      });
+    }
 
-window.speechSynthesis.onvoiceschanged = () => {
-  availableVoices = window.speechSynthesis.getVoices();
-};
-
-
-function speak(text) {
-  let plainText = text.replace(/<[^>]+>/g, '');
-
-  // don't read emoji
-  plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
-
-
-  const voices = availableVoices;
-
-  const femaleVoice = voices.find(v =>
-    (v.lang === "hi-IN" || v.lang.includes("hi")) &&
-    (v.name.toLowerCase().includes("female") || v.name.toLowerCase().includes("neural") || v.name.toLowerCase().includes("google"))
-  ) || voices.find(v => v.lang === "hi-IN") || voices[0];
-
-  if (!femaleVoice) {
-    console.warn("No suitable voice found. Using default.");
-    return;
-  }
-
-  const msg = new SpeechSynthesisUtterance(plainText);
-  msg.voice = femaleVoice;
-  msg.lang = femaleVoice.lang || 'hi-IN';
-
-  window.speechSynthesis.speak(msg);
-}
-
-
-reorderModes("fruit");
+    // Initial mode load
+    reorderModes("fruit");
