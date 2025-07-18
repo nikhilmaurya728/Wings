@@ -380,7 +380,7 @@ function showYoutubeVideo(description, videoId) {
 
 
 // Text to Speech 1
-/*
+
 const synth = window.speechSynthesis;
 function speak() {
 
@@ -388,10 +388,8 @@ function speak() {
   const msg = new SpeechSynthesisUtterance(text);
   synth.speak(msg);
 }
-*/
 
 // Text to Speech 2
-const synth = window.speechSynthesis;
 let availableVoices = [];
 
 // ✅ ये जरूर डालो वरना voice नहीं मिलेंगी
@@ -399,7 +397,7 @@ window.speechSynthesis.onvoiceschanged = () => {
   availableVoices = synth.getVoices();
 };
 
-function speak() {
+function speakHi() {
   let text = newText;
   let plainText = text.replace(/<[^>]+>/g, '');
 
