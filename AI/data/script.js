@@ -368,21 +368,14 @@ function showYoutubeVideo(description, videoId) {
 
 
 
+
+const synth = window.speechSynthesis;
 function speak() {
-      let text = newText;
-      const speech = new SpeechSynthesisUtterance();
-      speech.text = text;
-      speech.lang = "hi-IN"; // Hindi ke लिए
-      speech.pitch = 1;
-      speech.rate = 1;
-      speech.volume = 1;
 
-      // चाहें तो gender voice भी चुन सकते हो (female mostly index 1 पे होती है)
-      const voices = window.speechSynthesis.getVoices();
-      speech.voice = voices.find(v => v.lang === "hi-IN") || voices[0];
-
-      window.speechSynthesis.speak(speech);
-    }
+  let text = newText;
+  const utter = new SpeechSynthesisUtterance(text);
+  synth.speak(utter);
+}
 
 
 
