@@ -365,8 +365,29 @@ function showYoutubeVideo(description, videoId) {
     });
 }
 
-// Text to Speech
 
+
+
+function speak() {
+      let text = newText;
+      const speech = new SpeechSynthesisUtterance();
+      speech.text = text;
+      speech.lang = "hi-IN"; // Hindi ke लिए
+      speech.pitch = 1;
+      speech.rate = 1;
+      speech.volume = 1;
+
+      // चाहें तो gender voice भी चुन सकते हो (female mostly index 1 पे होती है)
+      const voices = window.speechSynthesis.getVoices();
+      speech.voice = voices.find(v => v.lang === "hi-IN") || voices[0];
+
+      window.speechSynthesis.speak(speech);
+    }
+
+
+
+// Text to Speech
+/*
 let availableVoices = [];
 
 window.speechSynthesis.onvoiceschanged = () => {
@@ -399,6 +420,6 @@ function speak() {
 
   window.speechSynthesis.speak(msg);
 }
-
+*/
 
 reorderModes("fruit");
