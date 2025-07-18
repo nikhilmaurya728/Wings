@@ -281,7 +281,7 @@ function answerHide() {
   document.getElementById("output5").innerHTML = "";
 }
 
-let newText = "hi";
+let newText = "नमस्ते! मैं मोबाइल पर बोल रहा हूँ।";
 function answerShow(text) {
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
   //speak(text);
