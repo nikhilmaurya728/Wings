@@ -380,35 +380,31 @@ function speak() {
 */
 
 // Text to Speech 3
-
 const synth = window.speechSynthesis;
 let availableVoices = [];
 
-// Load voices
+// ✅ ये जरूर डालो वरना voice नहीं मिलेंगी
 window.speechSynthesis.onvoiceschanged = () => {
   availableVoices = synth.getVoices();
 };
 
-// Speak Function
 function speak() {
   let text = newText;
   const msg = new SpeechSynthesisUtterance(text);
 
   // ✅ Female Hindi voice खोजो
-  const femaleHindiVoice = availableVoices.find(
-    (voice) => voice.lang === 'hi-IN' && voice.name.toLowerCase().includes("female")
+  const femaleHindi = availableVoices.find(
+    (v) => v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
   );
 
-  // ✅ अगर female Hindi voice मिली तो उसे सेट करो
-  if (femaleHindiVoice) {
-    msg.voice = femaleHindiVoice;
+  if (femaleHindi) {
+    msg.voice = femaleHindi;
   } else {
-    // fallback अगर female Hindi voice नहीं मिली
+    // fallback अगर female hindi ना मिले
     const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
     if (anyHindi) msg.voice = anyHindi;
   }
 
-  // बोलो!
   synth.speak(msg);
 }
 
