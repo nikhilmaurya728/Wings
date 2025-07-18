@@ -1,6 +1,6 @@
 let lastModeName = null;
-let modeStack = ["fruit", "vegetable", "animalM", "cat"];
-const allModeData = { fruit, vegetable, animalM, cat };
+let modeStack = ["fruit", "vegetable", "animal", "cat"];
+const allModeData = { fruit, vegetable, animal, cat };
 let newText = "नमस्ते! मैं एक AI Teacher हू, मै आपके HomeWork करने में मदत कर सकती हू ";
 
 
@@ -353,15 +353,12 @@ window.speechSynthesis.onvoiceschanged = () => {
   console.log("Loaded voices:", availableVoices);
 };
 
-/* ✅ Normal/default voice function
-function speak() {
-  let text = newText; // make sure newText is defined globally!
+/* function speak() {
+  let text = newText;
   const msg = new SpeechSynthesisUtterance(text);
-
   synth.speak(msg);
-}*/
+} */
 
-// ✅ Female Hindi voice function
 function speak() {
   let text = newText;
   let plainText = text.replace(/<[^>]+>/g, '');
