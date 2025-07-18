@@ -417,7 +417,7 @@ function speakHi() {
     if (anyHindi) msg.voice = anyHindi;
   }
 
-  synth.speak(msg);
+  synth.speakHi(msg);
 }
 
 
