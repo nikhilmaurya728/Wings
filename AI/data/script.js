@@ -281,10 +281,13 @@ function answerHide() {
   document.getElementById("output5").innerHTML = "";
 }
 
-
+let newText = "hello";
 function answerShow(text) {
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
   //speak(text);
+
+  newText = "hello, how are you";
+  speak();
 }
 
 
@@ -370,8 +373,8 @@ window.speechSynthesis.onvoiceschanged = () => {
   availableVoices = window.speechSynthesis.getVoices();
 };
 
-
-function speak(text) {
+function speak() {
+  let text = newText;
   let plainText = text.replace(/<[^>]+>/g, '');
 
   // don't read emoji
