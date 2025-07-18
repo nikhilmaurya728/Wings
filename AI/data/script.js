@@ -1,6 +1,6 @@
 let lastModeName = null;
-let modeStack = ["fruit", "vegetable", "animal", "cat"];
-const allModeData = { fruit, vegetable, animal, cat };
+let modeStack = ["fruit", "vegetable", "animal", "cat","ask"];
+const allModeData = { fruit, vegetable, animal, cat, ask };
 let newText = "नमस्ते! मैं एक AI Teacher हू, मै आपके HomeWork करने में मदत कर सकती हू ";
 
 
@@ -261,6 +261,10 @@ function answerHide() {
   document.getElementById("output3").innerHTML = "";
   document.getElementById("output4").innerHTML = "";
   document.getElementById("output5").innerHTML = "";
+}
+
+function nextQue(text){
+  document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
 }
 
 function answerShow(text) {

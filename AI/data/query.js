@@ -63,3 +63,10 @@ const cat = [
   },
 
 ];
+
+const ask = [
+  {
+    keywords: [["माफ करना", "maaf karna", "maf karna", "इसके बारे", "iske bare",  "पता नहीं ", "pata nahi","pata nahin", "pata nhi"]],
+    action: () => nextQue("अगला question बोलो ना")
+  },
+]
