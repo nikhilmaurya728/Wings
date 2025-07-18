@@ -202,7 +202,7 @@ function handleTypedInput() {
     handleVoice(userMessage.toLowerCase());
     document.getElementById("userQuestion").value = "";
   } else {
-    speak("Please type something.");
+    //speak("Please type something.");
   }
 }
 
@@ -284,7 +284,7 @@ function answerHide() {
 
 function answerShow(text) {
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
-  speak(text);
+  //speak(text);
 }
 
 
@@ -319,7 +319,7 @@ function printTable(title, arr, count = 10) {
   document.getElementById("output2").appendChild(box);
 
   const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
-  speak(`${title} are: ${speakList}`);
+  //speak(`${title} are: ${speakList}`);
 }
 
 function imageShow(title, imgUrl) {
@@ -327,7 +327,7 @@ function imageShow(title, imgUrl) {
         <h3>${title}</h3>
         <img src="${imgUrl}" alt="${title}" style="max-width:90%; border-radius:10px; box-shadow:0 0 10px #aaa;" />
       `;
-  speak(title);
+  //speak(title);
 }
 
 
@@ -352,13 +352,13 @@ function showYoutubeVideo(description, videoId) {
           
         </div>
       `;
-      speak(description); // बोलेगा custom message
+      //speak(description); // बोलेगा custom message
     })
     .catch(() => {
       document.getElementById("output").innerHTML = `
         <p style="color:red;">❌ Sorry, video not found.</p>
       `;
-      speak("Sorry, video not found");
+      //speak("Sorry, video not found");
     });
 }
 
@@ -369,11 +369,7 @@ let availableVoices = [];
 window.speechSynthesis.onvoiceschanged = () => {
   availableVoices = window.speechSynthesis.getVoices();
 };
-let tex;
-function speakText(text) {
-  tex = text;
-  speak(tex);
-}
+
 
 function speak(text) {
   let plainText = text.replace(/<[^>]+>/g, '');
