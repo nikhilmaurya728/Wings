@@ -1,4 +1,3 @@
-
 let lastModeName = null;
 let modeStack = ["fruit", "vegetable", "animalM", "cat"];
 const allModeData = { fruit, vegetable, animalM, cat };
@@ -11,7 +10,7 @@ let newText = "नमस्ते! मैं एक AI Teacher हू, मै �
 
 const wordMap = {
   1: ["one", "ek"],
-  2: ["two", "do"],
+  2: ["two", "do", "to"],
   3: ["three", "teen"],
   4: ["four", "chaar"],
   5: ["five", "paanch"],
@@ -183,19 +182,6 @@ function stopListening() {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 function handleTypedInput() {
   const userMessage = document.getElementById("userQuestion").value.trim();
   if (userMessage.length > 0) {
@@ -204,10 +190,9 @@ function handleTypedInput() {
   } else {
 
     newText = "Please type something.";
-speak();
+    speak();
   }
 }
-
 
 function handleVoice(message) {
   let count = 5;
@@ -234,7 +219,6 @@ function handleVoice(message) {
     }
   }
 
-
   const genericWords = ["name", "names", "list", "give", "show", "print"];
   const hasGeneric = genericWords.some(word => message.includes(word));
 
@@ -248,11 +232,7 @@ function handleVoice(message) {
       }
     }
   }
-
-
   answerShow(" 🤷‍♂️ माफ करना, मुझे इसके बारे में पता नहीं है।");
-
-
 }
 
 
@@ -283,15 +263,12 @@ function answerHide() {
   document.getElementById("output5").innerHTML = "";
 }
 
-
 function answerShow(text) {
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
-  //speak(text);
 
   newText = text;
-speak();
+  speak();
 }
-
 
 function printTable(title, arr, count = 10) {
   const limited = [arr[0], ...arr.slice(1, count + 1)];
@@ -313,7 +290,6 @@ function printTable(title, arr, count = 10) {
 
   const box = document.createElement("div");
   box.innerHTML = `<div style="overflow-x: auto;">${tableHTML}</div>`;
-
   box.style.marginBottom = "15px";
   box.style.border = "1px solid #ccc";
   box.style.padding = "10px";
@@ -322,11 +298,10 @@ function printTable(title, arr, count = 10) {
 
   document.getElementById("output2").innerHTML = "";
   document.getElementById("output2").appendChild(box);
-
   const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
   //speak(`${title} are: ${speakList}`);
   newText = `${title} are: ${speakList}`;
-speak();
+  speak();
 }
 
 function imageShow(title, imgUrl) {
@@ -334,15 +309,11 @@ function imageShow(title, imgUrl) {
         <h3>${title}</h3>
         <img src="${imgUrl}" alt="${title}" style="max-width:90%; border-radius:10px; box-shadow:0 0 10px #aaa;" />
       `;
-  //speak(title);
-
   newText = title;
-speak();
+  speak();
 }
 
-
-
-// yt video
+// yt video youtube video
 function showYoutubeVideo(description, videoId) {
   fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
     .then(res => res.json())
@@ -358,26 +329,19 @@ function showYoutubeVideo(description, videoId) {
           </iframe>
           <p style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;"><span style="font-size: 0.9rem; color: #555;">👤 ${data.author_name} -</span> 🎬 ${data.title}</p>
           <p style="font-size: 1rem; color: #333;">📜 ${description}</p>
-        
-          
         </div>
       `;
-      //speak(description); // बोलेगा custom message
       newText = description;
-speak();
+      speak();
     })
     .catch(() => {
       document.getElementById("output").innerHTML = `
         <p style="color:red;">❌ Sorry, video not found.</p>
       `;
-      //speak("Sorry, video not found");
       newText = "Sorry, video not found";
-speak();
+      speak();
     });
 }
-
-
-
 
 // Text to Speech 1
 const synth = window.speechSynthesis;
@@ -418,58 +382,9 @@ function speak() {
     const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
     if (anyHindi) msg.voice = anyHindi;
   }
+  //msg.voice = femaleVoice;
   msg.lang = "hi-IN";
   synth.speak(msg); // 🔥 Corrected here
 }
-
-// Text to Speech 2
-/*
-
-const synth = window.speechSynthesis;
-let availableVoices = [];
-document.getElementById("output5").textContent = "checkPoint";
-let a = 0;
-
-function getVoices() {
- a++;
-  document.getElementById("output5").textContent = a +"checkPoint";
- 
-  // Try getting voices multiple times if empty
-  availableVoices = synth.getVoices();
-  if (availableVoices.length === 0) {
-    setTimeout(getVoices, 100); // Retry after 100ms
-  }
-}
-
-getVoices(); // Call on load
-
-
-function speak() {
-  let text = newText;
-  let plainText = text.replace(/<[^>]+>/g, '');
-
-  // don't read emoji
-  plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
-
-
-  const voices = availableVoices;
-
-  const femaleVoice = voices.find(v =>
-    (v.lang === "hi-IN" || v.lang.includes("hi")) &&
-    (v.name.toLowerCase().includes("female") || v.name.toLowerCase().includes("neural") || v.name.toLowerCase().includes("google"))
-  ) || voices.find(v => v.lang === "hi-IN") || voices[0];
-
-  if (!femaleVoice) {
-    console.warn("No suitable voice found. Using default.");
-    return;
-  }
-
-  const msg = new SpeechSynthesisUtterance(plainText);
-  msg.voice = femaleVoice;
-  msg.lang = femaleVoice.lang || 'hi-IN';
-
-  window.speechSynthesis.speak(msg);
-}*/
-
 
 reorderModes("fruit");
