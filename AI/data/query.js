@@ -57,7 +57,7 @@ const cat = [
       showYoutubeVideo("Cat Video", "PAORQoMvSdY")
   },
   {
-    keywords: [["video", "videos"], ["joke", "comedy"]],
+    keywords: [["play", "show", "give"], ["video", "videos"], ["joke", "comedy"]],
     action: () =>
       showYoutubeVideo("Comedy Video", "GAWyCkvv1Hw")
   },
