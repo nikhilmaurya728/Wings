@@ -287,7 +287,7 @@ function answerShow(text) {
   //speak(text);
 
   newText = "hello, how are you";
-
+  speak()
 }
 
 
