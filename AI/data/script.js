@@ -386,9 +386,11 @@ const synth = window.speechSynthesis;
 let availableVoices = [];
 document.getElementById("output5").textContent = "checkPoint";
 let a = 0;
-function getVoices() {
 
+function getVoices() {
+ a++;
   document.getElementById("output5").textContent = a +"checkPoint";
+ 
   // Try getting voices multiple times if empty
   availableVoices = synth.getVoices();
   if (availableVoices.length === 0) {
