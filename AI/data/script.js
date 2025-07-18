@@ -380,47 +380,47 @@ function showYoutubeVideo(description, videoId) {
 
 
 // Text to Speech 1
+ const synth = window.speechSynthesis;
+  let availableVoices = [];
 
-const synth = window.speechSynthesis;
-function speak() {
+  // ✅ ये जरूर डालो वरना voice नहीं मिलेंगी
+  window.speechSynthesis.onvoiceschanged = () => {
+    availableVoices = synth.getVoices();
+    console.log("Loaded voices:", availableVoices);
+  };
 
-  let text = newText;
-  const msg = new SpeechSynthesisUtterance(text);
-  synth.speak(msg);
-}
-
-// Text to Speech 2
-let availableVoices = [];
-
-// ✅ ये जरूर डालो वरना voice नहीं मिलेंगी
-window.speechSynthesis.onvoiceschanged = () => {
-  availableVoices = synth.getVoices();
-};
-
-function speakHi() {
-  let text = newText;
-  let plainText = text.replace(/<[^>]+>/g, '');
-
-  // don't read emoji
-  plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
-
-  // ✅ Female Hindi voice खोजो
-  const femaleHindi = availableVoices.find(
-    (v) => v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
-  );
-  const msg = new SpeechSynthesisUtterance(plainText);
-  if (femaleHindi) {
-    msg.voice = femaleHindi;
-  } else {
-    // fallback अगर female hindi ना मिले
-    const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
-    if (anyHindi) msg.voice = anyHindi;
+  // ✅ Normal/default voice function
+  function speak() {
+    let text = newText; // make sure newText is defined globally!
+    const msg = new SpeechSynthesisUtterance(text);
+    synth.speak(msg);
   }
 
-  synth.speakHi(msg);
-}
+  // ✅ Female Hindi voice function
+  function speakHi() {
+    let text = newText;
+    let plainText = text.replace(/<[^>]+>/g, '');
 
+    // don't read emoji
+    plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
 
+    const msg = new SpeechSynthesisUtterance(plainText);
+
+    // ✅ Female Hindi voice खोजो
+    const femaleHindi = availableVoices.find(
+      (v) => v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
+    );
+
+    if (femaleHindi) {
+      msg.voice = femaleHindi;
+    } else {
+      const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
+      if (anyHindi) msg.voice = anyHindi;
+    }
+
+    synth.speak(msg); // 🔥 Corrected here
+  }
+  
 // Text to Speech 2
 /*
 
