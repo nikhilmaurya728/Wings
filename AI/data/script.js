@@ -2,7 +2,7 @@
 let lastModeName = null;
 let modeStack = ["fruit", "vegetable", "animalM", "cat"];
 const allModeData = { fruit, vegetable, animalM, cat };
-
+let newText = "नमस्ते! मैं एक AI Teacher हू, मै आपके HomeWork करने में मदत कर सकती हू ";
 
 
 
@@ -202,7 +202,9 @@ function handleTypedInput() {
     handleVoice(userMessage.toLowerCase());
     document.getElementById("userQuestion").value = "";
   } else {
-    //speak("Please type something.");
+
+    newText = "Please type something.";
+    speak();
   }
 }
 
@@ -281,13 +283,13 @@ function answerHide() {
   document.getElementById("output5").innerHTML = "";
 }
 
-let newText = "नमस्ते! मैं मोबाइल पर बोल रहा हूँ।";
+
 function answerShow(text) {
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
   //speak(text);
 
-  newText = "hello, how are you";
-  speak()
+  newText = text;
+  speak();
 }
 
 
@@ -323,6 +325,8 @@ function printTable(title, arr, count = 10) {
 
   const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
   //speak(`${title} are: ${speakList}`);
+  newText = `${title} are: ${speakList}`;
+  speak();
 }
 
 function imageShow(title, imgUrl) {
@@ -331,6 +335,9 @@ function imageShow(title, imgUrl) {
         <img src="${imgUrl}" alt="${title}" style="max-width:90%; border-radius:10px; box-shadow:0 0 10px #aaa;" />
       `;
   //speak(title);
+
+   newText = title;
+  speak();
 }
 
 
@@ -356,12 +363,16 @@ function showYoutubeVideo(description, videoId) {
         </div>
       `;
       //speak(description); // बोलेगा custom message
+      newText = description;
+  speak();
     })
     .catch(() => {
       document.getElementById("output").innerHTML = `
         <p style="color:red;">❌ Sorry, video not found.</p>
       `;
       //speak("Sorry, video not found");
+       newText = "Sorry, video not found";
+  speak();
     });
 }
 
@@ -379,7 +390,7 @@ function speak() {
 }
 */
 
-// Text to Speech 3
+// Text to Speech 2
 const synth = window.speechSynthesis;
 let availableVoices = [];
 
@@ -390,13 +401,16 @@ window.speechSynthesis.onvoiceschanged = () => {
 
 function speak() {
   let text = newText;
-  const msg = new SpeechSynthesisUtterance(text);
+  let plainText = text.replace(/<[^>]+>/g, '');
+
+  // don't read emoji
+  plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
 
   // ✅ Female Hindi voice खोजो
   const femaleHindi = availableVoices.find(
     (v) => v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
   );
-
+  const msg = new SpeechSynthesisUtterance(plainText);
   if (femaleHindi) {
     msg.voice = femaleHindi;
   } else {
