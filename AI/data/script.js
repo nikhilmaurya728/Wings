@@ -368,19 +368,53 @@ function showYoutubeVideo(description, videoId) {
 
 
 
-// Text to Speech 2
+// Text to Speech 1
 /*
 const synth = window.speechSynthesis;
 function speak() {
 
   let text = newText;
-  const utter = new SpeechSynthesisUtterance(text);
-  synth.speak(utter);
-}*/
+  const msg = new SpeechSynthesisUtterance(text);
+  synth.speak(msg);
+}
+*/
+
+// Text to Speech 3
+
+const synth = window.speechSynthesis;
+let availableVoices = [];
+
+// Load voices
+window.speechSynthesis.onvoiceschanged = () => {
+  availableVoices = synth.getVoices();
+};
+
+// Speak Function
+function speak() {
+  let text = newText;
+  const msg = new SpeechSynthesisUtterance(text);
+
+  // ✅ Female Hindi voice खोजो
+  const femaleHindiVoice = availableVoices.find(
+    (voice) => voice.lang === 'hi-IN' && voice.name.toLowerCase().includes("female")
+  );
+
+  // ✅ अगर female Hindi voice मिली तो उसे सेट करो
+  if (femaleHindiVoice) {
+    msg.voice = femaleHindiVoice;
+  } else {
+    // fallback अगर female Hindi voice नहीं मिली
+    const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
+    if (anyHindi) msg.voice = anyHindi;
+  }
+
+  // बोलो!
+  synth.speak(msg);
+}
 
 
-
-// Text to Speech 1
+// Text to Speech 2
+/*
 
 const synth = window.speechSynthesis;
 let availableVoices = [];
@@ -426,6 +460,7 @@ function speak() {
   msg.lang = femaleVoice.lang || 'hi-IN';
 
   window.speechSynthesis.speak(msg);
-}
+}*/
+
 
 reorderModes("fruit");
