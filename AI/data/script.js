@@ -368,24 +368,33 @@ function showYoutubeVideo(description, videoId) {
 
 
 
-
+// Text to Speech 2
+/*
 const synth = window.speechSynthesis;
 function speak() {
 
   let text = newText;
   const utter = new SpeechSynthesisUtterance(text);
   synth.speak(utter);
-}
+}*/
 
 
 
-// Text to Speech
-/*
+// Text to Speech 1
+
+const synth = window.speechSynthesis;
 let availableVoices = [];
 
-window.speechSynthesis.onvoiceschanged = () => {
-  availableVoices = window.speechSynthesis.getVoices();
-};
+function getVoices() {
+  // Try getting voices multiple times if empty
+  availableVoices = synth.getVoices();
+  if (availableVoices.length === 0) {
+    setTimeout(getVoices, 100); // Retry after 100ms
+  }
+}
+
+getVoices(); // Call on load
+
 
 function speak() {
   let text = newText;
@@ -413,6 +422,5 @@ function speak() {
 
   window.speechSynthesis.speak(msg);
 }
-*/
 
 reorderModes("fruit");
