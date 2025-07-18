@@ -204,7 +204,7 @@ function handleTypedInput() {
   } else {
 
     newText = "Please type something.";
-
+speak();
   }
 }
 
@@ -289,7 +289,7 @@ function answerShow(text) {
   //speak(text);
 
   newText = text;
-
+speak();
 }
 
 
@@ -326,7 +326,7 @@ function printTable(title, arr, count = 10) {
   const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
   //speak(`${title} are: ${speakList}`);
   newText = `${title} are: ${speakList}`;
-
+speak();
 }
 
 function imageShow(title, imgUrl) {
@@ -337,7 +337,7 @@ function imageShow(title, imgUrl) {
   //speak(title);
 
   newText = title;
-
+speak();
 }
 
 
@@ -364,7 +364,7 @@ function showYoutubeVideo(description, videoId) {
       `;
       //speak(description); // बोलेगा custom message
       newText = description;
-
+speak();
     })
     .catch(() => {
       document.getElementById("output").innerHTML = `
@@ -372,7 +372,7 @@ function showYoutubeVideo(description, videoId) {
       `;
       //speak("Sorry, video not found");
       newText = "Sorry, video not found";
-
+speak();
     });
 }
 
@@ -389,16 +389,16 @@ window.speechSynthesis.onvoiceschanged = () => {
   console.log("Loaded voices:", availableVoices);
 };
 
-// ✅ Normal/default voice function
+/* ✅ Normal/default voice function
 function speak() {
   let text = newText; // make sure newText is defined globally!
   const msg = new SpeechSynthesisUtterance(text);
 
   synth.speak(msg);
-}
+}*/
 
 // ✅ Female Hindi voice function
-function speakHi() {
+function speak() {
   let text = newText;
   let plainText = text.replace(/<[^>]+>/g, '');
 
