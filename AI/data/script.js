@@ -204,7 +204,7 @@ function handleTypedInput() {
   } else {
 
     newText = "Please type something.";
-     
+
   }
 }
 
@@ -289,7 +289,7 @@ function answerShow(text) {
   //speak(text);
 
   newText = text;
-   
+
 }
 
 
@@ -326,7 +326,7 @@ function printTable(title, arr, count = 10) {
   const speakList = arr.slice(1, count + 1).map(row => row[1]).join(", ");
   //speak(`${title} are: ${speakList}`);
   newText = `${title} are: ${speakList}`;
-   
+
 }
 
 function imageShow(title, imgUrl) {
@@ -336,8 +336,8 @@ function imageShow(title, imgUrl) {
       `;
   //speak(title);
 
-   newText = title;
-   
+  newText = title;
+
 }
 
 
@@ -364,15 +364,15 @@ function showYoutubeVideo(description, videoId) {
       `;
       //speak(description); // बोलेगा custom message
       newText = description;
-   
+
     })
     .catch(() => {
       document.getElementById("output").innerHTML = `
         <p style="color:red;">❌ Sorry, video not found.</p>
       `;
       //speak("Sorry, video not found");
-       newText = "Sorry, video not found";
-   
+      newText = "Sorry, video not found";
+
     });
 }
 
@@ -380,47 +380,48 @@ function showYoutubeVideo(description, videoId) {
 
 
 // Text to Speech 1
- const synth = window.speechSynthesis;
-  let availableVoices = [];
+const synth = window.speechSynthesis;
+let availableVoices = [];
 
-  // ✅ ये जरूर डालो वरना voice नहीं मिलेंगी
-  window.speechSynthesis.onvoiceschanged = () => {
-    availableVoices = synth.getVoices();
-    console.log("Loaded voices:", availableVoices);
-  };
+// ✅ ये जरूर डालो वरना voice नहीं मिलेंगी
+window.speechSynthesis.onvoiceschanged = () => {
+  availableVoices = synth.getVoices();
+  console.log("Loaded voices:", availableVoices);
+};
 
-  // ✅ Normal/default voice function
-  function speak() {
-    let text = newText; // make sure newText is defined globally!
-    const msg = new SpeechSynthesisUtterance(text);
-    synth.speak(msg);
+// ✅ Normal/default voice function
+function speak() {
+  let text = newText; // make sure newText is defined globally!
+  const msg = new SpeechSynthesisUtterance(text);
+
+  synth.speak(msg);
+}
+
+// ✅ Female Hindi voice function
+function speakHi() {
+  let text = newText;
+  let plainText = text.replace(/<[^>]+>/g, '');
+
+  // don't read emoji
+  plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
+
+  const msg = new SpeechSynthesisUtterance(plainText);
+
+  // ✅ Female Hindi voice खोजो
+  const femaleHindi = availableVoices.find(
+    (v) => v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
+  );
+
+  if (femaleHindi) {
+    msg.voice = femaleHindi;
+  } else {
+    const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
+    if (anyHindi) msg.voice = anyHindi;
   }
+  msg.lang = "hi-IN";
+  synth.speak(msg); // 🔥 Corrected here
+}
 
-  // ✅ Female Hindi voice function
-  function speakHi() {
-    let text = newText;
-    let plainText = text.replace(/<[^>]+>/g, '');
-
-    // don't read emoji
-    plainText = plainText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF]|[\u2600-\u26FF])/g, '');
-
-    const msg = new SpeechSynthesisUtterance(plainText);
-
-    // ✅ Female Hindi voice खोजो
-    const femaleHindi = availableVoices.find(
-      (v) => v.lang === "hi-IN" && v.name.toLowerCase().includes("female")
-    );
-
-    if (femaleHindi) {
-      msg.voice = femaleHindi;
-    } else {
-      const anyHindi = availableVoices.find(v => v.lang === "hi-IN");
-      if (anyHindi) msg.voice = anyHindi;
-    }
-
-    synth.speak(msg); // 🔥 Corrected here
-  }
-  
 // Text to Speech 2
 /*
 
