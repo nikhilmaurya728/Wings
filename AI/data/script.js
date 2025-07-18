@@ -281,7 +281,7 @@ function answerHide() {
   document.getElementById("output5").innerHTML = "";
 }
 
-let newText = "hello";
+let newText = "hi";
 function answerShow(text) {
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
   //speak(text);
