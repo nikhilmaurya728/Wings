@@ -1,6 +1,6 @@
 let lastModeName = null;
-let modeStack = ["fruit", "vegetable", "animal", "cat","ask"];
-const allModeData = { fruit, vegetable, animal, cat, ask };
+let modeStack = ["fruit", "vegetable", "animal", "cat","mySchool"];
+const allModeData = { fruit, vegetable, animal, cat, mySchool };
 let newText = "नमस्ते! मैं एक AI Teacher हू, मै आपके HomeWork करने में मदत कर सकती हू ";
 
 
@@ -232,7 +232,7 @@ function handleVoice(message) {
       }
     }
   }
-  answerShow(" 🤷‍♂️ माफ करना, मुझे इसके बारे में पता नहीं है।");
+  nextQue(" 🤷‍♂️ माफ करना, मुझे इसके बारे में पता नहीं है।");
 }
 
 
@@ -265,6 +265,7 @@ function answerHide() {
 
 function nextQue(text){
   document.getElementById("output1").innerHTML = `<div style="font-size:18px">💬 ${text}</div>`;
+  
 }
 
 function answerShow(text) {
