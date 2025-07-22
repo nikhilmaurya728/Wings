@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Top Mutual Funds (Fixed Columns)</title>
   <style>
     body {
@@ -69,11 +71,11 @@
     }
 
     th.sorted-asc::after {
-      content: " 🔼";
+      content: "🔼";
     }
 
     th.sorted-desc::after {
-      content: " 🔽";
+      content: "🔽";
     }
   </style>
 </head>
@@ -85,7 +87,7 @@
   <table id="mfTable">
     <thead>
       <tr>
-        <th onclick="sortTable(0)">Sr</th>
+        <th onclick="sortTable(0)">Sr No.</th>
         <th onclick="sortTable(1)">Name</th>
         <th onclick="sortTable(2)">1 Yr</th>
         <th onclick="sortTable(3)">3 Yr</th>

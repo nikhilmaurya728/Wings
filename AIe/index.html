@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Voice Assistant</title>
+  <link rel="stylesheet" href="/AI/style.css">
+  
+</head>
+
+<body>
+  <h1> Smart Teacher <img src="https://i.pinimg.com/originals/72/d1/0f/72d10f76cf3020b51725ecf7df888c59.gif" alt=""
+      width="30px">
+  </h1>
+
+
+  <div class="outputs">
+    <div id="output">
+      <img src="/AI/image/CLMLogo.png" alt="" width="50%">
+
+      <p> Say something like "Show 5 fruits" or "Give 3 vegetables, Comedy-joke-Cat Video-Videos, what is
+        cat-dog-banana-vegetable-vegetables-fruit-fruits, fruit-fruits-vegetable-vegetables name-names"</p>
+    </div>
+    <div id="output1"></div>
+    <div id="output2"></div>
+    <div id="output3"></div>
+    <div id="output4"></div>
+    <div id="output5"></div>
+  </div>
+
+
+  <div class="chat-input">
+    <button id="startLis" onclick="startListening()">🎤</button>
+    <button id="stopLis" onclick="stopListening()">🛑</button>
+    <button onclick="speak()">🔇</button>
+    <input id="userQuestion" type="text" placeholder="Type or speak your question..."
+      onkeypress="if(event.key === 'Enter') handleTypedInput()" />
+    <button class="send" onclick="handleTypedInput()">➤</button>
+  </div>
+
+  </br></br>
+  <h3>🎛 Active Modes:</h3>
+  <div id="modeList"></div></br></br></br>
+
+  <script src="/AI/data/dataTable.js"></script>
+  <script src="/AI/data/query.js"></script>
+  <script src="/AI/data/script.js"></script>
+ 
+</body>
+
+</html>
