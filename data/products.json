@@ -1,0 +1,38 @@
+
+[
+  {
+    "id": 1,
+    "name": "T-Shirt",
+    "price": 499,
+    "description": "Cotton round neck t-shirt",
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 2,
+    "name": "Jeans",
+    "price": 999,
+    "description": "Slim fit blue jeans",
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 3,
+    "name": "Sneakers",
+    "price": 1499,
+    "description": "Casual white sneakers",
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 4,
+    "name": "Cap",
+    "price": 299,
+    "description": "Cool black cap",
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 5,
+    "name": "Backpack",
+    "price": 1299,
+    "description": "Stylish backpack for all needs",
+    "image": "https://via.placeholder.com/150"
+  }
+]

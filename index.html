@@ -1,39 +1,17 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Mobile Voice Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Shop</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="text-align:center; padding-top:100px; font-family:sans-serif">
-  <h2>📱 Voice Test on Phone</h2>
-  <button onclick="speakTest()">🔊 Tap to Speak</button>
+<body>
+  <h1>🛍 Welcome to My Shop</h1>
+  <a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a>
+  <div id="product-list" class="product-list"></div>
 
-  <script>
-    let voices = [];
-
-    function loadVoices() {
-      voices = speechSynthesis.getVoices();
-      if (!voices.length) {
-        // fallback if voices not loaded immediately
-        setTimeout(loadVoices, 100);
-      }
-    }
-
-    // Load voices when available
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-    loadVoices();
-
-    function speakTest() {
-      const msg = new SpeechSynthesisUtterance("नमस्ते! मैं मोबाइल पर बोल रहा हूँ।");
-
-      const hindiVoice = voices.find(v => v.lang.includes("hi")) || voices.find(v => v.lang.includes("en")) || voices[0];
-      if (hindiVoice) {
-        msg.voice = hindiVoice;
-        msg.lang = hindiVoice.lang;
-      }
-
-      speechSynthesis.speak(msg);
-    }
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>

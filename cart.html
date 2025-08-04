@@ -1,0 +1,78 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cart</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <h2>🛒 Your Cart</h2>
+  <div id="cartItems"></div>
+  <p>Total: ₹<span id="total">0</span></p>
+  <button onclick="checkoutOrder()">✅ Checkout</button>
+
+  <script>
+   
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function loadCart() {
+  const cartItemsDiv = document.getElementById('cartItems');
+  cartItemsDiv.innerHTML = '';
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price;
+
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'cart-item';
+    itemDiv.innerHTML = `
+      <strong>${item.name}</strong> - ₹${item.price}
+      <button onclick="removeFromCart(${index})">❌ Remove</button>
+    `;
+    cartItemsDiv.appendChild(itemDiv);
+  });
+
+  document.getElementById('total').innerText = total;
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  loadCart(); // ✅ reload and recalculate total
+}
+
+// Load cart on page load
+window.onload = loadCart;
+
+
+
+
+    function checkoutOrder() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length === 0) {
+        alert('🛒 Your cart is empty!');
+        return;
+      }
+
+      let message = "Order Summary:%0A"; // %0A is newline in WhatsApp
+      let total = 0;
+
+      cart.forEach(item => {
+        message += `- ${item.name} - ₹${item.price}%0A`;
+        total += item.price;
+      });
+
+      message += `%0A🧾 Total: ₹${total}`;
+
+      const whatsappLink = `https://wa.me/916387851637?text=${message}`;
+      window.open(whatsappLink, '_blank');
+    }
+
+  </script>
+</body>
+
+</html>
