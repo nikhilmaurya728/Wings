@@ -1,70 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>📸 ArUco Marker Detector</title>
-  <script async src="https://docs.opencv.org/master/opencv.js" type="text/javascript"></script>
+  <title>🎯 ArUco ID Detection</title>
   <style>
-    video, canvas {
-      width: 90%;
-      max-width: 400px;
-      margin: 10px auto;
-      display: block;
-      border: 2px solid #333;
-      border-radius: 10px;
-    }
-    #result {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      color: green;
-    }
-    button {
-      display: block;
-      margin: 10px auto;
-      font-size: 18px;
-      padding: 10px 20px;
-    }
+    video, canvas { max-width: 100%; margin-top: 10px; }
+    #output { font-size: 20px; color: green; margin-top: 10px; }
   </style>
 </head>
 <body>
-
-  <h2 style="text-align:center;">📱 ArUco Marker Detector (4x4_50)</h2>
+  <h2>📷 ArUco Marker Detector (Back Camera)</h2>
   <video id="video" autoplay playsinline></video>
-  <button onclick="takePhoto()">📸 Take Photo</button>
-  <canvas id="canvas" style="display:none;"></canvas>
-  <div id="result">🪪 Marker ID: <span id="markerId">--</span></div>
+  <br>
+  <button onclick="captureAndDetect()">📸 Capture & Detect</button>
+  <br>
+  <canvas id="canvas"></canvas>
+  <div id="output">Detected ID: None</div>
+
+  <!-- Load OpenCV.js -->
+  <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
 
   <script>
-    let video = document.getElementById('video');
-    let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
+    let video = document.getElementById("video");
+    let canvas = document.getElementById("canvas");
+    let output = document.getElementById("output");
 
-    // ✅ Open back camera
+    // ✅ Step 1: Access Back Camera
     navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { exact: "environment" } }, 
+      video: { facingMode: { exact: "environment" } },
       audio: false
     }).then(stream => {
       video.srcObject = stream;
     }).catch(err => {
-      alert("❌ Camera Error: " + err);
+      output.innerText = "❌ Camera not found: " + err.message;
     });
 
-    // 📸 Click photo and detect marker
-    function takePhoto() {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      detectMarker();
+    let cvReady = false;
+
+    function onOpenCvReady() {
+      cvReady = true;
+      output.innerText = "✅ OpenCV.js loaded!";
     }
 
-    // 🧠 ArUco Detection
-    function detectMarker() {
-      if (!cv || !cv.aruco) {
-        alert("OpenCV.js not yet loaded");
+    // ✅ Step 2: Capture frame and detect
+    function captureAndDetect() {
+      if (!cvReady) {
+        output.innerText = "⏳ OpenCV.js not yet loaded";
         return;
       }
 
+      // Draw video frame to canvas
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      let ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // OpenCV image processing
       let src = cv.imread(canvas);
       let gray = new cv.Mat();
       cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
@@ -72,18 +62,22 @@
       let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_4X4_50);
       let corners = new cv.MatVector();
       let ids = new cv.Mat();
-      cv.aruco.detectMarkers(gray, dictionary, corners, ids);
+      let rejected = new cv.MatVector();
 
-      if (!ids.empty()) {
-        let id = ids.intAt(0, 0);
-        document.getElementById("markerId").innerText = id;
+      cv.aruco.detectMarkers(gray, dictionary, corners, ids, undefined, rejected);
+
+      if (ids.rows > 0) {
+        output.innerText = "🎯 Detected ID(s): " + ids.data32S.join(", ");
+        cv.aruco.drawDetectedMarkers(src, corners, ids);
       } else {
-        document.getElementById("markerId").innerText = "Not Found";
+        output.innerText = "😕 No marker detected";
       }
 
-      src.delete(); gray.delete(); corners.delete(); ids.delete();
+      cv.imshow(canvas, src);
+
+      // Cleanup
+      src.delete(); gray.delete(); corners.delete(); ids.delete(); rejected.delete();
     }
   </script>
-
 </body>
 </html>
