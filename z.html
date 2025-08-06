@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live Shape Detector</title>
   <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady()"></script>
   <style>
@@ -13,16 +16,20 @@
       margin: 0;
       padding: 0;
     }
-    video, canvas {
+
+    video,
+    canvas {
       margin-top: 10px;
       border: 2px solid #0f0;
     }
+
     #shapes {
       margin-top: 10px;
       font-size: 18px;
     }
   </style>
 </head>
+
 <body>
   <h2>📸 Live Shape Detector</h2>
   <video id="video" width="400" height="300" autoplay muted playsinline></video>
@@ -37,13 +44,19 @@
 
     async function startCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { exact: "environment" } }
+        });
         video.srcObject = stream;
       } catch (err) {
-        alert("Camera access denied!");
-        console.error(err);
+        console.warn("Back camera not available, using front camera.");
+        const fallbackStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" }
+        });
+        video.srcObject = fallbackStream;
       }
     }
+
 
     function onOpenCvReady() {
       startCamera();
@@ -96,4 +109,5 @@
     }
   </script>
 </body>
+
 </html>
