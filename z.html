@@ -2,50 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shape Detector</title>
+  <title>Live Shape Detector</title>
   <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady()"></script>
   <style>
     body {
-      font-family: sans-serif;
       text-align: center;
-      padding: 20px;
-      background: #f3f3f3;
+      background: #111;
+      color: #0f0;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
     }
-    canvas {
-      margin-top: 20px;
-      border: 1px solid #000;
+    video, canvas {
+      margin-top: 10px;
+      border: 2px solid #0f0;
+    }
+    #shapes {
+      margin-top: 10px;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
-  <h2>🔍 Shape Detector</h2>
-  <p>Select an image with simple shapes (circles, rectangles, triangles):</p>
-  <input type="file" id="upload" accept="image/*" />
-  <canvas id="canvas"></canvas>
+  <h2>📸 Live Shape Detector</h2>
+  <video id="video" width="400" height="300" autoplay muted playsinline></video>
+  <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+  <div id="shapes">Detecting...</div>
 
   <script>
-    function onOpenCvReady() {
-      document.getElementById("upload").addEventListener("change", function (e) {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.getElementById("canvas");
-          const ctx = canvas.getContext("2d");
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
+    let video = document.getElementById("video");
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let shapeOutput = document.getElementById("shapes");
 
-          // OpenCV processing
-          const src = cv.imread(canvas);
-          const gray = new cv.Mat();
-          const edges = new cv.Mat();
-          const contours = new cv.MatVector();
-          const hierarchy = new cv.Mat();
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        alert("Camera access denied!");
+        console.error(err);
+      }
+    }
+
+    function onOpenCvReady() {
+      startCamera();
+
+      video.addEventListener("play", () => {
+        const src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+        const gray = new cv.Mat();
+        const edges = new cv.Mat();
+        const contours = new cv.MatVector();
+        const hierarchy = new cv.Mat();
+
+        function detectShapes() {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          src.data.set(imageData.data);
 
           cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
           cv.Canny(gray, edges, 50, 150, 3, false);
           cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
 
-          let counts = { triangle: 0, rectangle: 0, circle: 0, unknown: 0 };
+          let counts = { triangle: 0, rectangle: 0, circle: 0 };
 
           for (let i = 0; i < contours.size(); ++i) {
             let cnt = contours.get(i);
@@ -55,35 +74,24 @@
 
             let vertices = approx.rows;
 
-            if (vertices === 3) {
-              counts.triangle++;
-            } else if (vertices === 4) {
-              counts.rectangle++;
-            } else if (vertices > 5) {
-              counts.circle++;
-            } else {
-              counts.unknown++;
-            }
+            if (vertices === 3) counts.triangle++;
+            else if (vertices === 4) counts.rectangle++;
+            else if (vertices > 5) counts.circle++;
 
-            approx.delete();
-            cnt.delete();
+            approx.delete(); cnt.delete();
           }
 
-          alert(`✅ Shapes Detected:
-🔺 Triangles: ${counts.triangle}
-🔷 Rectangles: ${counts.rectangle}
-🟢 Circles: ${counts.circle}
-❓ Unknown: ${counts.unknown}`);
+          shapeOutput.innerHTML = `
+            🔺 Triangles: ${counts.triangle} <br>
+            🔷 Rectangles: ${counts.rectangle} <br>
+            🟢 Circles: ${counts.circle}
+          `;
 
-          // Cleanup
-          src.delete();
-          gray.delete();
-          edges.delete();
-          contours.delete();
-          hierarchy.delete();
-        };
+          // repeat detection
+          requestAnimationFrame(detectShapes);
+        }
 
-        img.src = URL.createObjectURL(e.target.files[0]);
+        detectShapes(); // start loop
       });
     }
   </script>
