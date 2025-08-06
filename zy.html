@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Marker Scanner</title>
+  <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      text-align: center;
+      padding: 20px;
+    }
+    video, canvas {
+      border: 2px solid #0f0;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #0f0;
+      color: #000;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>📸 Smart Marker Scanner</h2>
+  <video id="video" width="400" height="300" autoplay muted playsinline></video><br>
+  <button onclick="captureAndDetect()">📷 Capture & Scan</button><br>
+  <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+  <div id="status">Waiting to capture...</div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const statusDiv = document.getElementById('status');
+    let dataMap = {};
+    let spokenMarkers = new Set();
+
+    // 📢 Speak facts
+    function speak(text) {
+      const msg = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(msg);
+    }
+
+    // 🔄 Load JSON data
+    async function loadData() {
+      const res = await fetch('data.json');
+      dataMap = await res.json();
+    }
+
+    // 🎥 Start back camera
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { exact: "environment" } }
+        });
+        video.srcObject = stream;
+      } catch (err) {
+        alert("Camera error: " + err);
+      }
+    }
+
+    // 📸 Take snapshot & detect marker
+    function captureAndDetect() {
+      if (!cv || !cv.imread) {
+        alert("OpenCV not ready yet!");
+        return;
+      }
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      let src = cv.imread(canvas);
+      let gray = new cv.Mat();
+      cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+
+      let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_6X6_250);
+      let corners = new cv.MatVector();
+      let ids = new cv.Mat();
+      let rejected = new cv.MatVector();
+
+      cv.aruco.detectMarkers(gray, dictionary, corners, ids, null, rejected);
+
+      if (!ids.empty()) {
+        let id = ids.intAt(0, 0);
+        statusDiv.innerText = `✅ Detected Marker ID: ${id}`;
+        if (dataMap[id] && !spokenMarkers.has(id)) {
+          spokenMarkers.add(id);
+          speak(`${dataMap[id].name}. ${dataMap[id].facts.join('. ')}`);
+        }
+      } else {
+        statusDiv.innerText = "❌ No marker detected. Try again.";
+      }
+
+      // Cleanup
+      src.delete(); gray.delete(); corners.delete(); ids.delete(); rejected.delete();
+    }
+
+    // 🎬 When OpenCV ready
+    function onOpenCvReady() {
+      startCamera();
+      loadData();
+    }
+
+    // Attach to global scope for OpenCV
+    window.onOpenCvReady = onOpenCvReady;
+  </script>
+</body>
+</html>

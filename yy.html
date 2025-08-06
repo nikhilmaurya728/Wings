@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>📷 ArUco Object Detector</title>
+  <script src="https://cdn.jsdelivr.net/npm/js-aruco@1.2.3/build/aruco.min.js"></script>
+  <style>
+    video, canvas { width: 100%; max-width: 500px; }
+    #infoBox { padding: 10px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h2>📸 Point at a Marker</h2>
+  <video id="video" autoplay playsinline></video>
+  <canvas id="canvas"></canvas>
+  <div id="infoBox">🕵️‍♂️ Scan an ArUco Marker to see facts!</div>
+
+  <script>
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    const detector = new AR.Detector();
+
+    // Sample JSON facts (you can replace this with full 50 data)
+    const objectFacts = {
+      "23": {
+        "name": "Banana",
+        "facts": [
+          "Bananas are technically berries.",
+          "They float in water.",
+          "They are slightly radioactive."
+        ]
+      },
+      "42": {
+        "name": "Tiger",
+        "facts": [
+          "Tigers are the largest cat species.",
+          "Each tiger has a unique stripe pattern."
+        ]
+      }
+    };
+
+    function displayFacts(id) {
+      const data = objectFacts[id];
+      if (data) {
+        document.getElementById("infoBox").innerHTML =
+          `📦 <b>${data.name}</b><br>🔍 Facts:<br> - ${data.facts.join("<br> - ")}`;
+      } else {
+        document.getElementById("infoBox").innerText = "❌ Unknown Marker ID: " + id;
+      }
+    }
+
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then((stream) => {
+          video.srcObject = stream;
+          video.onloadedmetadata = () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            requestAnimationFrame(tick);
+          };
+        })
+        .catch((err) => {
+          alert("Camera access denied or not available.");
+          console.error(err);
+        });
+    }
+
+    function tick() {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      const markers = detector.detect(imageData);
+
+      if (markers.length > 0) {
+        const markerId = markers[0].id;
+        displayFacts(markerId);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    startCamera();
+  </script>
+</body>
+</html>
