@@ -2,113 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Marker Scanner</title>
-  <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+  <title>📸 ArUco Marker Detector</title>
+  <script async src="https://docs.opencv.org/master/opencv.js" type="text/javascript"></script>
   <style>
-    body {
-      background: #111;
-      color: #0f0;
-      font-family: monospace;
-      text-align: center;
-      padding: 20px;
-    }
     video, canvas {
-      border: 2px solid #0f0;
-      margin-top: 10px;
+      width: 90%;
+      max-width: 400px;
+      margin: 10px auto;
+      display: block;
+      border: 2px solid #333;
+      border-radius: 10px;
+    }
+    #result {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      color: green;
     }
     button {
-      margin-top: 15px;
+      display: block;
+      margin: 10px auto;
+      font-size: 18px;
       padding: 10px 20px;
-      font-size: 16px;
-      background: #0f0;
-      color: #000;
-      border: none;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h2>📸 Smart Marker Scanner</h2>
-  <video id="video" width="400" height="300" autoplay muted playsinline></video><br>
-  <button onclick="captureAndDetect()">📷 Capture & Scan</button><br>
-  <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
-  <div id="status">Waiting to capture...</div>
+
+  <h2 style="text-align:center;">📱 ArUco Marker Detector (4x4_50)</h2>
+  <video id="video" autoplay playsinline></video>
+  <button onclick="takePhoto()">📸 Take Photo</button>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <div id="result">🪪 Marker ID: <span id="markerId">--</span></div>
 
   <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const statusDiv = document.getElementById('status');
-    let dataMap = {};
-    let spokenMarkers = new Set();
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
 
-    // 📢 Speak facts
-    function speak(text) {
-      const msg = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(msg);
+    // ✅ Open back camera
+    navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { exact: "environment" } }, 
+      audio: false
+    }).then(stream => {
+      video.srcObject = stream;
+    }).catch(err => {
+      alert("❌ Camera Error: " + err);
+    });
+
+    // 📸 Click photo and detect marker
+    function takePhoto() {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      detectMarker();
     }
 
-    // 🔄 Load JSON data
-    async function loadData() {
-      const res = await fetch('data.json');
-      dataMap = await res.json();
-    }
-
-    // 🎥 Start back camera
-    async function startCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { exact: "environment" } }
-        });
-        video.srcObject = stream;
-      } catch (err) {
-        alert("Camera error: " + err);
-      }
-    }
-
-    // 📸 Take snapshot & detect marker
-    function captureAndDetect() {
-      if (!cv || !cv.imread) {
-        alert("OpenCV not ready yet!");
+    // 🧠 ArUco Detection
+    function detectMarker() {
+      if (!cv || !cv.aruco) {
+        alert("OpenCV.js not yet loaded");
         return;
       }
 
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       let src = cv.imread(canvas);
       let gray = new cv.Mat();
       cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
 
-      let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_6X6_250);
+      let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_4X4_50);
       let corners = new cv.MatVector();
       let ids = new cv.Mat();
-      let rejected = new cv.MatVector();
-
-      cv.aruco.detectMarkers(gray, dictionary, corners, ids, null, rejected);
+      cv.aruco.detectMarkers(gray, dictionary, corners, ids);
 
       if (!ids.empty()) {
         let id = ids.intAt(0, 0);
-        statusDiv.innerText = `✅ Detected Marker ID: ${id}`;
-        if (dataMap[id] && !spokenMarkers.has(id)) {
-          spokenMarkers.add(id);
-          speak(`${dataMap[id].name}. ${dataMap[id].facts.join('. ')}`);
-        }
+        document.getElementById("markerId").innerText = id;
       } else {
-        statusDiv.innerText = "❌ No marker detected. Try again.";
+        document.getElementById("markerId").innerText = "Not Found";
       }
 
-      // Cleanup
-      src.delete(); gray.delete(); corners.delete(); ids.delete(); rejected.delete();
+      src.delete(); gray.delete(); corners.delete(); ids.delete();
     }
-
-    // 🎬 When OpenCV ready
-    function onOpenCvReady() {
-      startCamera();
-      loadData();
-    }
-
-    // Attach to global scope for OpenCV
-    window.onOpenCvReady = onOpenCvReady;
   </script>
+
 </body>
 </html>
