@@ -81,6 +81,14 @@
 
           for (let i = 0; i < contours.size(); ++i) {
             let cnt = contours.get(i);
+            let area = cv.contourArea(cnt);
+
+            // Filter small objects (approx less than 1cm²)
+            if (area < 300) {
+              cnt.delete(); // remove small noise
+              continue;
+            }
+
             let approx = new cv.Mat();
             let perimeter = cv.arcLength(cnt, true);
             cv.approxPolyDP(cnt, approx, 0.04 * perimeter, true);
@@ -91,7 +99,8 @@
             else if (vertices === 4) counts.rectangle++;
             else if (vertices > 5) counts.circle++;
 
-            approx.delete(); cnt.delete();
+            approx.delete();
+            cnt.delete();
           }
 
           shapeOutput.innerHTML = `
