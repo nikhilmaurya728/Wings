@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shape Detector</title>
+  <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady()"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f3f3f3;
+    }
+    canvas {
+      margin-top: 20px;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔍 Shape Detector</h2>
+  <p>Select an image with simple shapes (circles, rectangles, triangles):</p>
+  <input type="file" id="upload" accept="image/*" />
+  <canvas id="canvas"></canvas>
+
+  <script>
+    function onOpenCvReady() {
+      document.getElementById("upload").addEventListener("change", function (e) {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.getElementById("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          // OpenCV processing
+          const src = cv.imread(canvas);
+          const gray = new cv.Mat();
+          const edges = new cv.Mat();
+          const contours = new cv.MatVector();
+          const hierarchy = new cv.Mat();
+
+          cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+          cv.Canny(gray, edges, 50, 150, 3, false);
+          cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+
+          let counts = { triangle: 0, rectangle: 0, circle: 0, unknown: 0 };
+
+          for (let i = 0; i < contours.size(); ++i) {
+            let cnt = contours.get(i);
+            let approx = new cv.Mat();
+            let perimeter = cv.arcLength(cnt, true);
+            cv.approxPolyDP(cnt, approx, 0.04 * perimeter, true);
+
+            let vertices = approx.rows;
+
+            if (vertices === 3) {
+              counts.triangle++;
+            } else if (vertices === 4) {
+              counts.rectangle++;
+            } else if (vertices > 5) {
+              counts.circle++;
+            } else {
+              counts.unknown++;
+            }
+
+            approx.delete();
+            cnt.delete();
+          }
+
+          alert(`✅ Shapes Detected:
+🔺 Triangles: ${counts.triangle}
+🔷 Rectangles: ${counts.rectangle}
+🟢 Circles: ${counts.circle}
+❓ Unknown: ${counts.unknown}`);
+
+          // Cleanup
+          src.delete();
+          gray.delete();
+          edges.delete();
+          contours.delete();
+          hierarchy.delete();
+        };
+
+        img.src = URL.createObjectURL(e.target.files[0]);
+      });
+    }
+  </script>
+</body>
+</html>
