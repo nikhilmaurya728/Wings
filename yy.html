@@ -1,85 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>📷 ArUco Object Detector</title>
-  <script src="https://cdn.jsdelivr.net/npm/js-aruco@1.2.3/build/aruco.min.js"></script>
+  <title>📷 ArUco Marker Detector</title>
   <style>
-    video, canvas { width: 100%; max-width: 500px; }
-    #infoBox { padding: 10px; font-size: 18px; }
+    body { text-align: center; font-family: sans-serif; background: #f2f2f2; }
+    canvas, video { display: none; }
+    #idDisplay { font-size: 24px; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>📸 Point at a Marker</h2>
-  <video id="video" autoplay playsinline></video>
-  <canvas id="canvas"></canvas>
-  <div id="infoBox">🕵️‍♂️ Scan an ArUco Marker to see facts!</div>
+  <h2>🔍 Show a Marker to the Camera</h2>
+  <video id="video" width="640" height="480" autoplay muted></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <div id="idDisplay">🎯 Marker ID: --</div>
 
-  <script>
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
-    const context = canvas.getContext("2d");
+  <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+  <script type="text/javascript">
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let idDisplay = document.getElementById("idDisplay");
 
-    const detector = new AR.Detector();
-
-    // Sample JSON facts (you can replace this with full 50 data)
-    const objectFacts = {
-      "23": {
-        "name": "Banana",
-        "facts": [
-          "Bananas are technically berries.",
-          "They float in water.",
-          "They are slightly radioactive."
-        ]
-      },
-      "42": {
-        "name": "Tiger",
-        "facts": [
-          "Tigers are the largest cat species.",
-          "Each tiger has a unique stripe pattern."
-        ]
-      }
-    };
-
-    function displayFacts(id) {
-      const data = objectFacts[id];
-      if (data) {
-        document.getElementById("infoBox").innerHTML =
-          `📦 <b>${data.name}</b><br>🔍 Facts:<br> - ${data.facts.join("<br> - ")}`;
-      } else {
-        document.getElementById("infoBox").innerText = "❌ Unknown Marker ID: " + id;
-      }
+    async function startCamera() {
+      let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      video.play();
     }
 
-    function startCamera() {
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-        .then((stream) => {
-          video.srcObject = stream;
-          video.onloadedmetadata = () => {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            requestAnimationFrame(tick);
-          };
-        })
-        .catch((err) => {
-          alert("Camera access denied or not available.");
-          console.error(err);
-        });
+    function onOpenCvReady() {
+      startCamera().then(() => {
+        let cap = new cv.VideoCapture(video);
+        let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+        let gray = new cv.Mat();
+        let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_6X6_50);
+        let ids = new cv.Mat();
+        let corners = new cv.MatVector();
+
+        function process() {
+          cap.read(src);
+          cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
+          cv.aruco.detectMarkers(gray, dictionary, corners, ids);
+
+          if (!ids.empty()) {
+            let idList = [];
+            for (let i = 0; i < ids.rows; i++) {
+              idList.push(ids.intPtr(i)[0]);
+            }
+            idDisplay.innerText = "🎯 Marker ID: " + idList.join(", ");
+          } else {
+            idDisplay.innerText = "🙈 No Marker Detected";
+          }
+
+          requestAnimationFrame(process);
+        }
+
+        requestAnimationFrame(process);
+      });
     }
-
-    function tick() {
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      const markers = detector.detect(imageData);
-
-      if (markers.length > 0) {
-        const markerId = markers[0].id;
-        displayFacts(markerId);
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    startCamera();
   </script>
 </body>
 </html>
