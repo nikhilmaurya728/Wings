@@ -2,114 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Snap & Detect Shapes</title>
+  <title>Smart Object Detector</title>
   <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady()"></script>
   <style>
     body {
-      font-family: sans-serif;
       background: #111;
       color: #0f0;
       text-align: center;
+      font-family: monospace;
       padding: 20px;
     }
     video, canvas {
       border: 2px solid #0f0;
       margin-top: 10px;
     }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #0f0;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    #result {
-      margin-top: 15px;
-      font-size: 18px;
-    }
   </style>
 </head>
 <body>
-  <h2>📸 Snap & Detect Shapes</h2>
+  <h2>📷 Smart Marker Detector</h2>
   <video id="video" width="400" height="300" autoplay muted playsinline></video>
-  <br>
-  <button onclick="captureAndDetect()">📷 Take Picture</button>
-  <br>
   <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
-  <div id="result">Click button to detect shapes</div>
+  <div id="status">Waiting for marker...</div>
 
   <script>
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const result = document.getElementById("result");
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let dataMap = {};
+    let spokenMarkers = new Set();
+
+    // Text-to-speech
+    function speak(text) {
+      const msg = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(msg);
+    }
+
+    async function loadData() {
+      const res = await fetch('data.json');
+      dataMap = await res.json();
+    }
 
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" } }
+          video: { facingMode: { exact: "environment" } }
         });
         video.srcObject = stream;
       } catch (err) {
-        alert("Error accessing camera: " + err);
+        alert("Camera error: " + err);
       }
+    }
+
+    function detectMarker() {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      let src = cv.imread(canvas);
+      let gray = new cv.Mat();
+      cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+
+      let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_6X6_250);
+      let corners = new cv.MatVector();
+      let ids = new cv.Mat();
+      let rejected = new cv.MatVector();
+
+      cv.aruco.detectMarkers(gray, dictionary, corners, ids, null, rejected);
+
+      if (!ids.empty()) {
+        let id = ids.intAt(0, 0);
+        document.getElementById("status").innerText = `Detected Marker ID: ${id}`;
+
+        if (dataMap[id] && !spokenMarkers.has(id)) {
+          spokenMarkers.add(id);
+          speak(`${dataMap[id].name}. ${dataMap[id].facts.join('. ')}`);
+        }
+      }
+
+      // Cleanup
+      src.delete(); gray.delete(); corners.delete(); ids.delete(); rejected.delete();
     }
 
     function onOpenCvReady() {
       startCamera();
-    }
-
-    function captureAndDetect() {
-      result.innerText = "Processing...";
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      let src = cv.imread(canvas);
-      let gray = new cv.Mat();
-      let edges = new cv.Mat();
-      let contours = new cv.MatVector();
-      let hierarchy = new cv.Mat();
-
-      cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
-      cv.GaussianBlur(gray, gray, new cv.Size(5, 5), 0);
-      cv.Canny(gray, edges, 50, 150, 3, false);
-      cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
-
-      let counts = { triangle: 0, rectangle: 0, circle: 0 };
-      const areaThreshold = 300;
-
-      for (let i = 0; i < contours.size(); ++i) {
-        let cnt = contours.get(i);
-        let area = cv.contourArea(cnt);
-
-        if (area < areaThreshold) {
-          cnt.delete();
-          continue;
-        }
-
-        let approx = new cv.Mat();
-        let perimeter = cv.arcLength(cnt, true);
-        cv.approxPolyDP(cnt, approx, 0.04 * perimeter, true);
-        let vertices = approx.rows;
-
-        if (vertices === 3) counts.triangle++;
-        else if (vertices === 4) counts.rectangle++;
-        else if (vertices > 5) counts.circle++;
-
-        approx.delete();
-        cnt.delete();
-      }
-
-      // Cleanup
-      src.delete(); gray.delete(); edges.delete(); contours.delete(); hierarchy.delete();
-
-      result.innerHTML = `
-        ✅ Detection Complete:<br>
-        🔺 Triangles: ${counts.triangle}<br>
-        🔷 Rectangles: ${counts.rectangle}<br>
-        🟢 Circles: ${counts.circle}
-      `;
+      loadData();
+      setInterval(detectMarker, 1000);
     }
   </script>
 </body>

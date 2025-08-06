@@ -1,0 +1,17 @@
+{
+  "23": {
+    "name": "Banana",
+    "facts": [
+      "Bananas are technically berries",
+      "They float in water",
+      "They are radioactive slightly"
+    ]
+  },
+  "42": {
+    "name": "Tiger",
+    "facts": [
+      "Tigers are the largest cat species",
+      "Each tiger has a unique stripe pattern"
+    ]
+  }
+}
