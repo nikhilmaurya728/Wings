@@ -1,10 +1,330 @@
 {
+  "1": {
+    "name": "Apple",
+    "facts": [
+      "Rich in fiber",
+      "Keeps doctor away",
+      "Grows in temperate climates"
+    ]
+  },
+  "2": {
+    "name": "Car",
+    "facts": [
+      "Has 4 wheels",
+      "Runs on fuel or electricity",
+      "First car was made in 1886"
+    ]
+  },
+  "3": {
+    "name": "Tree",
+    "facts": [
+      "Produces oxygen",
+      "Absorbs CO2",
+      "Trees can live for thousands of years"
+    ]
+  },
+  "4": {
+    "name": "Laptop",
+    "facts": [
+      "Portable computer",
+      "Has CPU, RAM and storage",
+      "Runs on battery"
+    ]
+  },
+  "5": {
+    "name": "Dog",
+    "facts": [
+      "Loyal pet",
+      "Has powerful sense of smell",
+      "Can learn commands"
+    ]
+  },
+  "6": {
+    "name": "Cat",
+    "facts": [
+      "Independent pet",
+      "Purrs when happy",
+      "Can sleep up to 16 hours a day"
+    ]
+  },
+  "7": {
+    "name": "Chair",
+    "facts": [
+      "Used for sitting",
+      "Common furniture",
+      "Comes in various designs"
+    ]
+  },
+  "8": {
+    "name": "Mobile Phone",
+    "facts": [
+      "Used for communication",
+      "Smartphones have cameras",
+      "First mobile was in 1973"
+    ]
+  },
+  "9": {
+    "name": "Watch",
+    "facts": [
+      "Shows time",
+      "Can be analog or digital",
+      "Smartwatches track health"
+    ]
+  },
+  "10": {
+    "name": "Book",
+    "facts": [
+      "Source of knowledge",
+      "Printed or digital",
+      "Has pages and cover"
+    ]
+  },
+  "11": {
+    "name": "Globe",
+    "facts": [
+      "Model of Earth",
+      "Shows continents and oceans",
+      "Used in geography"
+    ]
+  },
+  "12": {
+    "name": "Fan",
+    "facts": [
+      "Used for cooling",
+      "Electric fans rotate",
+      "Has blades"
+    ]
+  },
+  "13": {
+    "name": "Cup",
+    "facts": [
+      "Used for drinking",
+      "Can be ceramic or glass",
+      "Comes in various sizes"
+    ]
+  },
+  "14": {
+    "name": "Spoon",
+    "facts": [
+      "Used to eat or serve",
+      "Made of metal or plastic",
+      "Part of cutlery"
+    ]
+  },
+  "15": {
+    "name": "Shoes",
+    "facts": [
+      "Protects feet",
+      "Various types for activities",
+      "Invented over 5,000 years ago"
+    ]
+  },
+  "16": {
+    "name": "Television",
+    "facts": [
+      "Displays video",
+      "Used for entertainment",
+      "Invented in the 1920s"
+    ]
+  },
+  "17": {
+    "name": "Pen",
+    "facts": [
+      "Used for writing",
+      "Contains ink",
+      "Ballpoint is common type"
+    ]
+  },
+  "18": {
+    "name": "Bottle",
+    "facts": [
+      "Holds liquids",
+      "Can be reused",
+      "Made of plastic or glass"
+    ]
+  },
+  "19": {
+    "name": "Sun",
+    "facts": [
+      "Star at center of solar system",
+      "Gives light and heat",
+      "Composed mostly of hydrogen"
+    ]
+  },
+  "20": {
+    "name": "Moon",
+    "facts": [
+      "Earth’s satellite",
+      "Controls tides",
+      "Humans landed in 1969"
+    ]
+  },
+  "21": {
+    "name": "Clock",
+    "facts": [
+      "Measures time",
+      "Analog and digital types",
+      "Can be wall or wrist clock"
+    ]
+  },
+  "22": {
+    "name": "Table",
+    "facts": [
+      "Used for placing items",
+      "Found in homes and offices",
+      "Flat surface and legs"
+    ]
+  },
   "23": {
     "name": "Banana",
     "facts": [
       "Bananas are technically berries",
       "They float in water",
-      "They are radioactive slightly"
+      "They are slightly radioactive"
+    ]
+  },
+  "24": {
+    "name": "Carrot",
+    "facts": [
+      "Orange vegetable",
+      "Good for eyes",
+      "Rich in Vitamin A"
+    ]
+  },
+  "25": {
+    "name": "Strawberry",
+    "facts": [
+      "Red fruit",
+      "Has seeds outside",
+      "Rich in antioxidants"
+    ]
+  },
+  "26": {
+    "name": "Plane",
+    "facts": [
+      "Used for air travel",
+      "Flies using wings",
+      "Invented by Wright brothers"
+    ]
+  },
+  "27": {
+    "name": "Fish",
+    "facts": [
+      "Lives in water",
+      "Has gills and fins",
+      "Over 30,000 species"
+    ]
+  },
+  "28": {
+    "name": "Camera",
+    "facts": [
+      "Captures photos",
+      "Can be digital or analog",
+      "Has lens and sensor"
+    ]
+  },
+  "29": {
+    "name": "Rocket",
+    "facts": [
+      "Goes to space",
+      "Uses propulsion",
+      "Carries satellites or astronauts"
+    ]
+  },
+  "30": {
+    "name": "Headphones",
+    "facts": [
+      "Used for listening",
+      "Covers ears",
+      "Can be wired or wireless"
+    ]
+  },
+  "31": {
+    "name": "Bicycle",
+    "facts": [
+      "Has two wheels",
+      "Human powered",
+      "Eco-friendly transport"
+    ]
+  },
+  "32": {
+    "name": "Toothbrush",
+    "facts": [
+      "Used to clean teeth",
+      "Used daily",
+      "Comes in manual or electric"
+    ]
+  },
+  "33": {
+    "name": "Iron",
+    "facts": [
+      "Used to press clothes",
+      "Removes wrinkles",
+      "Needs electricity"
+    ]
+  },
+  "34": {
+    "name": "Ball",
+    "facts": [
+      "Used in sports",
+      "Can bounce or roll",
+      "Different sizes for games"
+    ]
+  },
+  "35": {
+    "name": "Helmet",
+    "facts": [
+      "Protects head",
+      "Used in biking or construction",
+      "Made of hard material"
+    ]
+  },
+  "36": {
+    "name": "Ring",
+    "facts": [
+      "Worn on finger",
+      "Symbol of commitment",
+      "Can be gold or silver"
+    ]
+  },
+  "37": {
+    "name": "Keyboard",
+    "facts": [
+      "Used for typing",
+      "Has keys for letters",
+      "Used with computers"
+    ]
+  },
+  "38": {
+    "name": "Mouse",
+    "facts": [
+      "Controls pointer",
+      "Has buttons",
+      "Used with computers"
+    ]
+  },
+  "39": {
+    "name": "Light Bulb",
+    "facts": [
+      "Produces light",
+      "Invented by Edison",
+      "Works on electricity"
+    ]
+  },
+  "40": {
+    "name": "Glasses",
+    "facts": [
+      "Helps in seeing",
+      "Corrects vision",
+      "Can be prescription or sun"
+    ]
+  },
+  "41": {
+    "name": "Scissors",
+    "facts": [
+      "Used for cutting",
+      "Has two blades",
+      "Used in craft and kitchen"
     ]
   },
   "42": {
@@ -12,6 +332,70 @@
     "facts": [
       "Tigers are the largest cat species",
       "Each tiger has a unique stripe pattern"
+    ]
+  },
+  "43": {
+    "name": "Elephant",
+    "facts": [
+      "Largest land animal",
+      "Has trunk and tusks",
+      "Highly intelligent"
+    ]
+  },
+  "44": {
+    "name": "Zebra",
+    "facts": [
+      "Black and white stripes",
+      "Related to horses",
+      "Stripes are unique"
+    ]
+  },
+  "45": {
+    "name": "Lion",
+    "facts": [
+      "Known as king of jungle",
+      "Lives in prides",
+      "Roars can be heard 8km away"
+    ]
+  },
+  "46": {
+    "name": "Peacock",
+    "facts": [
+      "National bird of India",
+      "Colorful feathers",
+      "Male displays to attract"
+    ]
+  },
+  "47": {
+    "name": "Parrot",
+    "facts": [
+      "Can mimic human speech",
+      "Colorful bird",
+      "Eats fruits and seeds"
+    ]
+  },
+  "48": {
+    "name": "Ant",
+    "facts": [
+      "Small insect",
+      "Lives in colonies",
+      "Can carry 10x its weight"
+    ]
+  },
+  "49": {
+    "name": "Bee",
+    "facts": [
+      "Makes honey",
+      "Pollinates flowers",
+      "Lives in hives"
+    ]
+  },
+  "50": {
+    "name": "Butterfly",
+    "facts": [
+      "Colorful wings",
+      "Goes through metamorphosis",
+      "Pollinates flowers"
     ]
   }
 }
