@@ -59,33 +59,46 @@
     };
 
 
-    let alreadySpoken = false; // ✅ Step 1 - flag for once only
+   let lastScanned = ""; // ⬅️ Store previous scanned QR text
 
-    function onScanSuccess(decodedText, decodedResult) {
-      if (alreadySpoken) return; // ✅ prevent repeat
+function onScanSuccess(decodedText, decodedResult) {
+  const key = decodedText.trim().toLowerCase();
 
-      const key = decodedText.trim().toLowerCase();
-      resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
+  // ✅ If same QR scanned again, do nothing
+  if (key === lastScanned) return;
 
-      if (fruitInfo[key]) {
-        const fruit = fruitInfo[key];
+  lastScanned = key; // ⬅️ Update new QR
 
-        // ✅ Show on screen
-        infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}`;
+  resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
 
-        // ✅ Speak in Hindi only once
-        const speakText = `${fruit.name} के फायदे: ${fruit.benefits}`;
-        const utterance = new SpeechSynthesisUtterance(speakText);
-        utterance.lang = "hi-IN"; // 🇮🇳 Hindi voice
-        speechSynthesis.speak(utterance);
+  if (fruitInfo[key]) {
+    const fruit = fruitInfo[key];
 
-        alreadySpoken = true; // ✅ Set flag true
-      } else {
-        infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
-      }
-
-      html5QrcodeScanner.clear();
+    // 👉 Show on screen
+    let also = "";
+    if (fruit.alsoRead && fruit.alsoRead.length > 0) {
+      also = `<br><br><strong>📚 Also read:</strong><ul>`;
+      fruit.alsoRead.forEach(f => {
+        if (fruitInfo[f]) {
+          also += `<li>${fruitInfo[f].emoji} <strong>${fruitInfo[f].name}</strong> – ${fruitInfo[f].benefits}</li>`;
+        }
+      });
+      also += `</ul>`;
     }
+
+    infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}${also}`;
+
+    // 🎤 Speak benefits in Hindi
+    const speakText = `${fruit.name} के फायदे: ${fruit.benefits}`;
+    const utterance = new SpeechSynthesisUtterance(speakText);
+    utterance.lang = "hi-IN";
+    speechSynthesis.speak(utterance);
+  } else {
+    infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
+  }
+
+  html5QrcodeScanner.clear();
+}
 
 
     function startScanner(cameraId) {
