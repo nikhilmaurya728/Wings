@@ -1,73 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📦 Barcode Scanner (Back Camera)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
-  <style>
-    #scanner-container {
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
-      border: 2px solid black;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    #result {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 18px;
-      color: green;
-    }
-  </style>
+  <title>Image Text Detector</title>
 </head>
 <body>
+  <h2>🖼️ Upload Image to Detect Text</h2>
+  <input type="file" id="imageInput" accept="image/*"><br><br>
+  <img id="preview" style="max-width: 300px;"><br><br>
+  <button onclick="detectText()">📤 Detect Text</button>
 
-  <h2 style="text-align:center;">📦 Barcode Scanner (Back Camera)</h2>
-  <div id="scanner-container"></div>
-  <div id="result">🔍 Waiting for barcode...</div>
+  <h3>📄 Detected Text:</h3>
+  <pre id="output"></pre>
+
+  <!-- Tesseract.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 
   <script>
-    const resultDiv = document.getElementById("result");
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const output = document.getElementById('output');
 
-    Quagga.init({
-      inputStream: {
-        name: "Live",
-        type: "LiveStream",
-        target: document.querySelector('#scanner-container'),
-        constraints: {
-          facingMode: "environment" // Use back camera
-        }
-      },
-      decoder: {
-        readers: [
-          "code_128_reader",    // Most common
-          "ean_reader",         // European Article Number
-          "ean_8_reader",
-          "upc_reader",
-          "upc_e_reader",
-          "code_39_reader",
-          "code_39_vin_reader",
-          "codabar_reader",
-          "i2of5_reader",
-          "2of5_reader"
-        ]
+    let selectedImage = null;
+
+    imageInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        selectedImage = URL.createObjectURL(file);
+        preview.src = selectedImage;
       }
-    }, function (err) {
-      if (err) {
-        console.error(err);
-        resultDiv.innerText = "❌ Failed to start camera";
+    });
+
+    function detectText() {
+      if (!selectedImage) {
+        alert("⚠️ Pehle image upload karo!");
         return;
       }
-      Quagga.start();
-    });
 
-    Quagga.onDetected(function (data) {
-      const code = data.codeResult.code;
-      resultDiv.innerText = `✅ Barcode Detected: ${code}`;
-      Quagga.stop(); // Stop scanning after detection
-    });
+      output.textContent = "⏳ Text detect kiya ja raha hai...";
+
+      Tesseract.recognize(
+        selectedImage,
+        'eng', // English language
+        {
+          logger: m => console.log(m)
+        }
+      ).then(({ data: { text } }) => {
+        output.textContent = text;
+      }).catch(err => {
+        output.textContent = "❌ Error: " + err.message;
+      });
+    }
   </script>
 </body>
 </html>

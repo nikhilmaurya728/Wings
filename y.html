@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Text & Color Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    img {
+      max-width: 300px;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+    }
+    pre {
+      background: #f0f0f0;
+      padding: 10px;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h2>🖼️ Upload Image to Detect Text & Color</h2>
+  <input type="file" id="imageInput" accept="image/*"><br>
+  <img id="preview"><br><br>
+  <button onclick="detectText()">📤 Detect Text</button>
+
+  <h3>📄 Detected Text:</h3>
+  <pre id="output">Waiting...</pre>
+
+  <h3>🎨 Sample Text Color:</h3>
+  <div id="colorBox" style="width:100px;height:30px;margin:auto;border:1px solid #333;"></div>
+  <p id="colorCode">N/A</p>
+
+  <!-- Tesseract.js -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const output = document.getElementById('output');
+    const colorBox = document.getElementById('colorBox');
+    const colorCode = document.getElementById('colorCode');
+
+    let selectedImage = null;
+
+    imageInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        selectedImage = URL.createObjectURL(file);
+        preview.src = selectedImage;
+      }
+    });
+
+    function detectText() {
+      if (!selectedImage) {
+        alert("⚠️ Pehle image upload karo!");
+        return;
+      }
+
+      output.textContent = "⏳ Text detect kiya ja raha hai...";
+
+      Tesseract.recognize(
+        selectedImage,
+        'eng',
+        { logger: m => console.log(m) }
+      ).then(({ data: { text } }) => {
+        output.textContent = text;
+
+        // Create temp canvas to extract color
+        const img = new Image();
+        img.src = selectedImage;
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          // Sample color from center (for demo purpose)
+          const x = Math.floor(img.width / 2);
+          const y = Math.floor(img.height / 2);
+          const pixel = ctx.getImageData(x, y, 1, 1).data;
+          const rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+
+          colorBox.style.backgroundColor = rgb;
+          colorCode.textContent = rgb;
+        };
+      }).catch(err => {
+        output.textContent = "❌ Error: " + err.message;
+      });
+    }
+  </script>
+</body>
+</html>
