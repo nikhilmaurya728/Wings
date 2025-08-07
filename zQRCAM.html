@@ -54,51 +54,74 @@
         name: "सेब",
         benefits: "यह फाइबर और विटामिन C से भरपूर होता है और सेहत के लिए अच्छा है।",
         emoji: "🍎"
-      }
+      },
       // ...more fruits
+
+      mango: {
+        name: "आम",
+        benefits: "यह विटामिन A और C से भरपूर होता है, आँखों और त्वचा के लिए लाभकारी है।",
+        emoji: "🥭"
+      },
+      pineapple: {
+        name: "अनानास",
+        benefits: "यह पाचन में मदद करता है और रोग प्रतिरोधक क्षमता बढ़ाता है।",
+        emoji: "🍍"
+      },
+      grape: {
+        name: "अंगूर",
+        benefits: "यह एंटीऑक्सीडेंट्स से भरपूर होता है और दिल की सेहत के लिए अच्छा होता है।",
+        emoji: "🍇"
+      },
+      lion: {
+        name: "शेर",
+        benefits: "यह कोई फल नहीं है, लेकिन जंगल का राजा है।", // 😄 for fun!
+        emoji: "🦁"
+      }
+    };
+
     };
 
 
-   let lastScanned = ""; // ⬅️ Store previous scanned QR text
+    let lastScanned = ""; // ⬅️ Store previous scanned QR text
 
-function onScanSuccess(decodedText, decodedResult) {
-  const key = decodedText.trim().toLowerCase();
+    function onScanSuccess(decodedText, decodedResult) {
+      const key = decodedText.trim().toLowerCase();
 
-  // ✅ If same QR scanned again, do nothing
-  if (key === lastScanned) return;
+      // ✅ If same QR scanned again, do nothing
+      if (key === lastScanned) return;
 
-  lastScanned = key; // ⬅️ Update new QR
+      lastScanned = key; // ⬅️ Update new QR
 
-  resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
+      resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
 
-  if (fruitInfo[key]) {
-    const fruit = fruitInfo[key];
+      if (fruitInfo[key]) {
+        const fruit = fruitInfo[key];
 
-    // 👉 Show on screen
-    let also = "";
-    if (fruit.alsoRead && fruit.alsoRead.length > 0) {
-      also = `<br><br><strong>📚 Also read:</strong><ul>`;
-      fruit.alsoRead.forEach(f => {
-        if (fruitInfo[f]) {
-          also += `<li>${fruitInfo[f].emoji} <strong>${fruitInfo[f].name}</strong> – ${fruitInfo[f].benefits}</li>`;
+        // 👉 Show on screen
+        let also = "";
+        if (fruit.alsoRead && fruit.alsoRead.length > 0) {
+          also = `<br><br><strong>📚 Also read:</strong><ul>`;
+          fruit.alsoRead.forEach(f => {
+            if (fruitInfo[f]) {
+              also += `<li>${fruitInfo[f].emoji} <strong>${fruitInfo[f].name}</strong> – ${fruitInfo[f].benefits}</li>`;
+            }
+          });
+          also += `</ul>`;
         }
-      });
-      also += `</ul>`;
+
+        infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}${also}`;
+
+        // 🎤 Speak benefits in Hindi
+        const speakText = `${fruit.name} के फायदे: ${fruit.benefits}`;
+        const utterance = new SpeechSynthesisUtterance(speakText);
+        utterance.lang = "hi-IN";
+        speechSynthesis.speak(utterance);
+      } else {
+        infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
+      }
+
+      html5QrcodeScanner.clear();
     }
-
-    infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}${also}`;
-
-    // 🎤 Speak benefits in Hindi
-    const speakText = `${fruit.name} के फायदे: ${fruit.benefits}`;
-    const utterance = new SpeechSynthesisUtterance(speakText);
-    utterance.lang = "hi-IN";
-    speechSynthesis.speak(utterance);
-  } else {
-    infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
-  }
-
-  html5QrcodeScanner.clear();
-}
 
 
     function startScanner(cameraId) {
