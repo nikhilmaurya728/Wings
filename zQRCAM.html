@@ -63,22 +63,39 @@
       }
     };
 
-    function onScanSuccess(decodedText, decodedResult) {
-      console.log(`Code matched = ${decodedText}`, decodedResult);
-      resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
+ function onScanSuccess(decodedText, decodedResult) {
+  console.log(`Code matched = ${decodedText}`, decodedResult);
+  resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
 
-      // lower case for safety
-      const key = decodedText.trim().toLowerCase();
+  const key = decodedText.trim().toLowerCase();
 
-      if (fruitInfo[key]) {
-        const fruit = fruitInfo[key];
-        infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}`;
-      } else {
-        infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
-      }
-
-      html5QrcodeScanner.clear();
+  if (fruitInfo[key]) {
+    const fruit = fruitInfo[key];
+    let also = "";
+    if (fruit.alsoRead && fruit.alsoRead.length > 0) {
+      also = `<br><br><strong>📚 Also read:</strong><ul>`;
+      fruit.alsoRead.forEach(f => {
+        if (fruitInfo[f]) {
+          also += `<li>${fruitInfo[f].emoji} <strong>${fruitInfo[f].name}</strong> – ${fruitInfo[f].benefits}</li>`;
+        }
+      });
+      also += `</ul>`;
     }
+
+    // 👉 Show info
+    infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}${also}`;
+
+    // 🗣️ Speak benefits
+    const speakText = `${fruit.name}. ${fruit.benefits}`;
+    const utterance = new SpeechSynthesisUtterance(speakText);
+    speechSynthesis.speak(utterance);
+
+  } else {
+    infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
+  }
+
+  html5QrcodeScanner.clear();
+}
 
     function startScanner(cameraId) {
       const html5QrCode = new Html5Qrcode("reader");
