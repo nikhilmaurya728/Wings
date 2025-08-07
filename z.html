@@ -1,122 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Shape Detector</title>
-  <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady()"></script>
+  <title>QR Code Reader (Back Camera)</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
-    body {
-      text-align: center;
-      background: #111;
-      color: #0f0;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
+    #reader {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 10px;
     }
-
-    video,
-    canvas {
-      margin-top: 10px;
-      border: 2px solid #0f0;
-    }
-
-    #shapes {
+    #result {
       margin-top: 10px;
       font-size: 18px;
+      text-align: center;
     }
   </style>
 </head>
-
 <body>
-  <h2>📸 Live Shape Detector</h2>
-  <video id="video" width="400" height="300" autoplay muted playsinline></video>
-  <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
-  <div id="shapes">Detecting...</div>
+  <h2 style="text-align:center;">📷 Scan QR Code (Back Camera)</h2>
+  <div id="reader"></div>
+  <div id="result">🔍 Waiting for QR...</div>
 
   <script>
-    let video = document.getElementById("video");
-    let canvas = document.getElementById("canvas");
-    let ctx = canvas.getContext("2d");
-    let shapeOutput = document.getElementById("shapes");
+    const resultDiv = document.getElementById('result');
 
-    async function startCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { exact: "environment" } }
-        });
-        video.srcObject = stream;
-      } catch (err) {
-        console.warn("Back camera not available, using front camera.");
-        const fallbackStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" }
-        });
-        video.srcObject = fallbackStream;
+    function onScanSuccess(decodedText, decodedResult) {
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
+      html5QrcodeScanner.clear();
+    }
+
+    function startScanner(cameraId) {
+      const html5QrCode = new Html5Qrcode("reader");
+      html5QrCode.start(
+        cameraId,
+        {
+          fps: 10,    // frames per second
+          qrbox: 250  // size of scanning box (can be adjusted)
+        },
+        onScanSuccess
+      );
+    }
+
+    // Get back camera (if available)
+    Html5Qrcode.getCameras().then(cameras => {
+      if (cameras && cameras.length) {
+        // Try to find the back camera
+        const backCamera = cameras.find(camera => 
+          camera.label.toLowerCase().includes('back')
+        );
+
+        const selectedCameraId = backCamera ? backCamera.id : cameras[0].id;
+        startScanner(selectedCameraId);
+      } else {
+        resultDiv.innerHTML = "❌ No camera found.";
       }
-    }
-
-
-    function onOpenCvReady() {
-      startCamera();
-
-      video.addEventListener("play", () => {
-        const src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
-        const gray = new cv.Mat();
-        const edges = new cv.Mat();
-        const contours = new cv.MatVector();
-        const hierarchy = new cv.Mat();
-
-        function detectShapes() {
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          src.data.set(imageData.data);
-
-          cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
-          cv.Canny(gray, edges, 50, 150, 3, false);
-          cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
-
-          let counts = { triangle: 0, rectangle: 0, circle: 0 };
-
-          for (let i = 0; i < contours.size(); ++i) {
-            let cnt = contours.get(i);
-            let area = cv.contourArea(cnt);
-
-            // Filter small objects (approx less than 1cm²)
-            if (area < 300) {
-              cnt.delete(); // remove small noise
-              continue;
-            }
-
-            let approx = new cv.Mat();
-            let perimeter = cv.arcLength(cnt, true);
-            cv.approxPolyDP(cnt, approx, 0.04 * perimeter, true);
-
-            let vertices = approx.rows;
-
-            if (vertices === 3) counts.triangle++;
-            else if (vertices === 4) counts.rectangle++;
-            else if (vertices > 5) counts.circle++;
-
-            approx.delete();
-            cnt.delete();
-          }
-
-          shapeOutput.innerHTML = `
-            🔺 Triangles: ${counts.triangle} <br>
-            🔷 Rectangles: ${counts.rectangle} <br>
-            🟢 Circles: ${counts.circle}
-          `;
-
-          // repeat detection
-          requestAnimationFrame(detectShapes);
-        }
-
-        detectShapes(); // start loop
-      });
-    }
+    }).catch(err => {
+      resultDiv.innerHTML = `⚠️ Error: ${err}`;
+    });
   </script>
 </body>
-
 </html>

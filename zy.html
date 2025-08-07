@@ -1,82 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>🎯 ArUco ID Detection</title>
+  <meta charset="UTF-8">
+  <title>QR Code Reader</title>
   <style>
-    video, canvas { max-width: 100%; margin-top: 10px; }
-    #output { font-size: 20px; color: green; margin-top: 10px; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #preview {
+      max-width: 300px;
+      margin-top: 20px;
+    }
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
   </style>
 </head>
 <body>
-  <h2>📷 ArUco Marker Detector (Back Camera)</h2>
-  <video id="video" autoplay playsinline></video>
+  <h2>📷 QR Code Reader (Upload Image)</h2>
+  <input type="file" accept="image/*" onchange="handleImageUpload(event)">
   <br>
-  <button onclick="captureAndDetect()">📸 Capture & Detect</button>
-  <br>
-  <canvas id="canvas"></canvas>
-  <div id="output">Detected ID: None</div>
+  <img id="preview" src="" alt="">
+  <div id="result">📄 Scanned QR Result will appear here</div>
 
-  <!-- Load OpenCV.js -->
-  <script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+  <!-- Required library -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
   <script>
-    let video = document.getElementById("video");
-    let canvas = document.getElementById("canvas");
-    let output = document.getElementById("output");
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-    // ✅ Step 1: Access Back Camera
-    navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { exact: "environment" } },
-      audio: false
-    }).then(stream => {
-      video.srcObject = stream;
-    }).catch(err => {
-      output.innerText = "❌ Camera not found: " + err.message;
-    });
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          context.drawImage(img, 0, 0);
 
-    let cvReady = false;
+          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, canvas.width, canvas.height);
+          
+          if (code) {
+            document.getElementById("result").innerText = "✅ QR Code Detected: " + code.data;
+          } else {
+            document.getElementById("result").innerText = "❌ QR Code Not Found";
+          }
 
-    function onOpenCvReady() {
-      cvReady = true;
-      output.innerText = "✅ OpenCV.js loaded!";
-    }
-
-    // ✅ Step 2: Capture frame and detect
-    function captureAndDetect() {
-      if (!cvReady) {
-        output.innerText = "⏳ OpenCV.js not yet loaded";
-        return;
-      }
-
-      // Draw video frame to canvas
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      let ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      // OpenCV image processing
-      let src = cv.imread(canvas);
-      let gray = new cv.Mat();
-      cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
-
-      let dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_4X4_50);
-      let corners = new cv.MatVector();
-      let ids = new cv.Mat();
-      let rejected = new cv.MatVector();
-
-      cv.aruco.detectMarkers(gray, dictionary, corners, ids, undefined, rejected);
-
-      if (ids.rows > 0) {
-        output.innerText = "🎯 Detected ID(s): " + ids.data32S.join(", ");
-        cv.aruco.drawDetectedMarkers(src, corners, ids);
-      } else {
-        output.innerText = "😕 No marker detected";
-      }
-
-      cv.imshow(canvas, src);
-
-      // Cleanup
-      src.delete(); gray.delete(); corners.delete(); ids.delete(); rejected.delete();
+          // Show image preview
+          document.getElementById("preview").src = e.target.result;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   </script>
 </body>
