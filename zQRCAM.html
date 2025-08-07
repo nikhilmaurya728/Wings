@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Code Reader (Back Camera)</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <style>
+    #reader {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    #result {
+      margin-top: 10px;
+      font-size: 18px;
+      text-align: center;
+    }
+    #info {
+      margin-top: 15px;
+      font-size: 16px;
+      text-align: center;
+      background: #e0ffe0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">📷 Scan QR Code (Back Camera)</h2>
+  <div id="reader"></div>
+  <div id="result">🔍 Waiting for QR...</div>
+  <div id="info"></div>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    const infoDiv = document.getElementById('info');
+
+    // 🍇 Fruit info object
+    const fruitInfo = {
+      banana: {
+        name: "Banana",
+        benefits: "Rich in potassium, helps digestion, great for energy.",
+        emoji: "🍌"
+      },
+      apple: {
+        name: "Apple",
+        benefits: "Keeps the doctor away, full of fiber and vitamin C.",
+        emoji: "🍎"
+      },
+      mango: {
+        name: "Mango",
+        benefits: "King of fruits, rich in vitamin A and C.",
+        emoji: "🥭"
+      },
+      watermelon: {
+        name: "Watermelon",
+        benefits: "Hydrating and sweet, perfect for summer.",
+        emoji: "🍉"
+      }
+    };
+
+    function onScanSuccess(decodedText, decodedResult) {
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
+
+      // lower case for safety
+      const key = decodedText.trim().toLowerCase();
+
+      if (fruitInfo[key]) {
+        const fruit = fruitInfo[key];
+        infoDiv.innerHTML = `<strong>${fruit.emoji} ${fruit.name}</strong><br>${fruit.benefits}`;
+      } else {
+        infoDiv.innerHTML = `ℹ️ No info found for "${decodedText}".`;
+      }
+
+      html5QrcodeScanner.clear();
+    }
+
+    function startScanner(cameraId) {
+      const html5QrCode = new Html5Qrcode("reader");
+      html5QrCode.start(
+        cameraId,
+        {
+          fps: 10,
+          qrbox: 250
+        },
+        onScanSuccess
+      );
+    }
+
+    Html5Qrcode.getCameras().then(cameras => {
+      if (cameras && cameras.length) {
+        const backCamera = cameras.find(camera => 
+          camera.label.toLowerCase().includes('back')
+        );
+        const selectedCameraId = backCamera ? backCamera.id : cameras[0].id;
+        startScanner(selectedCameraId);
+      } else {
+        resultDiv.innerHTML = "❌ No camera found.";
+      }
+    }).catch(err => {
+      resultDiv.innerHTML = `⚠️ Error: ${err}`;
+    });
+  </script>
+</body>
+</html>
