@@ -1,80 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ArUco Marker Detector</title>
-  <script async src="https://docs.opencv.org/4.5.5/opencv.js" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <title>📦 Barcode Scanner (Back Camera)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    #scanner-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      border: 2px solid black;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #result {
       text-align: center;
-      padding: 20px;
-    }
-    video, canvas {
-      max-width: 90%;
-      border: 2px solid #000;
-      margin: 10px 0;
-    }
-    #detectedId {
-      font-size: 24px;
-      font-weight: bold;
+      margin-top: 10px;
+      font-size: 18px;
       color: green;
     }
   </style>
 </head>
 <body>
-  <h2>📷 ArUco Marker Detector (4x4 Dictionary)</h2>
 
-  <video id="video" autoplay playsinline width="300" height="240"></video><br>
-  <button onclick="clickPic()">📸 Click Picture</button><br>
-  <canvas id="canvas" width="300" height="240"></canvas>
-  <p id="detectedId">Detected ID: None</p>
+  <h2 style="text-align:center;">📦 Barcode Scanner (Back Camera)</h2>
+  <div id="scanner-container"></div>
+  <div id="result">🔍 Waiting for barcode...</div>
 
   <script>
-    let video = document.getElementById("video");
-    let canvas = document.getElementById("canvas");
-    let ctx = canvas.getContext("2d");
-    let detectedText = document.getElementById("detectedId");
+    const resultDiv = document.getElementById("result");
 
-    // Start camera
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then((stream) => {
-        video.srcObject = stream;
-      })
-      .catch((err) => {
-        alert("Camera access denied!");
-      });
-
-    function clickPic() {
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      detectArUco();
-    }
-
-    function detectArUco() {
-      if (!cv || !cv.aruco) {
-        alert("OpenCV not yet loaded!");
+    Quagga.init({
+      inputStream: {
+        name: "Live",
+        type: "LiveStream",
+        target: document.querySelector('#scanner-container'),
+        constraints: {
+          facingMode: "environment" // Use back camera
+        }
+      },
+      decoder: {
+        readers: [
+          "code_128_reader",    // Most common
+          "ean_reader",         // European Article Number
+          "ean_8_reader",
+          "upc_reader",
+          "upc_e_reader",
+          "code_39_reader",
+          "code_39_vin_reader",
+          "codabar_reader",
+          "i2of5_reader",
+          "2of5_reader"
+        ]
+      }
+    }, function (err) {
+      if (err) {
+        console.error(err);
+        resultDiv.innerText = "❌ Failed to start camera";
         return;
       }
+      Quagga.start();
+    });
 
-      const src = cv.imread(canvas);
-      const dictionary = new cv.aruco.getPredefinedDictionary(cv.aruco.DICT_4X4_50);
-      const parameters = new cv.aruco.DetectorParameters();
-      const detector = new cv.aruco.ArucoDetector(dictionary, parameters);
-
-      let corners = new cv.MatVector();
-      let ids = new cv.Mat();
-
-      detector.detectMarkers(src, corners, ids);
-
-      if (!ids.empty()) {
-        detectedText.textContent = "Detected ID: " + ids.data32S[0];
-      } else {
-        detectedText.textContent = "Detected ID: None";
-      }
-
-      src.delete(); corners.delete(); ids.delete();
-    }
+    Quagga.onDetected(function (data) {
+      const code = data.codeResult.code;
+      resultDiv.innerText = `✅ Barcode Detected: ${code}`;
+      Quagga.stop(); // Stop scanning after detection
+    });
   </script>
 </body>
 </html>
