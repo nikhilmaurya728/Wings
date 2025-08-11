@@ -1,17 +1,206 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+  <title>Mobile App Style Index</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Shop</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <h1>🛍 Welcome to My Shop</h1>
-  <a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a>
-  <div id="product-list" class="product-list"></div>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  <script src="js/main.js"></script>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #222;
+      color: white;
+      padding: 20px;
+      transition: left 0.3s;
+      z-index: 200;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: #444;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 150;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: #4CAF50;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      color: white;
+      z-index: 99;
+    }
+
+    .menu-btn {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .header-title {
+      flex: 1;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .login-btn {
+      margin-left: 10px;
+      padding: 5px 12px;
+      background: white;
+      color: #4CAF50;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* Main content */
+    .main {
+      margin-top: 70px;
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      width: 140px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 500px) {
+      .card {
+        width: 100%;
+        height: 90px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>Menu</h2>
+    <a href="Fruit.html">📄 Fruit</a>
+    <a href="zQRCAM.html">📄 Scan Cards</a>
+    <a href="LY.html">📄 Video and Lyrics</a>
+    <a href="vKARTindex.html">📄 V-Kart</a>
+    <a href="page5.html">📄 Page 5</a>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+    <div class="header-title">Wings</div>
+    <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic">
+    <a href="login.html" class="login-btn">Login</a>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <a href="Fruit.html" class="card">📄 Fruit</a>
+    <a href="zQRCAM.html" class="card">📄 Scan Cards</a>
+    <a href="LY.html" class="card">📄 Video and Lyrics</a>
+    <a href="vKARTindex.html" class="card">📄 V-Kart</a>
+    <a href="page5.html" class="card">📄 Page 5</a>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+      document.getElementById("overlay").classList.toggle("active");
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").classList.remove("active");
+      document.getElementById("overlay").classList.remove("active");
+    }
+  </script>
+
 </body>
+
 </html>

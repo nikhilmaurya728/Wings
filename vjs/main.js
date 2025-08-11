@@ -1,7 +1,7 @@
 
 
 /* js/main.js */
-fetch("data/products.json")
+fetch("vdata/products.json")
   .then((res) => res.json())
   .then((products) => {
     const list = document.getElementById("product-list");
@@ -11,7 +11,7 @@ fetch("data/products.json")
         <h3>${p.name}</h3>
         <img src="${p.image}" width="150" />
         <p>₹${p.price}</p>
-        <a href="product.html?id=${p.id}">👁 View</a>
+        <a href="vproduct.html?id=${p.id}">👁 View</a>
         <button onclick="addToCart(${p.id})">Add to Cart</button>
       `;
       list.appendChild(div);
@@ -19,7 +19,7 @@ fetch("data/products.json")
   });
 
 function addToCart(id) {
-  fetch("data/products.json")
+  fetch("vdata/products.json")
     .then((res) => res.json())
     .then((products) => {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
