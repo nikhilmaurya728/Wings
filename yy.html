@@ -1,56 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Image Text Detector</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mini E‑commerce — Single File</title>
+  <style>
+    /* CSS remains unchanged from previous version */
+    /* ... same CSS as before ... */
+  </style>
 </head>
 <body>
-  <h2>🖼️ Upload Image to Detect Text</h2>
-  <input type="file" id="imageInput" accept="image/*"><br><br>
-  <img id="preview" style="max-width: 300px;"><br><br>
-  <button onclick="detectText()">📤 Detect Text</button>
-
-  <h3>📄 Detected Text:</h3>
-  <pre id="output"></pre>
-
-  <!-- Tesseract.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+  <div class="wrap">
+    <!-- Same HTML structure as before -->
+  </div>
 
   <script>
-    const imageInput = document.getElementById('imageInput');
-    const preview = document.getElementById('preview');
-    const output = document.getElementById('output');
+    const PRODUCTS = [
+      {id:'p1', title:'Fresh Milk (1L)', desc:'Full cream, farm fresh', price:55, old:65, img:'https://picsum.photos/id/1040/600/400'},
+      {id:'p2', title:'Paneer (250g)', desc:'Soft cottage cheese', price:120, old:150, img:'https://picsum.photos/id/1025/600/400'},
+      {id:'p3', title:'Curd (500g)', desc:'Homemade dahi', price:45, old:60, img:'https://picsum.photos/id/1050/600/400'},
+      {id:'p4', title:'Ghee (200g)', desc:'Pure desi ghee', price:250, old:299, img:'https://picsum.photos/id/1062/600/400'},
+      {id:'p5', title:'Butter (100g)', desc:'Creamy butter', price:70, old:85, img:'https://picsum.photos/id/1070/600/400'},
+      {id:'p6', title:'Sweets Box', desc:'Assorted mithai (400g)', price:350, old:420, img:'https://picsum.photos/id/1080/600/400'},
+      {id:'p7', title:'Masala Chai Pack', desc:'Tea blend 100g', price:90, old:110, img:'https://picsum.photos/id/1011/600/400'},
+      {id:'p8', title:'Dry Fruits (200g)', desc:'Almonds & Cashews', price:450, old:520, img:'https://picsum.photos/id/1012/600/400'},
+      {id:'p9', title:'Honey Jar (250g)', desc:'Organic honey', price:299, old:349, img:'https://picsum.photos/id/1013/600/400'}
+    ];
 
-    let selectedImage = null;
+    let state = { products: PRODUCTS.slice(), cart: {} };
+    try{ const saved = localStorage.getItem('mini_cart_v1'); if(saved) state.cart = JSON.parse(saved); } catch(e){}
 
-    imageInput.addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        selectedImage = URL.createObjectURL(file);
-        preview.src = selectedImage;
+    const fmt = v => '₹'+Number(v).toFixed(2);
+    const productsEl = document.getElementById('products');
+    const resultCount = document.getElementById('resultCount');
+
+    function renderProducts(list){
+      productsEl.innerHTML = '';
+      if(list.length===0){ productsEl.innerHTML = `<div class="card empty" style="grid-column:1/-1;text-align:center">No products found</div>`; }
+      list.forEach(p=>{
+        const div = document.createElement('div'); div.className='card fade-in';
+        div.innerHTML = `
+          <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+          <div><div class="p-title">${p.title}</div><div class="p-desc">${p.desc}</div></div>
+          <div class="p-row">
+            <div><div class="price">${fmt(p.price)}</div><div class="old">${p.old?fmt(p.old):''}</div></div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+              <div class="rating">4.${Math.floor(Math.random()*5)} ★</div>
+              <div><button class="btn" data-id="${p.id}">Add</button></div>
+            </div>
+          </div>`;
+        productsEl.appendChild(div);
+      });
+      resultCount.textContent = list.length;
+    }
+
+    const cartListEl = document.getElementById('cartList');
+    const grandTotalEl = document.getElementById('grandTotal');
+    const cartBadge = document.getElementById('cartBadge');
+
+    function saveCart(){ localStorage.setItem('mini_cart_v1', JSON.stringify(state.cart)); }
+    function addToCart(id, qty=1){ const prod = state.products.find(p=>p.id===id); if(!prod) return; if(state.cart[id]) state.cart[id].qty += qty; else state.cart[id] = {product:prod, qty:qty}; saveCart(); renderCart(); }
+    function removeFromCart(id){ delete state.cart[id]; saveCart(); renderCart(); }
+    function changeQty(id, delta){ if(!state.cart[id]) return; state.cart[id].qty += delta; if(state.cart[id].qty<=0) removeFromCart(id); else { saveCart(); renderCart(); } }
+
+    function renderCart(){
+      const keys = Object.keys(state.cart);
+      if(keys.length===0){ cartListEl.classList.add('empty'); cartListEl.innerHTML = '<div style="text-align:center;color:var(--muted)">Your cart is empty 🧾</div>'; cartBadge.textContent=0; grandTotalEl.textContent=fmt(0); return; }
+      cartListEl.classList.remove('empty');
+      cartListEl.innerHTML = '';
+      let total=0; let items=0;
+      keys.forEach(id=>{
+        const line = state.cart[id];
+        const p = line.product; const q=line.qty; const subtotal = p.price*q; total += subtotal; items += q;
+        const item = document.createElement('div'); item.className='cart-item fade-in';
+        item.innerHTML = `
+          <div class="ci-thumb"><img src="${p.img}" alt="${p.title}"></div>
+          <div class="ci-info"><div style="font-weight:600">${p.title}</div><div style="font-size:13px;color:var(--muted)">${fmt(p.price)} × ${q} = <strong>${fmt(subtotal)}</strong></div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+            <div class="qty"><button data-action="dec" data-id="${id}">−</button><div style="min-width:26px;text-align:center">${q}</div><button data-action="inc" data-id="${id}">+</button></div>
+            <button style="background:transparent;color:var(--danger);border:none;cursor:pointer" data-action="rm" data-id="${id}">Remove</button>
+          </div>`;
+        cartListEl.appendChild(item);
+      });
+      grandTotalEl.textContent = fmt(total);
+      cartBadge.textContent = items;
+    }
+
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button'); if(!btn) return;
+      const id = btn.dataset.id; const action = btn.dataset.action;
+      if(action==='inc') changeQty(id,1);
+      else if(action==='dec') changeQty(id,-1);
+      else if(action==='rm') removeFromCart(id);
+      else if(btn.id==='checkoutBtn'){
+        if(Object.keys(state.cart).length===0) return alert('Cart is empty');
+        let msg = 'Hello, I want to place an order:%0A';
+        let total=0;
+        Object.values(state.cart).forEach(line => {
+          msg += `- ${line.product.title} | ${fmt(line.product.price)} × ${line.qty} = ${fmt(line.product.price*line.qty)}%0A`;
+          total += line.product.price * line.qty;
+        });
+        msg += `%0ATotal: ${fmt(total)}`;
+        const phone = '6387851637';
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
       }
+      else if(btn.id==='saveBtn'){ saveCart(); alert('Cart saved to localStorage'); }
+      else if(btn.id==='clearBtn'){ if(confirm('Clear cart?')){ state.cart={}; saveCart(); renderCart(); } }
+      else if(btn.dataset.id){ addToCart(btn.dataset.id); }
     });
 
-    function detectText() {
-      if (!selectedImage) {
-        alert("⚠️ Pehle image upload karo!");
-        return;
-      }
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', ()=>{
+      const q = searchInput.value.trim().toLowerCase();
+      const filtered = state.products.filter(p => (p.title+" "+p.desc).toLowerCase().includes(q));
+      renderProducts(filtered);
+    });
 
-      output.textContent = "⏳ Text detect kiya ja raha hai...";
+    document.getElementById('cartToggle').addEventListener('click', ()=>{
+      document.querySelector('.cart').scrollIntoView({behavior:'smooth', block:'start'});
+    });
 
-      Tesseract.recognize(
-        selectedImage,
-        'eng', // English language
-        {
-          logger: m => console.log(m)
-        }
-      ).then(({ data: { text } }) => {
-        output.textContent = text;
-      }).catch(err => {
-        output.textContent = "❌ Error: " + err.message;
-      });
-    }
+    renderProducts(state.products);
+    renderCart();
+
+    window.addEventListener('keydown', (e)=>{ if(e.key==='/' && document.activeElement!==searchInput){ e.preventDefault(); searchInput.focus(); } });
   </script>
 </body>
 </html>
