@@ -21,7 +21,9 @@
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     html,
@@ -30,7 +32,6 @@
     }
 
     body {
-      margin: 0;
       background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 45%);
       color: #0f172a;
       -webkit-font-smoothing: antialiased;
@@ -284,7 +285,9 @@
       background: var(--card);
       border-radius: var(--radius);
       padding: 12px;
-      box-shadow: var(--shadow)
+      box-shadow: var(--shadow);
+      margin: 40px 0;
+      
     }
 
     .cart h3 {
@@ -343,13 +346,7 @@
       margin-top: 10px
     }
 
-    /* Footer small */
-    footer {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center
-    }
+
 
     /* Empty state */
     .empty {
@@ -447,7 +444,7 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        
+
 
         <div class="appName1">
           <h1>Mini Market</h1>
@@ -545,7 +542,62 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
     </main>
 
-    <footer>Made for demo · single HTML file · tweak freely ✨</footer>
+    <footer style=" color:#000000; padding:40px 20px; font-family:Arial, sans-serif;">
+      <div
+        style="max-width:1200px; margin:auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:30px;">
+
+        <!-- About -->
+        <div>
+          <h3 style="color:#00096d;">💻 Second Hand Laptops</h3>
+          <p>
+            हम आपको देते हैं <b>best second hand laptops & PCs</b>
+            <b>सबसे कम दाम</b> पर, और साथ में मिलती है <b>1 साल* की warranty</b>।
+            हमारी <b>expert team</b> आपको देती है <b>सही suggestion</b> कि कौन सा
+            laptop आपके लिए perfect रहेगा।
+            यहाँ से आप <b>laptops, PCs और computer parts</b> आसानी से खरीद सकते हैं –
+            सब कुछ <b>Mini Market App</b> पर! 🚀
+          </p>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h4 style="color:#00096d;">⚡ Our Services</h4>
+          <ul style="list-style:none; padding:0; margin:0; line-height:1.8;">
+            <li>✔ Best Price Guarantee</li>
+            <li>✔ Free Suggestions for best Laptop</li>
+            <li>✔ 3 or 6 Months Warranty</li>
+            <li>✔ PC & Laptop Parts</li>
+            <li>✔ After Sales Support</li>
+          </ul>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 style="color:#00096d;">🔗 Quick Links</h4>
+          <ul style="list-style:none; padding:0; margin:0; line-height:1.8;">
+            <li><a href="#" style="color:#004cff; text-decoration:none;">Shop Laptops</a></li>
+            <li><a href="#" style="color:#004cff; text-decoration:none;">Shop PC Parts</a></li>
+            <li><a href="#" style="color:#004cff; text-decoration:none;">Warranty Policy</a></li>
+            <li><a href="tel:6387851637" style="color:#004cff; text-decoration:none;">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 style="color:#00096d;">📞 Contact Us</h4>
+          <p>📍 Address: Rajabajar, jaunpur UP</p>
+          <p>📞 Phone: +91-6387851637</p>
+          <p>✉ Email: support@minimarket.vercel.app</p>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div style="text-align:center; margin-top:30px; font-size:14px; border-top:1px solid #333; padding-top:15px;">
+        © 2025 Mini Market. All rights reserved. | Designed with ❤️
+      </div>
+    </footer>
+
   </div>
 
   <script>
@@ -848,9 +900,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       else if (btn.id === 'saveBtn') {
         saveCart(); alert('Cart saved to localStorage');
       }
-     /* else if (btn.id === 'clearBtn') {
-        if (confirm('Clear cart?')) { state.cart = {}; saveCart(); renderCart(); }
-      }*/
+      /* else if (btn.id === 'clearBtn') {
+         if (confirm('Clear cart?')) { state.cart = {}; saveCart(); renderCart(); }
+       }*/
       else if (btn.dataset.id) { addToCart(btn.dataset.id); }
     });
 
