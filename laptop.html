@@ -61,19 +61,79 @@
       gap: 12px
     }
 
+
+
+
+    /* logo */
     .logo {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #0b72ff, #6c8cff);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 18px;
-      box-shadow: var(--shadow)
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
     }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* popup */
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: #fff;
+      width: 320px;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+      float: right;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: red;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+
+
+
 
     .brand h1 {
       font-size: 18px;
@@ -137,7 +197,7 @@
 
     .products {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 16px
     }
 
@@ -148,7 +208,9 @@
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      gap: 12px
+      gap: 12px;
+      max-width: 400px;
+      min-width: 300px;
     }
 
     .thumb {
@@ -185,13 +247,23 @@
     }
 
     .price {
-      font-weight: 700
+      font-weight: 700;
+    }
+
+    .off {
+      font-weight: 700;
+      color: #16a34a;
     }
 
     .old {
       color: var(--muted);
       text-decoration: line-through;
       font-size: 13px
+    }
+
+    .shipping_cost {
+      font-weight: 100;
+      font-size: 10px
     }
 
     .rating {
@@ -289,10 +361,18 @@
       color: var(--muted)
     }
 
+    .appName1 {
+      display: block;
+    }
+
+    .appName2 {
+      display: none;
+    }
+
     /* Responsive */
     @media (max-width:980px) {
       .products {
-        grid-template-columns: repeat(2, 1fr)
+        grid-template-columns: repeat(1, 1fr)
       }
 
       .main {
@@ -309,6 +389,14 @@
         flex-direction: column;
         align-items: stretch;
         gap: 10px
+      }
+
+      .appName1 {
+        display: none;
+      }
+
+      .appName2 {
+        display: block;
       }
 
       .search {
@@ -359,10 +447,13 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo">MM</div>
-        <div>
+        <!-- <div class="logo">
+          <img src="https://picsum.photos/100" alt="logo">
+        </div>-->
+
+        <div class="appName1">
           <h1>Mini Market</h1>
-          <div style="font-size:12px;color:var(--muted)">Simple single-file demo · responsive · cart</div>
+          <div style="font-size:12px;color:var(--muted)">Simple single-file</div>
         </div>
       </div>
 
@@ -372,7 +463,43 @@
       </div>
 
       <div class="top-actions">
-        <button class="btn ghost" id="clearBtn">Clear Cart</button>
+        <!-- Logo -->
+        <div class="brand">
+          <div class="appName2">
+            <h1>Mini Market</h1>
+            <div style="font-size:12px;color:var(--muted)">Simple single-file</div>
+          </div>
+        </div>
+        <div style="width: calc(100% - 310px); background: lightblue; height: 100px;"></div>
+
+        <div class="logo" id="logoBtn">
+          <img src="https://picsum.photos/100" alt="logo">
+        </div>
+
+        <!-- Popup Modal -->
+        <div class="popup" id="popup">
+          <div class="popup-content">
+            <span class="close" id="closeBtn">&times;</span>
+            <h2>Company Details</h2>
+
+            <form id="detailsForm">
+              <label>Phone:</label>
+              <input type="text" id="phone" required><br><br>
+
+              <label>Name:</label>
+              <input type="text" id="name" required><br><br>
+
+              <label>Email:</label>
+              <input type="email" id="email" required><br><br>
+
+              <label>Address:</label>
+              <textarea id="address" rows="3" required></textarea><br><br>
+
+              <button type="submit">Save</button>
+            </form>
+          </div>
+        </div>
+
         <button class="btn" id="cartToggle">🛒 Cart <span id="cartBadge"
             style="margin-left:8px;background:white;color:var(--accent);padding:4px 8px;border-radius:999px;font-weight:700">0</span></button>
       </div>
@@ -405,7 +532,10 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           </div>
           <div class="total">
             <div><strong>Total</strong></div>
-            <div><strong id="grandTotal">₹0.00</strong></div>
+            <div><strong id="grandTotal">₹0.00</strong>
+              <div><span class="old" id="before_grandTotal"></span> <span class="off" id="totalOff"></span> </div>
+            </div>
+
           </div>
           <div style="display:flex;gap:8px;margin-top:12px">
             <button class="btn" id="checkoutBtn">Checkout</button>
@@ -413,6 +543,8 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           </div>
         </div>
       </aside>
+
+
     </main>
 
     <footer>Made for demo · single HTML file · tweak freely ✨</footer>
@@ -420,85 +552,94 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
   <script>
     // ===== SAMPLE PRODUCTS =====
-   const PRODUCTS = [
-  {
-    id: 'p1',
-    title: 'Fresh Milk (1L)',
-    desc: 'Full cream, farm fresh',
-    price: 55,
-    old: 65,
-    img: 'https://picsum.photos/id/1040/600/400',
-    images: [
-      'https://picsum.photos/id/1040/600/400',
-      'https://picsum.photos/id/1041/600/400'
-    ],
-    videos: [
-      'https://www.youtube.com/embed/tgbNymZ7vqY',
-      'https://www.youtube.com/embed/ysz5S6PUM-U'
-    ]
-  },
-  {
-    id: 'p2',
-    title: 'Organic Eggs (12 pcs)',
-    desc: 'Free-range organic eggs, rich in protein',
-    price: 120,
-    old: 140,
-    img: 'https://picsum.photos/id/1050/600/400',
-    images: [
-      'https://picsum.photos/id/1050/600/400',
-      'https://picsum.photos/id/1051/600/400'
-    ],
-    videos: [
-      'https://www.youtube.com/embed/aqz-KE-bpKQ'
-    ]
-  },
-  {
-    id: 'p3',
-    title: 'Brown Bread (400g)',
-    desc: 'Whole wheat, high fiber bread',
-    price: 45,
-    old: 55,
-    img: 'https://picsum.photos/id/1060/600/400',
-    images: [
-      'https://picsum.photos/id/1060/600/400',
-      'https://picsum.photos/id/1061/600/400'
-    ],
-    videos: [
-      'https://www.youtube.com/embed/VYOjWnS4cMY'
-    ]
-  },
-  {
-    id: 'p4',
-    title: 'Fresh Bananas (1kg)',
-    desc: 'Naturally ripened, sweet bananas',
-    price: 70,
-    old: 85,
-    img: 'https://picsum.photos/id/1070/600/400',
-    images: [
-      'https://picsum.photos/id/1070/600/400',
-      'https://picsum.photos/id/1071/600/400'
-    ],
-    videos: [
-      'https://www.youtube.com/embed/2vjPBrBU-TM'
-    ]
-  },
-  {
-    id: 'p5',
-    title: 'Basmati Rice (5kg)',
-    desc: 'Long grain, premium basmati rice',
-    price: 450,
-    old: 500,
-    img: 'https://picsum.photos/id/1080/600/400',
-    images: [
-      'https://picsum.photos/id/1080/600/400',
-      'https://picsum.photos/id/1081/600/400'
-    ],
-    videos: [
-      'https://www.youtube.com/embed/lTTajzrSkCw'
-    ]
-  }
-];
-
+    const PRODUCTS = [
+      {
+        id: 'p1',
+        title: 'Fresh Milk (1L)',
+        desc: 'Full cream, farm fresh',
+        star: 3.9,
+        price: 900,
+        old: 900,
+        shipping_cost: 10,
+        img: 'https://picsum.photos/id/1040/600/400',
+        images: [
+          'https://picsum.photos/id/1040/600/400',
+          'https://picsum.photos/id/1041/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/tgbNymZ7vqY',
+          'https://www.youtube.com/embed/ysz5S6PUM-U'
+        ]
+      },
+      {
+        id: 'p2',
+        title: 'Organic Eggs (12 pcs)',
+        desc: 'Free-range organic eggs, rich in protein',
+        star: 4.3,
+        price: 120,
+        old: 140,
+        shipping_cost: 30,
+        img: 'https://picsum.photos/id/1050/600/400',
+        images: [
+          'https://picsum.photos/id/1050/600/400',
+          'https://picsum.photos/id/1051/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/aqz-KE-bpKQ'
+        ]
+      },
+      {
+        id: 'p3',
+        title: 'Brown Bread (400g)',
+        desc: 'Whole wheat, high fiber bread',
+        star: 2.9,
+        price: 45,
+        old: 55,
+        shipping_cost: 40,
+        img: 'https://picsum.photos/id/1060/600/400',
+        images: [
+          'https://picsum.photos/id/1060/600/400',
+          'https://picsum.photos/id/1061/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/VYOjWnS4cMY'
+        ]
+      },
+      {
+        id: 'p4',
+        title: 'Fresh Bananas (1kg)',
+        desc: 'Naturally ripened, sweet bananas',
+        star: 5.0,
+        price: 70,
+        old: 85,
+        shipping_cost: 50,
+        img: 'https://picsum.photos/id/1070/600/400',
+        images: [
+          'https://picsum.photos/id/1070/600/400',
+          'https://picsum.photos/id/1071/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/2vjPBrBU-TM'
+        ]
+      },
+      {
+        id: 'p5',
+        title: 'Basmati Rice (5kg)',
+        desc: 'Long grain, premium basmati rice',
+        star: 4.2,
+        price: 450,
+        old: 500,
+        shipping_cost: 70,
+        img: 'https://picsum.photos/id/1080/600/400',
+        images: [
+          'https://picsum.photos/id/1080/600/400',
+          'https://picsum.photos/id/1081/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/lTTajzrSkCw'
+        ]
+      }
+    ];
 
 
     // ===== App State =====
@@ -522,50 +663,58 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
     function renderProducts(list) {
       productsEl.innerHTML = '';
+      if (list.length === 0) {
+        productsEl.innerHTML = `<div class="card empty" style="grid-column:1/-1;text-align:center">No products found</div>`;
+      }
       list.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'card fade-in';
-
-        // पहले image index = 0 दिखाएंगे
+        const div = document.createElement('div'); div.className = 'card fade-in';
         div.innerHTML = `
-      <div class="thumb">
-        <img src="${p.images[0]}" data-index="0" alt="${p.title}" loading="lazy">
-      </div>
-      <div class="p-title">${p.title}</div>
-      <div class="p-desc">${p.desc}</div>
-      <button class="btn" data-id="${p.id}">Add</button>
-      <button class="btn ghost" data-view="${p.id}">View Product</button>
+          <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+          <div>
+            <div class="p-title">${p.title}</div>
+            <div class="p-desc">${p.desc}</div>
+          </div>
+          <div class="p-row">
+            <div>
+              <div class="price">${fmt(p.price)}</div>
+              <div><span class="old">${p.old ? fmt(p.old) : ''}</span> <span class="off">${p.old !== p.price ? fmt((p.old - p.price) * 100 / p.old) + '% off ' : 'On MRP'}</span> </div>
 
-    `;
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+              <div class="rating">${p.star} ★</div>
+              <div>
+                <button class="btn ghost" data-view="${p.id}">View</button>
 
-        // Image click करने पर अगला image दिखे
-        const imgEl = div.querySelector('img');
-        imgEl.addEventListener('click', () => {
-          let idx = Number(imgEl.dataset.index);
-          idx = (idx + 1) % p.images.length;
-          imgEl.src = p.images[idx];
-          imgEl.dataset.index = idx;
-        });
-
+                <button class="btn" data-id="${p.id}">Add</button>
+              </div>
+            </div>
+          </div>
+        `;
         productsEl.appendChild(div);
       });
       resultCount.textContent = list.length;
     }
 
     document.addEventListener('click', (e) => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
+      const btn = e.target.closest('button');
+      if (!btn) return;
 
-  // View Product
-  if (btn.dataset.view) {
-    const id = btn.dataset.view;
-    const prod = state.products.find(p => p.id === id);
-    if (!prod) return;
+      // View Product
+      if (btn.dataset.view) {
+        const id = btn.dataset.view;
+        const prod = state.products.find(p => p.id === id);
+        if (!prod) return;
 
-    const modalContent = document.getElementById('modalContent');
-    modalContent.innerHTML = `
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
       <h2>${prod.title}</h2>
       <p>${prod.desc}</p>
+      
+      <div>
+        <div class="price">${fmt(prod.price)} <span class="shipping_cost"> +${prod.shipping_cost}₹ Shipping Cost</span></div>
+        <div><span class="old">${prod.old ? fmt(prod.old) : ''}</span> <span class="off">${prod.old !== prod.price ? fmt((prod.old - prod.price) * 100 / prod.old) + '% off ' : 'On MRP'}</span> </div>
+      </div>
+      
       <h3>Images</h3>
       <div style="display:flex;gap:10px;overflow-x:auto;">
         ${prod.images.map(img => `<img src="${img}" style="width:200px;border-radius:8px">`).join('')}
@@ -575,21 +724,24 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         ${prod.videos.map(v => `<iframe width="100%" height="250" src="${v}" frameborder="0" allowfullscreen></iframe>`).join('')}
       </div>
       <div style="margin-top:15px;font-weight:bold">Price: ₹${prod.price}</div>
+      <div style="margin-top:15px;font-weight:bold"> We </div>
     `;
 
-    document.getElementById('productModal').style.display = 'flex';
-  }
+        document.getElementById('productModal').style.display = 'flex';
+      }
 
-  // Close Modal
-  if (btn.id === 'closeModal') {
-    document.getElementById('productModal').style.display = 'none';
-  }
-});
+      // Close Modal
+      if (btn.id === 'closeModal') {
+        document.getElementById('productModal').style.display = 'none';
+      }
+    });
 
 
     // ===== Cart UI =====
     const cartListEl = document.getElementById('cartList');
     const grandTotalEl = document.getElementById('grandTotal');
+    const before_grandTotalEl = document.getElementById('before_grandTotal');
+    const totalOff = document.getElementById('totalOff');
     const cartBadge = document.getElementById('cartBadge');
 
     function saveCart() {
@@ -603,18 +755,38 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       saveCart(); renderCart();
     }
 
-    function removeFromCart(id) { delete state.cart[id]; saveCart(); renderCart(); }
-    function changeQty(id, delta) { if (!state.cart[id]) return; state.cart[id].qty += delta; if (state.cart[id].qty <= 0) removeFromCart(id); else { saveCart(); renderCart(); } }
+    function removeFromCart(id) {
+      delete state.cart[id]; saveCart(); renderCart();
+    }
+    function changeQty(id, delta) {
+      if (!state.cart[id]) return; state.cart[id].qty += delta; if (state.cart[id].qty <= 0) removeFromCart(id); else { saveCart(); renderCart(); }
+    }
 
+    let totalShipping = 0, maxShipping = 0;
     function renderCart() {
       const keys = Object.keys(state.cart);
-      if (keys.length === 0) { cartListEl.classList.add('empty'); cartListEl.innerHTML = '<div style="text-align:center;color:var(--muted)">Your cart is empty 🧾</div>'; cartBadge.textContent = 0; grandTotalEl.textContent = fmt(0); return; }
+      if (keys.length === 0) { cartListEl.classList.add('empty'); cartListEl.innerHTML = '<div style="text-align:center;color:var(--muted)">Your cart is empty 🧾</div>'; cartBadge.textContent = 0; grandTotalEl.textContent = fmt(0); before_grandTotalEl.textContent = fmt(0); totalOff.textContent = 0; return; }
       cartListEl.classList.remove('empty');
       cartListEl.innerHTML = '';
-      let total = 0; let items = 0;
+      let total = 0; let items = 0; let before_total = 0;
+      totalShipping = 0; maxShipping = 0;
+
+
       keys.forEach(id => {
         const line = state.cart[id];
-        const p = line.product; const q = line.qty; const subtotal = p.price * q; total += subtotal; items += q;
+        const p = line.product; const q = line.qty; const subtotal = p.price * q; total += subtotal; const before_subtotal = p.old * q; before_total += before_subtotal; items += q;
+
+
+
+
+        // Shipping cost logic (per product * qty)
+        totalShipping += p.shipping_cost * q;
+        if (p.shipping_cost > maxShipping) {
+          maxShipping = p.shipping_cost;
+        }
+
+
+
         const item = document.createElement('div'); item.className = 'cart-item fade-in';
         item.innerHTML = `
           <div class="ci-thumb"><img src="${p.img}" alt="${p.title}"></div>
@@ -633,7 +805,10 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         `;
         cartListEl.appendChild(item);
       });
-      grandTotalEl.textContent = fmt(total);
+
+      grandTotalEl.textContent = fmt(total) + ' +' + maxShipping + '₹';
+      before_grandTotalEl.textContent = fmt(before_total) + ' +' + totalShipping + '₹';
+      totalOff.textContent = fmt((before_total + totalShipping - total - maxShipping) * 100 / (before_total + totalShipping)) + '% Off';
       cartBadge.textContent = items;
     }
 
@@ -642,6 +817,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       const btn = e.target.closest('button'); if (!btn) return;
       const id = btn.dataset.id;
       const action = btn.dataset.action;
+
       if (action === 'inc') changeQty(id, 1);
       else if (action === 'dec') changeQty(id, -1);
       else if (action === 'rm') removeFromCart(id);
@@ -650,7 +826,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           return alert('Cart is empty');
         }
 
-        let message = "🛒 *New Order*\n\n";
+
+
+        let message = `🛒 *New Order* ${usrNo}\n\n`;
         let total = 0;
         Object.values(state.cart).forEach(item => {
           const p = item.product;
@@ -659,6 +837,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           total += subtotal;
           message += `• ${p.title}\n  Price: ₹${p.price}\n  Qty: ${qty}\n  Subtotal: ₹${subtotal}\n\n`;
         });
+        message += `Total Shipping is ${totalShipping}₹ but we take *only ${maxShipping}₹* \n`;
         message += `*Total Amount:* ₹${total}`;
 
         // Encode and open WhatsApp
@@ -671,9 +850,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       else if (btn.id === 'saveBtn') {
         saveCart(); alert('Cart saved to localStorage');
       }
-      else if (btn.id === 'clearBtn') {
+     /* else if (btn.id === 'clearBtn') {
         if (confirm('Clear cart?')) { state.cart = {}; saveCart(); renderCart(); }
-      }
+      }*/
       else if (btn.dataset.id) { addToCart(btn.dataset.id); }
     });
 
@@ -700,7 +879,68 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); }
     });
 
+
+
+
+
+
+
+
+
+
+
+
+    // load details from localStorage
+    let usrNo;
+    function loadDetails() {
+      const details = JSON.parse(localStorage.getItem("companyDetails")) || {
+        phone: "",
+        name: "",
+        email: "",
+        address: ""
+      };
+      usrNo = details.phone;
+      document.getElementById("phone").value = details.phone;
+      document.getElementById("name").value = details.name;
+      document.getElementById("email").value = details.email;
+      document.getElementById("address").value = details.address;
+    }
+
+    // save details to localStorage
+    document.getElementById("detailsForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      usrNo = document.getElementById("phone").value;
+      const details = {
+        phone: document.getElementById("phone").value,
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value
+      };
+      localStorage.setItem("companyDetails", JSON.stringify(details));
+      alert("Details saved successfully ✅");
+      document.getElementById("popup").style.display = "none";
+    });
+
+    // open popup
+    document.getElementById("logoBtn").addEventListener("click", () => {
+      loadDetails();
+      document.getElementById("popup").style.display = "block";
+    });
+
+    // close popup
+    document.getElementById("closeBtn").addEventListener("click", () => {
+      document.getElementById("popup").style.display = "none";
+    });
+
+    // close when clicking outside
+    window.addEventListener("click", (e) => {
+      if (e.target.id === "popup") {
+        document.getElementById("popup").style.display = "none";
+      }
+    });
   </script>
+
+
 </body>
 
 </html>

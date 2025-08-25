@@ -1,69 +1,778 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <title>QR Code Reader (Back Camera)</title>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mini E‑commerce — Single File</title>
   <style>
-    #reader {
-      width: 100%;
-      max-width: 400px;
-      margin: auto;
-      border: 2px solid #000;
-      border-radius: 10px;
-      padding: 10px;
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #0b72ff;
+      --success: #16a34a;
+      --danger: #ef4444;
+      --glass: rgba(255, 255, 255, 0.6);
+      --maxWidth: 1100px;
+      --shadow: 0 6px 18px rgba(12, 24, 48, 0.08);
+      --radius: 12px;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
-    #result {
-      margin-top: 10px;
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 45%);
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px 18px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: var(--maxWidth)
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      /* image crop in circle */
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+
+    .brand h1 {
       font-size: 18px;
-      text-align: center;
+      margin: 0
+    }
+
+    .search {
+      flex: 1;
+      margin: 0 14px;
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 12px 44px 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #e6eefc;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      outline: none
+    }
+
+    .search .icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: .6
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(11, 114, 255, 0.12)
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(11, 114, 255, 0.12);
+      box-shadow: none
+    }
+
+    /* Layout */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 18px;
+      align-items: start
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 400px;
+      min-width: 300px;
+    }
+
+    .thumb {
+      height: 140px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f0f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .p-title {
+      font-weight: 600;
+      font-size: 15px
+    }
+
+    .p-desc {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .p-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px
+    }
+
+    .price {
+      font-weight: 700;
+    }
+
+    .off {
+      font-weight: 700;
+      color: #16a34a;
+    }
+
+    .old {
+      color: var(--muted);
+      text-decoration: line-through;
+      font-size: 13px
+    }
+
+    .shipping_cost {
+      font-weight: 100;
+      font-size: 10px
+    }
+
+    .rating {
+      background: #f1f8ff;
+      padding: 6px 8px;
+      border-radius: 8px;
+      color: #0b61d1;
+      font-weight: 600
+    }
+
+    /* Cart */
+    .cart {
+      position: sticky;
+      top: 18px
+    }
+
+    .cart .cart-box {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow)
+    }
+
+    .cart h3 {
+      margin: 0 0 8px 0
+    }
+
+    .cart-list {
+      max-height: 320px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .ci-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      overflow: hidden
+    }
+
+    .ci-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .ci-info {
+      flex: 1
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .qty button {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1px solid #e6eefc;
+      background: transparent
+    }
+
+    .total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px
+    }
+
+    /* Footer small */
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center
+    }
+
+    /* Empty state */
+    .empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      color: var(--muted)
+    }
+
+    /* Responsive */
+    @media (max-width:980px) {
+      .products {
+        grid-template-columns: repeat(1, 1fr)
+      }
+
+      .main {
+        grid-template-columns: 1fr 320px
+      }
+    }
+
+    @media (max-width:760px) {
+      body {
+        padding: 18px 12px
+      }
+
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px
+      }
+
+      .search {
+        order: 3
+      }
+
+      .main {
+        grid-template-columns: 1fr;
+      }
+
+      .cart {
+        position: static
+      }
+
+      .products {
+        grid-template-columns: 1fr
+      }
+
+      .thumb {
+        height: 200px
+      }
+    }
+
+    /* little micro animations */
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    .fade-in {
+      animation: fade .35s ease both
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
     }
   </style>
 </head>
+
 <body>
-  <h2 style="text-align:center;">📷 Scan QR Code (Back Camera)</h2>
-  <div id="reader"></div>
-  <div id="result">🔍 Waiting for QR...</div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">
+          <img src="https://picsum.photos/100" alt="logo">
+        </div>
+
+        <div>
+          <h1>Mini Market</h1>
+          <div style="font-size:12px;color:var(--muted)">Simple single-file demo · responsive · cart</div>
+        </div>
+      </div>
+
+      <div class="search">
+        <input id="searchInput" placeholder="Search products, e.g. milk, candies..." />
+        <div class="icon">🔎</div>
+      </div>
+
+      <div class="top-actions">
+        <div class="logo">
+          <img src="https://picsum.photos/100" alt="logo">
+        </div>
+
+        <button class="btn ghost" id="clearBtn">Clear Cart</button>
+        <button class="btn" id="cartToggle">🛒 Cart <span id="cartBadge"
+            style="margin-left:8px;background:white;color:var(--accent);padding:4px 8px;border-radius:999px;font-weight:700">0</span></button>
+      </div>
+    </header>
+
+    <main class="main">
+      <div id="productModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;">
+        <div
+          style="background:#fff;padding:20px;border-radius:12px;width:90%;max-width:800px;max-height:90%;overflow:auto;position:relative;">
+          <button id="closeModal" style="position:absolute;top:10px;right:10px;font-size:18px;">❌</button>
+          <div id="modalContent"></div>
+        </div>
+      </div>
+
+      <section>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <h2 style="margin:0">Products</h2>
+          <div style="color:var(--muted);font-size:14px">Showing <span id="resultCount">0</span> items</div>
+        </div>
+
+        <div id="products" class="products"></div>
+      </section>
+
+      <aside class="cart">
+        <div class="cart-box">
+          <h3>Cart</h3>
+          <div id="cartList" class="cart-list empty">
+            <div style="text-align:center;color:var(--muted)">Your cart is empty 🧾</div>
+          </div>
+          <div class="total">
+            <div><strong>Total</strong></div>
+            <div><strong id="grandTotal">₹0.00</strong>
+              <div><span class="old" id="before_grandTotal"></span> <span class="off" id="totalOff"></span> </div>
+            </div>
+
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" id="checkoutBtn">Checkout</button>
+            <button class="btn ghost" id="saveBtn">Save Cart</button>
+          </div>
+        </div>
+      </aside>
+
+
+    </main>
+
+    <footer>Made for demo · single HTML file · tweak freely ✨</footer>
+  </div>
 
   <script>
-    const resultDiv = document.getElementById('result');
-
-    function onScanSuccess(decodedText, decodedResult) {
-      console.log(`Code matched = ${decodedText}`, decodedResult);
-      resultDiv.innerHTML = `✅ QR Code: ${decodedText}`;
-      html5QrcodeScanner.clear();
-    }
-
-    function startScanner(cameraId) {
-      const html5QrCode = new Html5Qrcode("reader");
-      html5QrCode.start(
-        cameraId,
-        {
-          fps: 10,    // frames per second
-          qrbox: 250  // size of scanning box (can be adjusted)
-        },
-        onScanSuccess
-      );
-    }
-
-    // Get back camera (if available)
-    Html5Qrcode.getCameras().then(cameras => {
-      if (cameras && cameras.length) {
-        // Try to find the back camera
-        const backCamera = cameras.find(camera => 
-          camera.label.toLowerCase().includes('back')
-        );
-
-        const selectedCameraId = backCamera ? backCamera.id : cameras[0].id;
-        startScanner(selectedCameraId);
-      } else {
-        resultDiv.innerHTML = "❌ No camera found.";
+    // ===== SAMPLE PRODUCTS =====
+    const PRODUCTS = [
+      {
+        id: 'p1',
+        title: 'Fresh Milk (1L)',
+        desc: 'Full cream, farm fresh',
+        star: 3.9,
+        price: 900,
+        old: 900,
+        shipping_cost: 10,
+        img: 'https://picsum.photos/id/1040/600/400',
+        images: [
+          'https://picsum.photos/id/1040/600/400',
+          'https://picsum.photos/id/1041/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/tgbNymZ7vqY',
+          'https://www.youtube.com/embed/ysz5S6PUM-U'
+        ]
+      },
+      {
+        id: 'p2',
+        title: 'Organic Eggs (12 pcs)',
+        desc: 'Free-range organic eggs, rich in protein',
+        star: 4.3,
+        price: 120,
+        old: 140,
+        shipping_cost: 30,
+        img: 'https://picsum.photos/id/1050/600/400',
+        images: [
+          'https://picsum.photos/id/1050/600/400',
+          'https://picsum.photos/id/1051/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/aqz-KE-bpKQ'
+        ]
+      },
+      {
+        id: 'p3',
+        title: 'Brown Bread (400g)',
+        desc: 'Whole wheat, high fiber bread',
+        star: 2.9,
+        price: 45,
+        old: 55,
+        shipping_cost: 40,
+        img: 'https://picsum.photos/id/1060/600/400',
+        images: [
+          'https://picsum.photos/id/1060/600/400',
+          'https://picsum.photos/id/1061/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/VYOjWnS4cMY'
+        ]
+      },
+      {
+        id: 'p4',
+        title: 'Fresh Bananas (1kg)',
+        desc: 'Naturally ripened, sweet bananas',
+        star: 5.0,
+        price: 70,
+        old: 85,
+        shipping_cost: 50,
+        img: 'https://picsum.photos/id/1070/600/400',
+        images: [
+          'https://picsum.photos/id/1070/600/400',
+          'https://picsum.photos/id/1071/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/2vjPBrBU-TM'
+        ]
+      },
+      {
+        id: 'p5',
+        title: 'Basmati Rice (5kg)',
+        desc: 'Long grain, premium basmati rice',
+        star: 4.2,
+        price: 450,
+        old: 500,
+        shipping_cost: 70,
+        img: 'https://picsum.photos/id/1080/600/400',
+        images: [
+          'https://picsum.photos/id/1080/600/400',
+          'https://picsum.photos/id/1081/600/400'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/lTTajzrSkCw'
+        ]
       }
-    }).catch(err => {
-      resultDiv.innerHTML = `⚠️ Error: ${err}`;
+    ];
+
+
+    // ===== App State =====
+    let state = {
+      products: PRODUCTS.slice(),
+      cart: {}, // {id: {product, qty}}
+    };
+
+    // Load saved cart
+    try {
+      const saved = localStorage.getItem('mini_cart_v1');
+      if (saved) state.cart = JSON.parse(saved);
+    } catch (e) { console.warn('load cart failed', e) }
+
+    // ===== Helpers =====
+    const fmt = v => '₹' + Number(v).toFixed(2);
+
+    // ===== Render Products =====
+    const productsEl = document.getElementById('products');
+    const resultCount = document.getElementById('resultCount');
+
+    function renderProducts(list) {
+      productsEl.innerHTML = '';
+      if (list.length === 0) {
+        productsEl.innerHTML = `<div class="card empty" style="grid-column:1/-1;text-align:center">No products found</div>`;
+      }
+      list.forEach(p => {
+        const div = document.createElement('div'); div.className = 'card fade-in';
+        div.innerHTML = `
+          <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+          <div>
+            <div class="p-title">${p.title}</div>
+            <div class="p-desc">${p.desc}</div>
+          </div>
+          <div class="p-row">
+            <div>
+              <div class="price">${fmt(p.price)}</div>
+              <div><span class="old">${p.old ? fmt(p.old) : ''}</span> <span class="off">${p.old !== p.price ? fmt((p.old - p.price) * 100 / p.old) + '% off ' : 'On MRP'}</span> </div>
+
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+              <div class="rating">${p.star} ★</div>
+              <div>
+                <button class="btn ghost" data-view="${p.id}">View</button>
+
+                <button class="btn" data-id="${p.id}">Add</button>
+              </div>
+            </div>
+          </div>
+        `;
+        productsEl.appendChild(div);
+      });
+      resultCount.textContent = list.length;
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+
+      // View Product
+      if (btn.dataset.view) {
+        const id = btn.dataset.view;
+        const prod = state.products.find(p => p.id === id);
+        if (!prod) return;
+
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
+      <h2>${prod.title}</h2>
+      <p>${prod.desc}</p>
+      
+      <div>
+        <div class="price">${fmt(prod.price)} <span class="shipping_cost"> +${prod.shipping_cost}₹ Shipping Cost</span></div>
+        <div><span class="old">${prod.old ? fmt(prod.old) : ''}</span> <span class="off">${prod.old !== prod.price ? fmt((prod.old - prod.price) * 100 / prod.old) + '% off ' : 'On MRP'}</span> </div>
+      </div>
+      
+      <h3>Images</h3>
+      <div style="display:flex;gap:10px;overflow-x:auto;">
+        ${prod.images.map(img => `<img src="${img}" style="width:200px;border-radius:8px">`).join('')}
+      </div>
+      <h3>Videos</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${prod.videos.map(v => `<iframe width="100%" height="250" src="${v}" frameborder="0" allowfullscreen></iframe>`).join('')}
+      </div>
+      <div style="margin-top:15px;font-weight:bold">Price: ₹${prod.price}</div>
+      <div style="margin-top:15px;font-weight:bold"> We </div>
+    `;
+
+        document.getElementById('productModal').style.display = 'flex';
+      }
+
+      // Close Modal
+      if (btn.id === 'closeModal') {
+        document.getElementById('productModal').style.display = 'none';
+      }
     });
+
+
+    // ===== Cart UI =====
+    const cartListEl = document.getElementById('cartList');
+    const grandTotalEl = document.getElementById('grandTotal');
+    const before_grandTotalEl = document.getElementById('before_grandTotal');
+    const totalOff = document.getElementById('totalOff');
+    const cartBadge = document.getElementById('cartBadge');
+
+    function saveCart() {
+      try { localStorage.setItem('mini_cart_v1', JSON.stringify(state.cart)); } catch (e) { console.warn('save failed', e) }
+    }
+
+    function addToCart(id, qty = 1) {
+      const prod = state.products.find(p => p.id === id);
+      if (!prod) return;
+      if (state.cart[id]) state.cart[id].qty += qty; else state.cart[id] = { product: prod, qty: qty };
+      saveCart(); renderCart();
+    }
+
+    function removeFromCart(id) {
+      delete state.cart[id]; saveCart(); renderCart();
+    }
+    function changeQty(id, delta) {
+      if (!state.cart[id]) return; state.cart[id].qty += delta; if (state.cart[id].qty <= 0) removeFromCart(id); else { saveCart(); renderCart(); }
+    }
+
+    let totalShipping = 0, maxShipping = 0;
+    function renderCart() {
+      const keys = Object.keys(state.cart);
+      if (keys.length === 0) { cartListEl.classList.add('empty'); cartListEl.innerHTML = '<div style="text-align:center;color:var(--muted)">Your cart is empty 🧾</div>'; cartBadge.textContent = 0; grandTotalEl.textContent = fmt(0); before_grandTotalEl.textContent = fmt(0); totalOff.textContent = 0; return; }
+      cartListEl.classList.remove('empty');
+      cartListEl.innerHTML = '';
+      let total = 0; let items = 0; let before_total = 0;
+      totalShipping = 0;
+
+
+      keys.forEach(id => {
+        const line = state.cart[id];
+        const p = line.product; const q = line.qty; const subtotal = p.price * q; total += subtotal; const before_subtotal = p.old * q; before_total += before_subtotal; items += q;
+
+
+
+
+        // Shipping cost logic (per product * qty)
+        totalShipping += p.shipping_cost * q;
+        if (p.shipping_cost > maxShipping) {
+          maxShipping = p.shipping_cost;
+        }
+
+
+
+        const item = document.createElement('div'); item.className = 'cart-item fade-in';
+        item.innerHTML = `
+          <div class="ci-thumb"><img src="${p.img}" alt="${p.title}"></div>
+          <div class="ci-info">
+            <div style="font-weight:600">${p.title}</div>
+            <div style="font-size:13px;color:var(--muted)">${fmt(p.price)} × ${q} = <strong>${fmt(subtotal)}</strong></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+            <div class="qty">
+              <button data-action="dec" data-id="${id}">−</button>
+              <div style="min-width:26px;text-align:center">${q}</div>
+              <button data-action="inc" data-id="${id}">+</button>
+            </div>
+            <button style="background:transparent;color:var(--danger);border:none;cursor:pointer" data-action="rm" data-id="${id}">Remove</button>
+          </div>
+        `;
+        cartListEl.appendChild(item);
+      });
+
+      grandTotalEl.textContent = fmt(total) + ' +' + maxShipping + '₹';
+      before_grandTotalEl.textContent = fmt(before_total) + ' +' + totalShipping + '₹';
+      totalOff.textContent = fmt((before_total + totalShipping - total - maxShipping) * 100 / (before_total + totalShipping)) + '% Off';
+      cartBadge.textContent = items;
+    }
+
+    // ===== Wire up events =====
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('button'); if (!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+
+      if (action === 'inc') changeQty(id, 1);
+      else if (action === 'dec') changeQty(id, -1);
+      else if (action === 'rm') removeFromCart(id);
+      else if (btn.id === 'checkoutBtn') {
+        if (Object.keys(state.cart).length === 0) {
+          return alert('Cart is empty');
+        }
+
+
+
+        let message = "🛒 *New Order*\n\n";
+        let total = 0;
+        Object.values(state.cart).forEach(item => {
+          const p = item.product;
+          const qty = item.qty;
+          const subtotal = p.price * qty;
+          total += subtotal;
+          message += `• ${p.title}\n  Price: ₹${p.price}\n  Qty: ${qty}\n  Subtotal: ₹${subtotal}\n\n`;
+        });
+        message += `Total Shipping is ${totalShipping}₹ but we take *only ${maxShipping}₹* \n`;
+        message += `*Total Amount:* ₹${total}`;
+
+        // Encode and open WhatsApp
+        const encodedMessage = encodeURIComponent(message);
+        const phone = "916387851637"; // with country code (91 for India)
+        const url = `https://wa.me/${phone}?text=${encodedMessage}`;
+        window.open(url, "_blank");
+      }
+
+      else if (btn.id === 'saveBtn') {
+        saveCart(); alert('Cart saved to localStorage');
+      }
+      else if (btn.id === 'clearBtn') {
+        if (confirm('Clear cart?')) { state.cart = {}; saveCart(); renderCart(); }
+      }
+      else if (btn.dataset.id) { addToCart(btn.dataset.id); }
+    });
+
+    // Search
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      const filtered = state.products.filter(p => (p.title + " " + p.desc).toLowerCase().includes(q));
+      renderProducts(filtered);
+    });
+
+    // cart toggle fake (scroll to cart)
+    document.getElementById('cartToggle').addEventListener('click', () => {
+      const cartEl = document.querySelector('.cart');
+      cartEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // init
+    renderProducts(state.products);
+    renderCart();
+
+    // Quick keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); }
+    });
+
   </script>
 </body>
+
 </html>
