@@ -674,8 +674,6 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     ${addr.address}
   </label>
 </div>
-
-        
       </div>
     `;
       });
@@ -949,7 +947,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     } catch (e) { console.warn('load cart failed', e) }
 
     // ===== Helpers =====
-    const fmt = v => '₹' + Number(v).toFixed(2);
+    const fmt = v => '₹' + Number(v).toFixed(0);
 
     // ===== Render Products =====
     const productsEl = document.getElementById('products');
