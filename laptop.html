@@ -117,7 +117,7 @@
     }
 
     .close:hover {
-      color: red;
+      color: #c00000;
     }
 
     input,
@@ -1237,7 +1237,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     // अगर name नहीं है तो "?" दिखे
     let firstLetter = usrName && usrName.length > 0
       ? usrName.charAt(0).toUpperCase()
-      : "?";
+      : "🙎🏻‍♂️";
 
     document.getElementById("logoBtn").innerText = firstLetter;
 
@@ -1252,6 +1252,8 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         let value = (hash >> (i * 8)) & 0xFF;
         color += ("00" + value.toString(16)).slice(-2);
       }
+      if (!str) color = '#f00000';
+
       return color;
     }
     const logo = document.getElementById("logoBtn");
