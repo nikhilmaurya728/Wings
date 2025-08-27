@@ -10,7 +10,7 @@
       --bg: #f6f8fb;
       --card: #ffffff;
       --muted: #6b7280;
-      --accent: #0b72ff;
+      --accent: #1e669b;
       --success: #16a34a;
       --danger: #ef4444;
       --glass: rgba(255, 255, 255, 0.6);
@@ -79,7 +79,6 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: #0b72ff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -131,7 +130,7 @@
     }
 
     button {
-      background: #007bff;
+      background: var(--accent);
       color: #fff;
       border: none;
       padding: 8px 14px;
@@ -282,7 +281,7 @@
       background: #f1f8ff;
       padding: 6px 8px;
       border-radius: 8px;
-      color: #0b61d1;
+      color: var(--accent);
       font-weight: 600
     }
 
@@ -1242,6 +1241,22 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
     document.getElementById("logoBtn").innerText = firstLetter;
 
+
+    function stringToColor(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      let color = "#";
+      for (let i = 0; i < 3; i++) {
+        let value = (hash >> (i * 8)) & 0xFF;
+        color += ("00" + value.toString(16)).slice(-2);
+      }
+      return color;
+    }
+    const logo = document.getElementById("logoBtn");
+    logo.style.background = stringToColor(usrName);
+    document.documentElement.style.setProperty("--accent", '#1e669b');
 
     // open popup
     document.getElementById("logoBtn").addEventListener("click", () => {
