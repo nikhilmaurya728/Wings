@@ -101,12 +101,19 @@
     .popup-content {
       background: #fff;
       width: 320px;
-      margin: 5% auto;
+      margin: 3% auto;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      height: 500px;
+      max-height: 500px;
       overflow-y: auto;
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    .popup-content::-webkit-scrollbar {
+      display: none;
+      /* Chrome, Safari */
     }
 
     .close {
@@ -492,14 +499,11 @@
 
             <div
               style="display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;">
-              <button id="toggleFormBtn">➕ More Address</button>
-              <button onclick="location.reload();">Save</button>
+              <button class="btn ghost" id="toggleFormBtn">➕ More Address</button>
+              <button onclick="location.reload();">Save Change</button>
             </div>
-
-
+            </br></br>
             <div id="formBox" style="display:none;">
-              <h2>Company Details</h2>
-
               <form id="detailsForm">
                 <label>Phone:</label>
                 <input type="text" id="phone" required><br><br>
@@ -510,7 +514,10 @@
                 <label>Address:</label>
                 <textarea id="address" rows="3" required></textarea><br><br>
 
-                <button type="submit">Add Address</button>
+
+                <div style="text-align:right;">
+                  <button type="submit">Add Address</button>
+                </div>
               </form>
             </div>
           </div>
@@ -708,6 +715,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
       renderAddresses();
       form.reset();
+
+      document.getElementById("toggleFormBtn").click();
+      document.getElementById("formBox").style.display = "none";
     };
 
     // Delete address
@@ -1258,7 +1268,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     }
     const logo = document.getElementById("logoBtn");
     logo.style.background = stringToColor(usrName);
-   // document.documentElement.style.setProperty("--accent", '#1e669b');
+    // document.documentElement.style.setProperty("--accent", '#1e669b');
 
     // open popup
     document.getElementById("logoBtn").addEventListener("click", () => {

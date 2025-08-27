@@ -10,7 +10,7 @@
       --bg: #f6f8fb;
       --card: #ffffff;
       --muted: #6b7280;
-      --accent: #0b72ff;
+      --accent: #1e669b;
       --success: #16a34a;
       --danger: #ef4444;
       --glass: rgba(255, 255, 255, 0.6);
@@ -79,7 +79,6 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: #0b72ff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -118,7 +117,7 @@
     }
 
     .close:hover {
-      color: red;
+      color: #c00000;
     }
 
     input,
@@ -131,7 +130,7 @@
     }
 
     button {
-      background: #007bff;
+      background: var(--accent);
       color: #fff;
       border: none;
       padding: 8px 14px;
@@ -282,7 +281,7 @@
       background: #f1f8ff;
       padding: 6px 8px;
       border-radius: 8px;
-      color: #0b61d1;
+      color: var(--accent);
       font-weight: 600
     }
 
@@ -508,9 +507,6 @@
                 <label>Name:</label>
                 <input type="text" id="name" required><br><br>
 
-                <label>Email:</label>
-                <input type="email" id="email" required><br><br>
-
                 <label>Address:</label>
                 <textarea id="address" rows="3" required></textarea><br><br>
 
@@ -638,6 +634,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
   <script>
     const toggleBtn = document.getElementById("toggleFormBtn");
     const formBox = document.getElementById("formBox");
+    const saveReload = document.getElementById("formBox");
 
     toggleBtn.addEventListener("click", () => {
       if (formBox.style.display === "none") {
@@ -664,16 +661,19 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       addresses.forEach((addr, i) => {
         list.innerHTML += `
       <div style="margin:8px 0;padding:8px;border:1px solid #ccc;border-radius:6px; display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <input type="radio" name="selectedAddress" value="${i}" id="addr${i}" 
-            ${selectedAddressIndex == i ? "checked" : ""}>
-          <label for="addr${i}">
-            <b>${addr.name}</b> (${addr.phone})<br>
-            ${addr.email}<br>
-            ${addr.address}
-          </label>
-        </div>
-        <button onclick="deleteAddress(${i})" style="background:#ff4d4d;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">Delete</button>
+        <div style="position:relative;border:1px solid #ddd;padding:12px;border-radius:8px;margin-bottom:10px;">
+          <button onclick="deleteAddress(${i})" 
+    style="position:absolute;top:8px;right:8px;background:#ff4d4d;color:#fff;
+           border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">
+    Delete
+  </button>
+  <input type="radio" name="selectedAddress" value="${i}" id="addr${i}" 
+    ${selectedAddressIndex == i ? "checked" : ""}>
+  <label for="addr${i}">
+    <b>${addr.name}</b> (${addr.phone})<br>
+    ${addr.address}
+  </label>
+</div>
       </div>
     `;
       });
@@ -695,10 +695,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       e.preventDefault();
       const phone = document.getElementById("phone").value;
       const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
       const address = document.getElementById("address").value;
 
-      addresses.push({ phone, name, email, address });
+      addresses.push({ phone, name, address });
       localStorage.setItem("addresses", JSON.stringify(addresses));
 
       // अगर पहला address add हो रहा है तो उसे by default active कर दो
@@ -710,6 +709,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
       renderAddresses();
       form.reset();
+
+      document.getElementById("toggleFormBtn").click();
+      document.getElementById("formBox").style.display = "none";
     };
 
     // Delete address
@@ -948,7 +950,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     } catch (e) { console.warn('load cart failed', e) }
 
     // ===== Helpers =====
-    const fmt = v => '₹' + Number(v).toFixed(2);
+    const fmt = v => '₹' + Number(v).toFixed(0);
 
     // ===== Render Products =====
     const productsEl = document.getElementById('products');
@@ -1115,9 +1117,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           </div>
           <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
             <div class="qty">
-              <button data-action="dec" data-id="${id}">−</button>
+              <button style="color:black;" data-action="dec" data-id="${id}">−</button>
               <div style="min-width:26px;text-align:center">${q}</div>
-              <button data-action="inc" data-id="${id}">+</button>
+              <button style="color:black;" data-action="inc" data-id="${id}">+</button>
             </div>
             <button style="background:transparent;color:var(--danger);border:none;cursor:pointer" data-action="rm" data-id="${id}">Remove</button>
           </div>
@@ -1155,7 +1157,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
         //
 
-        let message = `*I am* ${usrName}, From ${usrAdd}, Mo- ${usrNo} *My Order*\n\n`;
+        let message = `*I am ${usrName},* From ${usrAdd}, Mo- ${usrNo} *My Order*\n\n`;
         let total = 0;
         Object.values(state.cart).forEach(item => {
           const p = item.product;
@@ -1221,28 +1223,46 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     // load details from localStorage change  ||
     let usrNo;
     let usrName;
+    let usrAdd;
     function loadDetails() {
       const details = JSON.parse(localStorage.getItem("companyDetails")) || {
         phone: "",
         name: "",
-        email: "",
         address: ""
       };
       usrNo = details.phone;
       usrName = details.name;
+      usrAdd = details.address;
       document.getElementById("phone").value = details.phone;
       document.getElementById("name").value = details.name;
-      document.getElementById("email").value = details.email;
       document.getElementById("address").value = details.address;
     }
     loadDetails();
     // अगर name नहीं है तो "?" दिखे
     let firstLetter = usrName && usrName.length > 0
       ? usrName.charAt(0).toUpperCase()
-      : "?";
+      : "🙎🏻‍♂️";
 
     document.getElementById("logoBtn").innerText = firstLetter;
 
+
+    function stringToColor(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      let color = "#";
+      for (let i = 0; i < 3; i++) {
+        let value = (hash >> (i * 8)) & 0xFF;
+        color += ("00" + value.toString(16)).slice(-2);
+      }
+      if (!str) color = '#f00000';
+
+      return color;
+    }
+    const logo = document.getElementById("logoBtn");
+    logo.style.background = stringToColor(usrName);
+    // document.documentElement.style.setProperty("--accent", '#1e669b');
 
     // open popup
     document.getElementById("logoBtn").addEventListener("click", () => {
