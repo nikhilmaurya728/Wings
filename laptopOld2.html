@@ -500,7 +500,7 @@
             <div
               style="display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;">
               <button class="btn ghost" id="toggleFormBtn">➕ More Address</button>
-              <button onclick="speakNow('Saved'); location.reload(); ">Save Change</button>
+              <button onclick="location.reload();">Save Change</button>
             </div>
             </br></br>
             <div id="formBox" style="display:none;">
@@ -651,34 +651,6 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         toggleBtn.textContent = "➕ Add New Address";
       }
     });
-
-
-    function speakNow(str) {
-      if (!str) return;
-
-      // पहले की आवाज़ रोक दो
-      speechSynthesis.cancel();
-
-      let utter = new SpeechSynthesisUtterance(str);
-      utter.lang = "hi-IN";   // Hindi accent
-      utter.rate = 1;         // normal speed
-      utter.pitch = 1;        // normal pitch
-
-      speechSynthesis.speak(utter);
-    }
-
-    // यह function बोलेगा "10 बार में 1 बार"
-    function speakOne(chance, ...texts) {
-      // 1 से chance तक random number
-      let randomNum = Math.floor(Math.random() * chance) + 1;
-
-      if (randomNum === 1) {
-        // Random text चुनना
-        let pick = texts[Math.floor(Math.random() * texts.length)];
-        speakNow(pick);
-      }
-    }
-
   </script>
 
 
@@ -1051,8 +1023,6 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
       // View Product
       if (btn.dataset.view) {
-        speakOne(3,"Amazon से अच्छा Deal", "इस प्रोडक्ट को Amazon पर चेक कर लो।", "Best Deal मिल रही है, अभी मौका है।", "अभी Order करो, स्टॉक Limited है।", "काफी लोग इसे खरीद रहे हैं, आप भी मिस मत करना।", "Price बहुत कम है, तुरंत देखो।");
-
         const id = btn.dataset.view;
         const prod = state.products.find(p => p.id === id);
         if (!prod) return;
@@ -1180,13 +1150,10 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       else if (action === 'rm') removeFromCart(id);
       else if (btn.id === 'checkoutBtn') {
         if (Object.keys(state.cart).length === 0) {
-          speakNow('आपने कोई product ऐड नहीं किया है');
           return alert('Cart is empty');
         }
         if (!usrName) {
-          alert("पहले मुझे अपना Address तो बताओ ..... empty string, 0, null, undefined, false, NaN");
-
-          speakNow('पहले मुझे अपना Address तो बताओ');
+          alert("पहले मुझे आपना Address तो बताओ ..... empty string, 0, null, undefined, false, NaN");
           // alert के बाद अपने आप click event trigger करना
           document.getElementById("logoBtn").click();
           document.getElementById("toggleFormBtn").click();
@@ -1228,17 +1195,6 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     // Search
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', () => {
-
-
-      // speakNow('दिल्ली की Best Deal अब आपके घर पर');
-      speakOne(1,
-        "दिल्ली की Best Deal",
-        "अब आपके घर पर",
-        "Offer अभी Limited है",
-        "Best Price Guarantee",
-        "आज ही Order करो"
-      );
-
       const q = searchInput.value.trim().toLowerCase();
       const filtered = state.products.filter(p => (p.title + " " + p.desc).toLowerCase().includes(q));
       renderProducts(filtered);
