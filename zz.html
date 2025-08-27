@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mini E‑commerce — Single File</title>
+  <title>Mini Market (e‑commerce App)</title>
   <style>
     :root {
       --bg: #f6f8fb;
@@ -21,7 +21,9 @@
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     html,
@@ -30,7 +32,6 @@
     }
 
     body {
-      margin: 0;
       background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 45%);
       color: #0f172a;
       -webkit-font-smoothing: antialiased;
@@ -52,7 +53,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 18px;
+      margin-bottom: 28px;
     }
 
     .brand {
@@ -64,71 +65,90 @@
 
 
 
-    /* logo */
-.logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
-}
-.logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    /* logo 
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      background-color: red;
+    }*/
 
-/* popup */
-.popup {
-  display: none; 
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(2px);
-  z-index: 999;
-}
-.popup-content {
-  background: #fff;
-  width: 320px;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-.close {
-  float: right;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.close:hover {
-  color: red;
-}
-input, textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-button {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-button:hover {
-  background: #0056b3;
-}
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #0b72ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    /* popup */
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: #fff;
+      width: 320px;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      height: 500px;
+      overflow-y: auto;
+    }
+
+    .close {
+      float: right;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: red;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
 
 
 
 
 
     .brand h1 {
-      font-size: 18px;
+      font-size: 24px;
       margin: 0
     }
 
@@ -276,7 +296,9 @@ button:hover {
       background: var(--card);
       border-radius: var(--radius);
       padding: 12px;
-      box-shadow: var(--shadow)
+      box-shadow: var(--shadow);
+      margin: 40px 0;
+
     }
 
     .cart h3 {
@@ -335,13 +357,7 @@ button:hover {
       margin-top: 10px
     }
 
-    /* Footer small */
-    footer {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center
-    }
+
 
     /* Empty state */
     .empty {
@@ -351,6 +367,15 @@ button:hover {
       justify-content: center;
       padding: 30px;
       color: var(--muted)
+    }
+
+    .appName1 {
+      display: block;
+    }
+
+    .appName2 {
+      display: none;
+      margin-left: 10px;
     }
 
     /* Responsive */
@@ -373,6 +398,14 @@ button:hover {
         flex-direction: column;
         align-items: stretch;
         gap: 10px
+      }
+
+      .appName1 {
+        display: none;
+      }
+
+      .appName2 {
+        display: block;
       }
 
       .search {
@@ -423,54 +456,70 @@ button:hover {
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo">
-          <img src="https://picsum.photos/100" alt="logo">
-        </div>
 
-        <div>
+
+        <div class="appName1">
           <h1>Mini Market</h1>
-          <div style="font-size:12px;color:var(--muted)">Simple single-file demo · responsive · cart</div>
+          <div style="font-size:12px;color:var(--muted)">Buy Your Laptop</div>
         </div>
       </div>
 
       <div class="search">
-        <input id="searchInput" placeholder="Search products, e.g. milk, candies..." />
+        <input id="searchInput" placeholder="दिल्ली की Best Deal अब आपके घर पर Search Laptop" />
         <div class="icon">🔎</div>
       </div>
 
       <div class="top-actions">
         <!-- Logo -->
-<div class="logo" id="logoBtn">
-  <img src="https://picsum.photos/100" alt="logo">
-</div>
+        <div class="brand">
+          <div class="appName2">
+            <h1>Mini Market</h1>
+            <div style="font-size:12px;color:var(--muted)">Buy Your Laptop</div>
+          </div>
+        </div>
+        <div style="width: calc(100% - 350px);"></div>
 
-<!-- Popup Modal -->
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <span class="close" id="closeBtn">&times;</span>
-    <h2>Company Details</h2>
-    
-    <form id="detailsForm">
-      <label>Phone:</label>
-      <input type="text" id="phone" required><br><br>
+        <div class="logo" id="logoBtn">
+        </div>
 
-      <label>Name:</label>
-      <input type="text" id="name" required><br><br>
+        <!-- Popup Modal -->
+        <div class="popup" id="popup">
+          <div class="popup-content">
+            <span class="close" id="closeBtn">&times;</span>
 
-      <label>Email:</label>
-      <input type="email" id="email" required><br><br>
-
-      <label>Address:</label>
-      <textarea id="address" rows="3" required></textarea><br><br>
-
-      <button type="submit">Save</button>
-    </form>
-  </div>
-</div>
+            <h3>Saved Addresses</h3>
+            <div id="addressList"></div>
 
 
+            <div
+              style="display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;">
+              <button id="toggleFormBtn">➕ More Address</button>
+              <button onclick="location.reload();">Save</button>
+            </div>
 
-        <button class="btn ghost" id="clearBtn">Clear Cart</button>
+
+            <div id="formBox" style="display:none;">
+              <h2>Company Details</h2>
+
+              <form id="detailsForm">
+                <label>Phone:</label>
+                <input type="text" id="phone" required><br><br>
+
+                <label>Name:</label>
+                <input type="text" id="name" required><br><br>
+
+                <label>Email:</label>
+                <input type="email" id="email" required><br><br>
+
+                <label>Address:</label>
+                <textarea id="address" rows="3" required></textarea><br><br>
+
+                <button type="submit">Add Address</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <button class="btn" id="cartToggle">🛒 Cart <span id="cartBadge"
             style="margin-left:8px;background:white;color:var(--accent);padding:4px 8px;border-radius:999px;font-weight:700">0</span></button>
       </div>
@@ -481,7 +530,9 @@ button:hover {
 background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;">
         <div
           style="background:#fff;padding:20px;border-radius:12px;width:90%;max-width:800px;max-height:90%;overflow:auto;position:relative;">
-          <button id="closeModal" style="position:absolute;top:10px;right:10px;font-size:18px;">❌</button>
+
+          <button id="closeModal"
+            style="background:transparent; position:absolute;top:10px;right:10px;font-size:18px;">❌</button>
           <div id="modalContent"></div>
         </div>
       </div>
@@ -508,6 +559,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
             </div>
 
           </div>
+          <div style="margin: 10px 0px; font-size: 12px;">Specia Offer* <span
+              style="text-align:center;color:var(--muted)">Laptop कोई सा भी buy करो आपको 6 Months
+              (399₹ per Month) तक क्लास फ्री में मिलेगा </span></div>
           <div style="display:flex;gap:8px;margin-top:12px">
             <button class="btn" id="checkoutBtn">Checkout</button>
             <button class="btn ghost" id="saveBtn">Save Cart</button>
@@ -517,99 +571,367 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
 
     </main>
+    <div style="margin: 40px 0px;">👉 “Second Hand Import लैपटॉप को Resale करने के लिए Laptops Order करने पर Extra
+      Discount💸 & FREE Gift 🎁 भी है”
+      </br>
+      👉 “Sabhi laptops wholesale price par — Best Deal, Best Quality 💻”
+      </br>👉 “Hurry! Offer valid for limited time. Order Now 📞”</div>
 
-    <footer>Made for demo · single HTML file · tweak freely ✨</footer>
+    <footer style=" color:#000000; padding:40px 20px; font-family:Arial, sans-serif;">
+      <div
+        style="max-width:1200px; margin:auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:30px;">
+
+        <!-- About -->
+        <div>
+          <p>
+            हम आपको देते हैं <b>Import Second hand laptops 💻 & PCs</b>
+            <b>सबसे कम दाम</b> पर, और साथ में मिलती है <b>1 साल* तक की warranty</b>।
+            हमारी <b>expert team</b> आपको देती है <b>सही suggestion</b> कि कौन सा
+            laptop आपके लिए perfect रहेगा।
+            यहाँ से आप <b>laptops, PCs और computer parts</b> आसानी से खरीद सकते हैं –
+            सब कुछ <b>Mini Market App</b> पर! 🚀
+          </p>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h4 style="color:#00096d;">⚡ Our Services</h4>
+          <ul style="list-style:none; padding:0; margin:0; line-height:1.8;">
+            <li>✔ Best Price Guarantee</li>
+            <li>✔ Free Suggestions for best Laptop</li>
+            <li>✔ 3 or 6 Months Warranty</li>
+            <li>✔ PC & Laptop Parts</li>
+            <li>✔ After Sales Support</li>
+          </ul>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 style="color:#00096d;">🔗 Quick Links</h4>
+          <ul style="list-style:none; padding:0; margin:0; line-height:1.8;">
+            <li><a href="#" style="color:#004cff; text-decoration:none;">Shop Laptops</a></li>
+            <li><a href="#" style="color:#004cff; text-decoration:none;">Shop PC Parts</a></li>
+            <li><a href="#" style="color:#004cff; text-decoration:none;">Warranty Policy</a></li>
+            <li><a href="tel:6387851637" style="color:#004cff; text-decoration:none;">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 style="color:#00096d;">📞 Contact Us</h4>
+          <p>📍 Address: Rajabajar, jaunpur UP</p>
+          <p>📞 Phone: +91-6387851637</p>
+          <p>✉ Email: support@minimarket.vercel.app</p>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div style="text-align:center; margin-top:30px; font-size:14px; border-top:1px solid #333; padding-top:15px;">
+        © 2025 Mini Market. All rights reserved. | Designed with ❤️
+      </div>
+    </footer>
+
   </div>
+
+
+  <script>
+    const toggleBtn = document.getElementById("toggleFormBtn");
+    const formBox = document.getElementById("formBox");
+
+    toggleBtn.addEventListener("click", () => {
+      if (formBox.style.display === "none") {
+        formBox.style.display = "block";
+        toggleBtn.textContent = "✖ Close Form"; // button text change
+      } else {
+        formBox.style.display = "none";
+        toggleBtn.textContent = "➕ Add New Address";
+      }
+    });
+  </script>
+
+
+  <script>
+    let addresses = JSON.parse(localStorage.getItem("addresses")) || [];
+    let selectedAddressIndex = localStorage.getItem("selectedAddressIndex") || null;
+
+    const form = document.getElementById("detailsForm");
+    const list = document.getElementById("addressList");
+
+    // Render address list
+    function renderAddresses() {
+      list.innerHTML = "";
+      addresses.forEach((addr, i) => {
+        list.innerHTML += `
+      <div style="margin:8px 0;padding:8px;border:1px solid #ccc;border-radius:6px; display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <input type="radio" name="selectedAddress" value="${i}" id="addr${i}" 
+            ${selectedAddressIndex == i ? "checked" : ""}>
+          <label for="addr${i}">
+            <b>${addr.name}</b> (${addr.phone})<br>
+            ${addr.email}<br>
+            ${addr.address}
+          </label>
+        </div>
+        <button onclick="deleteAddress(${i})" style="background:#ff4d4d;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">Delete</button>
+      </div>
+    `;
+      });
+
+      // attach change event to radio buttons
+      document.querySelectorAll("input[name='selectedAddress']").forEach(radio => {
+        radio.addEventListener("change", function () {
+          selectedAddressIndex = this.value;
+          localStorage.setItem("selectedAddressIndex", selectedAddressIndex);
+
+          // companyDetails me bhi save karo
+          localStorage.setItem("companyDetails", JSON.stringify(addresses[selectedAddressIndex]));
+        });
+      });
+    }
+
+    // Add new address
+    form.onsubmit = function (e) {
+      e.preventDefault();
+      const phone = document.getElementById("phone").value;
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const address = document.getElementById("address").value;
+
+      addresses.push({ phone, name, email, address });
+      localStorage.setItem("addresses", JSON.stringify(addresses));
+
+      // अगर पहला address add हो रहा है तो उसे by default active कर दो
+      if (addresses.length === 1) {
+        selectedAddressIndex = 0;
+        localStorage.setItem("selectedAddressIndex", selectedAddressIndex);
+        localStorage.setItem("companyDetails", JSON.stringify(addresses[0]));
+      }
+
+      renderAddresses();
+      form.reset();
+    };
+
+    // Delete address
+    function deleteAddress(index) {
+      addresses.splice(index, 1);
+      localStorage.setItem("addresses", JSON.stringify(addresses));
+
+      // अगर delete किया हुआ address selected था तो reset करो
+      if (selectedAddressIndex == index) {
+        selectedAddressIndex = null;
+        localStorage.removeItem("companyDetails");
+        localStorage.removeItem("selectedAddressIndex");
+      }
+
+      renderAddresses();
+    }
+
+    // Initial render
+    renderAddresses();
+
+    // Get selected address example
+    function getSelectedAddress() {
+      if (selectedAddressIndex !== null && addresses[selectedAddressIndex]) {
+        return addresses[selectedAddressIndex];
+      }
+      return null;
+    }
+
+  </script>
+
 
   <script>
     // ===== SAMPLE PRODUCTS =====
     const PRODUCTS = [
       {
         id: 'p1',
-        title: 'Fresh Milk (1L)',
-        desc: 'Full cream, farm fresh',
-        star: 3.9,
-        price: 900,
-        old: 900,
-        shipping_cost: 10,
-        img: 'https://picsum.photos/id/1040/600/400',
+        title: 'HP Elitebook 745G6 8 256',
+        desc: '15.6-inch Laptop AMD Ryzen 5-3500U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 8GB (Upto 32GB), 256GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.1,
+        price: 18000,
+        old: 21300,
+        shipping_cost: 190,
+        img: 'Image/HPElitebook1.jpg',
         images: [
-          'https://picsum.photos/id/1040/600/400',
-          'https://picsum.photos/id/1041/600/400'
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
         ],
         videos: [
-          'https://www.youtube.com/embed/tgbNymZ7vqY',
-          'https://www.youtube.com/embed/ysz5S6PUM-U'
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
         ]
       },
       {
         id: 'p2',
-        title: 'Organic Eggs (12 pcs)',
-        desc: 'Free-range organic eggs, rich in protein',
+        title: 'HP Elitebook 745G6 16 256',
+        desc: '15.6-inch Laptop AMD Ryzen 5-3500U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 16GB (Upto 32GB), 256GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
         star: 4.3,
-        price: 120,
-        old: 140,
-        shipping_cost: 30,
-        img: 'https://picsum.photos/id/1050/600/400',
+        price: 20800,
+        old: 24800,
+        shipping_cost: 150,
+        img: 'Image/HPElitebook1.jpg',
         images: [
-          'https://picsum.photos/id/1050/600/400',
-          'https://picsum.photos/id/1051/600/400'
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
         ],
         videos: [
-          'https://www.youtube.com/embed/aqz-KE-bpKQ'
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
         ]
       },
       {
         id: 'p3',
-        title: 'Brown Bread (400g)',
-        desc: 'Whole wheat, high fiber bread',
-        star: 2.9,
-        price: 45,
-        old: 55,
-        shipping_cost: 40,
-        img: 'https://picsum.photos/id/1060/600/400',
+        title: 'HP Elitebook 745G6 16 512',
+        desc: '15.6-inch Laptop AMD Ryzen 5-3500U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 16GB (Upto 32GB), 512GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.0,
+        price: 24500,
+        old: 28200,
+        shipping_cost: 140,
+        img: 'Image/HPElitebook1.jpg',
         images: [
-          'https://picsum.photos/id/1060/600/400',
-          'https://picsum.photos/id/1061/600/400'
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
         ],
         videos: [
-          'https://www.youtube.com/embed/VYOjWnS4cMY'
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
         ]
       },
+
       {
         id: 'p4',
-        title: 'Fresh Bananas (1kg)',
-        desc: 'Naturally ripened, sweet bananas',
-        star: 5.0,
-        price: 70,
-        old: 85,
-        shipping_cost: 50,
-        img: 'https://picsum.photos/id/1070/600/400',
+        title: 'HP Elitebook 745G6 8 512',
+        desc: '15.6-inch Laptop AMD Ryzen 5-3500U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 8GB (Upto 32GB), 512GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.3,
+        price: 22000,
+        old: 24800,
+        shipping_cost: 150,
+        img: 'Image/HPElitebook1.jpg',
         images: [
-          'https://picsum.photos/id/1070/600/400',
-          'https://picsum.photos/id/1071/600/400'
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
         ],
         videos: [
-          'https://www.youtube.com/embed/2vjPBrBU-TM'
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
+        ]
+      },
+
+      {
+        id: 'p5',
+        title: 'Laptop Charger',
+        desc: 'Laptop Adapter (Charger) for HP Elitebook Small pin 65W',
+        star: 3.8,
+        price: 400,
+        old: 550,
+        shipping_cost: 60,
+        img: 'Image/HPAdapter.jpg',
+        images: [
+          'Image/HPAdapter.jpg',
+          'Image/HPAdapter2.jpg'
+        ],
+        videos: [
+          'https://www.youtube.com/embed/UiYw8zImZL8'
         ]
       },
       {
-        id: 'p5',
-        title: 'Basmati Rice (5kg)',
-        desc: 'Long grain, premium basmati rice',
-        star: 4.2,
+        id: 'p6',
+        title: 'Laptop Charger',
+        desc: 'Laptop Adapter (Charger) for HP Elitebook Small pin 65W',
+        star: 4.5,
         price: 450,
-        old: 500,
+        old: 700,
         shipping_cost: 70,
-        img: 'https://picsum.photos/id/1080/600/400',
+        img: 'Image/HPAdapter.jpg',
         images: [
-          'https://picsum.photos/id/1080/600/400',
-          'https://picsum.photos/id/1081/600/400'
+          'Image/HPAdapter.jpg',
+          'Image/HPAdapter2.jpg'
         ],
         videos: [
-          'https://www.youtube.com/embed/lTTajzrSkCw'
+          'https://www.youtube.com/embed/UiYw8zImZL8'
         ]
-      }
+      },
+      {
+        id: 'p7',
+        title: 'HP Elitebook 830G6 8 256',
+        desc: '14-inch Laptop i5-8gen U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 8GB (Upto 32GB), 256GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.3,
+        price: 19500,
+        old: 23000,
+        shipping_cost: 150,
+        img: 'Image/HPElitebook1.jpg',
+        images: [
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
+        ],
+        videos: [
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
+        ]
+      },
+      {
+        id: 'p8',
+        title: 'HP Elitebook 830G6 16 256',
+        desc: '14-inch Laptop i5-8gen U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 16GB (Upto 32GB), 256GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.3,
+        price: 20799,
+        old: 24400,
+        shipping_cost: 99,
+        img: 'Image/HPElitebook1.jpg',
+        images: [
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
+        ],
+        videos: [
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
+        ]
+      },
+      {
+        id: 'p9',
+        title: 'HP Elitebook 830G6 8 512',
+        desc: '14-inch Laptop i5-8gen U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 8GB (Upto 32GB), 512GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.3,
+        price: 22099,
+        old: 26000,
+        shipping_cost: 119,
+        img: 'Image/HPElitebook1.jpg',
+        images: [
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
+        ],
+        videos: [
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
+        ]
+      },
+      {
+        id: 'p10',
+        title: 'HP Elitebook 830G6 16 512',
+        desc: '14-inch Laptop i5-8gen U 2.10 GHz , Backlite & fingerprint sensor , Silver Metal body , 16GB (Upto 32GB), 512GB nvme SSD (Upto 2TB) Windows 10 Pro (Import)',
+        star: 4.3,
+        price: 24000,
+        old: 27400,
+        shipping_cost: 119,
+        img: 'Image/HPElitebook1.jpg',
+        images: [
+          'Image/HPElitebook.jpg',
+          'Image/HPElitebook1.jpg',
+          'Image/HPElitebook2.jpg',
+        ],
+        videos: [
+
+          'https://www.youtube.com/embed/BGGZChZZytc',
+        ]
+      },
     ];
 
 
@@ -638,33 +960,54 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         productsEl.innerHTML = `<div class="card empty" style="grid-column:1/-1;text-align:center">No products found</div>`;
       }
       list.forEach(p => {
-        const div = document.createElement('div'); div.className = 'card fade-in';
+        const div = document.createElement('div');
+        div.className = 'card fade-in';
+        div.style.position = "relative"; // so share btn stays in corner
+
         div.innerHTML = `
-          <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+      <!-- Share Button -->
+      <button onclick="shareOnWhatsApp('${p.title}', '${p.price}')" 
+        style="position:absolute;top:8px;right:8px;background:transparent;color:#000;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:22px;z-index:2;">
+        ➦
+      </button>
+
+      <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+      <div>
+        <div class="p-title">${p.title}</div>
+        <div class="p-desc">${p.desc}</div>
+      </div>
+      <div class="p-row">
+        <div>
+          <div class="price">${fmt(p.price)}</div>
+          <div><span class="old">${p.old ? fmt(p.old) : ''}</span> 
+          <span class="off">${p.old !== p.price ? fmt((p.old - p.price) * 100 / p.old) + '% off ' : 'On MRP'}</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div class="rating">${p.star} ★</div>
           <div>
-            <div class="p-title">${p.title}</div>
-            <div class="p-desc">${p.desc}</div>
+            <button class="btn ghost" data-view="${p.id}">View</button>
+            <button class="btn" data-id="${p.id}">Add</button>
           </div>
-          <div class="p-row">
-            <div>
-              <div class="price">${fmt(p.price)}</div>
-              <div><span class="old">${p.old ? fmt(p.old) : ''}</span> <span class="off">${p.old !== p.price ? fmt((p.old - p.price) * 100 / p.old) + '% off ' : 'On MRP'}</span> </div>
-
-            </div>
-            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-              <div class="rating">${p.star} ★</div>
-              <div>
-                <button class="btn ghost" data-view="${p.id}">View</button>
-
-                <button class="btn" data-id="${p.id}">Add</button>
-              </div>
-            </div>
-          </div>
-        `;
+        </div>
+      </div>
+    `;
         productsEl.appendChild(div);
       });
       resultCount.textContent = list.length;
     }
+
+    function shareOnWhatsApp(title, price) {
+      let cleanPrice = Math.round(Number(price)); // decimal hata ke integer
+
+      if (isNaN(cleanPrice)) cleanPrice = 1; // safety fallback
+
+      //let siteUrl = window.location.href; // current page link
+      let text = `मात्र ${cleanPrice}₹ में एक गजब का ${title} मिल रहा है, तुम Order कर सकते हो, ये बड़ा भरोसेमंद Site है, अभी तो deal Offer मे मिल रहा है https://wings2.vercel.app/laptop.html`;
+      let waLink = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(waLink, "_blank");
+    }
+
+
 
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
@@ -678,19 +1021,24 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
         const modalContent = document.getElementById('modalContent');
         modalContent.innerHTML = `
-      <h2>${prod.title}</h2>
+      <h2 style="width:88%;">${prod.title}</h2>
       <p>${prod.desc}</p>
+
+
+    <div style='display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;'>
       
       <div>
         <div class="price">${fmt(prod.price)} <span class="shipping_cost"> +${prod.shipping_cost}₹ Shipping Cost</span></div>
         <div><span class="old">${prod.old ? fmt(prod.old) : ''}</span> <span class="off">${prod.old !== prod.price ? fmt((prod.old - prod.price) * 100 / prod.old) + '% off ' : 'On MRP'}</span> </div>
-      </div>
+      </div> 
+      <button class="btn" data-id="${id}">Add to Cart</button>
+    </div>
       
-      <h3>Images</h3>
-      <div style="display:flex;gap:10px;overflow-x:auto;">
+      
+      <div style="display:flex;gap:10px;overflow-x:auto; margin:30px 0px">
         ${prod.images.map(img => `<img src="${img}" style="width:200px;border-radius:8px">`).join('')}
       </div>
-      <h3>Videos</h3>
+      
       <div style="display:flex;flex-direction:column;gap:10px;">
         ${prod.videos.map(v => `<iframe width="100%" height="250" src="${v}" frameborder="0" allowfullscreen></iframe>`).join('')}
       </div>
@@ -796,10 +1144,18 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         if (Object.keys(state.cart).length === 0) {
           return alert('Cart is empty');
         }
+        if (!usrName) {
+          alert("पहले मुझे आपना Address तो बताओ ..... empty string, 0, null, undefined, false, NaN");
+          // alert के बाद अपने आप click event trigger करना
+          document.getElementById("logoBtn").click();
+          document.getElementById("toggleFormBtn").click();
+          document.getElementById("formBox").style.display = "block";
+          return 0;
+        }
 
+        //
 
-
-        let message = `🛒 *New Order* ${usrNo}\n\n`;
+        let message = `*I am* ${usrName}, From ${usrAdd}, Mo- ${usrNo} *My Order*\n\n`;
         let total = 0;
         Object.values(state.cart).forEach(item => {
           const p = item.product;
@@ -808,8 +1164,8 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           total += subtotal;
           message += `• ${p.title}\n  Price: ₹${p.price}\n  Qty: ${qty}\n  Subtotal: ₹${subtotal}\n\n`;
         });
-        message += `Total Shipping is ${totalShipping}₹ but we take *only ${maxShipping}₹* \n`;
-        message += `*Total Amount:* ₹${total}`;
+        message += `Total Shipping is ~${totalShipping}₹~ but we eligible *only ${maxShipping}₹* and\n`;
+        message += `*Product Amount: ${total}₹*`;
 
         // Encode and open WhatsApp
         const encodedMessage = encodeURIComponent(message);
@@ -821,11 +1177,12 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       else if (btn.id === 'saveBtn') {
         saveCart(); alert('Cart saved to localStorage');
       }
-      else if (btn.id === 'clearBtn') {
-        if (confirm('Clear cart?')) { state.cart = {}; saveCart(); renderCart(); }
-      }
+      /* else if (btn.id === 'clearBtn') {
+         if (confirm('Clear cart?')) { state.cart = {}; saveCart(); renderCart(); }
+       }*/
       else if (btn.dataset.id) { addToCart(btn.dataset.id); }
     });
+
 
     // Search
     const searchInput = document.getElementById('searchInput');
@@ -850,7 +1207,6 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); }
     });
 
-  
 
 
 
@@ -860,56 +1216,52 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
 
 
-    
-// load details from localStorage
-let usrNo;
-function loadDetails() {
-  const details = JSON.parse(localStorage.getItem("companyDetails")) || {
-    phone: "",
-    name: "",
-    email: "",
-    address: ""
-  };
-  usrNo = details.phone;
-  document.getElementById("phone").value = details.phone;
-  document.getElementById("name").value = details.name;
-  document.getElementById("email").value = details.email;
-  document.getElementById("address").value = details.address;
-}
 
-// save details to localStorage
-document.getElementById("detailsForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  usrNo = document.getElementById("phone").value;
-  const details = {
-    phone: document.getElementById("phone").value,
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    address: document.getElementById("address").value
-  };
-  localStorage.setItem("companyDetails", JSON.stringify(details));
-  alert("Details saved successfully ✅");
-  document.getElementById("popup").style.display = "none";
-});
 
-// open popup
-document.getElementById("logoBtn").addEventListener("click", () => {
-  loadDetails();
-  document.getElementById("popup").style.display = "block";
-});
+    // load details from localStorage change  ||
+    let usrNo;
+    let usrName;
+    function loadDetails() {
+      const details = JSON.parse(localStorage.getItem("companyDetails")) || {
+        phone: "",
+        name: "",
+        email: "",
+        address: ""
+      };
+      usrNo = details.phone;
+      usrName = details.name;
+      document.getElementById("phone").value = details.phone;
+      document.getElementById("name").value = details.name;
+      document.getElementById("email").value = details.email;
+      document.getElementById("address").value = details.address;
+    }
+    loadDetails();
+    // अगर name नहीं है तो "?" दिखे
+    let firstLetter = usrName && usrName.length > 0
+      ? usrName.charAt(0).toUpperCase()
+      : "?";
 
-// close popup
-document.getElementById("closeBtn").addEventListener("click", () => {
-  document.getElementById("popup").style.display = "none";
-});
+    document.getElementById("logoBtn").innerText = firstLetter;
 
-// close when clicking outside
-window.addEventListener("click", (e) => {
-  if (e.target.id === "popup") {
-    document.getElementById("popup").style.display = "none";
-  }
-});
-</script>
+
+    // open popup
+    document.getElementById("logoBtn").addEventListener("click", () => {
+      loadDetails();
+      document.getElementById("popup").style.display = "block";
+    });
+
+    // close popup
+    document.getElementById("closeBtn").addEventListener("click", () => {
+      document.getElementById("popup").style.display = "none";
+    });
+
+    // close when clicking outside
+    window.addEventListener("click", (e) => {
+      if (e.target.id === "popup") {
+        document.getElementById("popup").style.display = "none";
+      }
+    });
+  </script>
 
 
 </body>

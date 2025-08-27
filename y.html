@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mini E‑commerce — Single File</title>
+  <title>Mini Market (e‑commerce App)</title>
   <style>
     :root {
       --bg: #f6f8fb;
@@ -102,7 +102,7 @@
     .popup-content {
       background: #fff;
       width: 320px;
-      margin: 10% auto;
+      margin: 5% auto;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -490,10 +490,13 @@
             <h3>Saved Addresses</h3>
             <div id="addressList"></div>
 
-            <hr>
-            <div style="display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;"> <button id="toggleFormBtn">➕ More Address</button>
-            <button onclick="location.reload();">Save</button></div>
-           
+
+            <div
+              style="display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;">
+              <button id="toggleFormBtn">➕ More Address</button>
+              <button onclick="location.reload();">Save</button>
+            </div>
+
 
             <div id="formBox" style="display:none;">
               <h2>Company Details</h2>
@@ -504,9 +507,6 @@
 
                 <label>Name:</label>
                 <input type="text" id="name" required><br><br>
-
-                <label>Email:</label>
-                <input type="email" id="email" required><br><br>
 
                 <label>Address:</label>
                 <textarea id="address" rows="3" required></textarea><br><br>
@@ -556,6 +556,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
             </div>
 
           </div>
+          <div style="margin: 10px 0px; font-size: 12px;">Specia Offer* <span
+              style="text-align:center;color:var(--muted)">Laptop कोई सा भी buy करो आपको 6 Months
+              (399₹ per Month) तक क्लास फ्री में मिलेगा </span></div>
           <div style="display:flex;gap:8px;margin-top:12px">
             <button class="btn" id="checkoutBtn">Checkout</button>
             <button class="btn ghost" id="saveBtn">Save Cart</button>
@@ -658,16 +661,21 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       addresses.forEach((addr, i) => {
         list.innerHTML += `
       <div style="margin:8px 0;padding:8px;border:1px solid #ccc;border-radius:6px; display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <input type="radio" name="selectedAddress" value="${i}" id="addr${i}" 
-            ${selectedAddressIndex == i ? "checked" : ""}>
-          <label for="addr${i}">
-            <b>${addr.name}</b> (${addr.phone})<br>
-            ${addr.email}<br>
-            ${addr.address}
-          </label>
-        </div>
-        <button onclick="deleteAddress(${i})" style="background:#ff4d4d;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">Delete</button>
+        <div style="position:relative;border:1px solid #ddd;padding:12px;border-radius:8px;margin-bottom:10px;">
+          <button onclick="deleteAddress(${i})" 
+    style="position:absolute;top:8px;right:8px;background:#ff4d4d;color:#fff;
+           border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">
+    Delete
+  </button>
+  <input type="radio" name="selectedAddress" value="${i}" id="addr${i}" 
+    ${selectedAddressIndex == i ? "checked" : ""}>
+  <label for="addr${i}">
+    <b>${addr.name}</b> (${addr.phone})<br>
+    ${addr.address}
+  </label>
+</div>
+
+        
       </div>
     `;
       });
@@ -689,10 +697,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       e.preventDefault();
       const phone = document.getElementById("phone").value;
       const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
       const address = document.getElementById("address").value;
 
-      addresses.push({ phone, name, email, address });
+      addresses.push({ phone, name, address });
       localStorage.setItem("addresses", JSON.stringify(addresses));
 
       // अगर पहला address add हो रहा है तो उसे by default active कर दो
@@ -954,33 +961,54 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         productsEl.innerHTML = `<div class="card empty" style="grid-column:1/-1;text-align:center">No products found</div>`;
       }
       list.forEach(p => {
-        const div = document.createElement('div'); div.className = 'card fade-in';
+        const div = document.createElement('div');
+        div.className = 'card fade-in';
+        div.style.position = "relative"; // so share btn stays in corner
+
         div.innerHTML = `
-          <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+      <!-- Share Button -->
+      <button onclick="shareOnWhatsApp('${p.title}', '${p.price}')" 
+        style="position:absolute;top:8px;right:8px;background:transparent;color:#000;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:22px;z-index:2;">
+        ➦
+      </button>
+
+      <div class="thumb"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+      <div>
+        <div class="p-title">${p.title}</div>
+        <div class="p-desc">${p.desc}</div>
+      </div>
+      <div class="p-row">
+        <div>
+          <div class="price">${fmt(p.price)}</div>
+          <div><span class="old">${p.old ? fmt(p.old) : ''}</span> 
+          <span class="off">${p.old !== p.price ? fmt((p.old - p.price) * 100 / p.old) + '% off ' : 'On MRP'}</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div class="rating">${p.star} ★</div>
           <div>
-            <div class="p-title">${p.title}</div>
-            <div class="p-desc">${p.desc}</div>
+            <button class="btn ghost" data-view="${p.id}">View</button>
+            <button class="btn" data-id="${p.id}">Add</button>
           </div>
-          <div class="p-row">
-            <div>
-              <div class="price">${fmt(p.price)}</div>
-              <div><span class="old">${p.old ? fmt(p.old) : ''}</span> <span class="off">${p.old !== p.price ? fmt((p.old - p.price) * 100 / p.old) + '% off ' : 'On MRP'}</span> </div>
-
-            </div>
-            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-              <div class="rating">${p.star} ★</div>
-              <div>
-                <button class="btn ghost" data-view="${p.id}">View</button>
-
-                <button class="btn" data-id="${p.id}">Add</button>
-              </div>
-            </div>
-          </div>
-        `;
+        </div>
+      </div>
+    `;
         productsEl.appendChild(div);
       });
       resultCount.textContent = list.length;
     }
+
+    function shareOnWhatsApp(title, price) {
+      let cleanPrice = Math.round(Number(price)); // decimal hata ke integer
+
+      if (isNaN(cleanPrice)) cleanPrice = 1; // safety fallback
+
+      //let siteUrl = window.location.href; // current page link
+      let text = `मात्र ${cleanPrice}₹ में एक गजब का ${title} मिल रहा है, तुम Order कर सकते हो, ये बड़ा भरोसेमंद Site है, अभी तो deal Offer मे मिल रहा है https://wings2.vercel.app/laptop.html`;
+      let waLink = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(waLink, "_blank");
+    }
+
+
 
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
@@ -994,7 +1022,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
         const modalContent = document.getElementById('modalContent');
         modalContent.innerHTML = `
-      <h2>${prod.title}</h2>
+      <h2 style="width:88%;">${prod.title}</h2>
       <p>${prod.desc}</p>
 
 
@@ -1088,9 +1116,9 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           </div>
           <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
             <div class="qty">
-              <button data-action="dec" data-id="${id}">−</button>
+              <button style="color:black;" data-action="dec" data-id="${id}">−</button>
               <div style="min-width:26px;text-align:center">${q}</div>
-              <button data-action="inc" data-id="${id}">+</button>
+              <button style="color:black;" data-action="inc" data-id="${id}">+</button>
             </div>
             <button style="background:transparent;color:var(--danger);border:none;cursor:pointer" data-action="rm" data-id="${id}">Remove</button>
           </div>
@@ -1117,10 +1145,18 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         if (Object.keys(state.cart).length === 0) {
           return alert('Cart is empty');
         }
+        if (!usrName) {
+          alert("पहले मुझे आपना Address तो बताओ ..... empty string, 0, null, undefined, false, NaN");
+          // alert के बाद अपने आप click event trigger करना
+          document.getElementById("logoBtn").click();
+          document.getElementById("toggleFormBtn").click();
+          document.getElementById("formBox").style.display = "block";
+          return 0;
+        }
 
+        //
 
-
-        let message = `🛒 *New Order* ${usrNo}\n\n`;
+        let message = `*I am ${usrName},* From ${usrAdd}, Mo- ${usrNo} *My Order*\n\n`;
         let total = 0;
         Object.values(state.cart).forEach(item => {
           const p = item.product;
@@ -1129,8 +1165,8 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           total += subtotal;
           message += `• ${p.title}\n  Price: ₹${p.price}\n  Qty: ${qty}\n  Subtotal: ₹${subtotal}\n\n`;
         });
-        message += `Total Shipping is ${totalShipping}₹ but we take *only ${maxShipping}₹* \n`;
-        message += `*Total Amount:* ₹${total}`;
+        message += `Total Shipping is ~${totalShipping}₹~ but we eligible *only ${maxShipping}₹* and\n`;
+        message += `*Product Amount: ${total}₹*`;
 
         // Encode and open WhatsApp
         const encodedMessage = encodeURIComponent(message);
@@ -1147,6 +1183,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
        }*/
       else if (btn.dataset.id) { addToCart(btn.dataset.id); }
     });
+
 
     // Search
     const searchInput = document.getElementById('searchInput');
@@ -1185,18 +1222,18 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     // load details from localStorage change  ||
     let usrNo;
     let usrName;
+    let usrAdd;
     function loadDetails() {
       const details = JSON.parse(localStorage.getItem("companyDetails")) || {
         phone: "",
         name: "",
-        email: "",
         address: ""
       };
       usrNo = details.phone;
       usrName = details.name;
+      usrAdd = details.address;
       document.getElementById("phone").value = details.phone;
       document.getElementById("name").value = details.name;
-      document.getElementById("email").value = details.email;
       document.getElementById("address").value = details.address;
     }
     loadDetails();
