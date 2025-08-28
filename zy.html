@@ -2,67 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <title>QR Code Reader</title>
+  <title>Flower & Fireworks Demo</title>
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 20px;
+   
+    .particle {
+      position: absolute;
+      font-size: 24px;
+      animation: fly 1.5s linear forwards;
     }
-    #preview {
-      max-width: 300px;
-      margin-top: 20px;
-    }
-    #result {
-      font-size: 18px;
-      margin-top: 20px;
-      color: green;
+
+    @keyframes fly {
+      0%   { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <h2>📷 QR Code Reader (Upload Image)</h2>
-  <input type="file" accept="image/*" onchange="handleImageUpload(event)">
-  <br>
-  <img id="preview" src="" alt="">
-  <div id="result">📄 Scanned QR Result will appear here</div>
 
-  <!-- Required library -->
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <button onclick="burst()">🎉 Click Me</button>
 
   <script>
-    function handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function burst() {
+      const emojis = ["🌸","✨","💥","🎆","🌺","🎇"]; 
+      for (let i = 0; i < 90; i++) {
+        const span = document.createElement("span");
+        span.className = "particle";
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = "50%";
+        span.style.top = "50%";
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const img = new Image();
-        img.onload = function () {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          context.drawImage(img, 0, 0);
+        // random direction
+        const x = (Math.random() - 0.5) * 400 + "px";
+        const y = (Math.random() - 0.5) * 400 + "px";
+        span.style.setProperty("--x", x);
+        span.style.setProperty("--y", y);
 
-          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-          const code = jsQR(imageData.data, canvas.width, canvas.height);
-          
-          if (code) {
-            document.getElementById("result").innerText = "✅ QR Code Detected: " + code.data;
-          } else {
-            document.getElementById("result").innerText = "❌ QR Code Not Found";
-          }
+        document.body.appendChild(span);
 
-          // Show image preview
-          document.getElementById("preview").src = e.target.result;
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+        // remove after animation
+        setTimeout(() => span.remove(), 1500);
+      }
     }
   </script>
+
 </body>
 </html>

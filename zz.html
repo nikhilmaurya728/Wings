@@ -42,6 +42,25 @@
       padding: 28px 18px;
     }
 
+    body {
+      -webkit-user-select: none;
+      /* Chrome, Safari */
+      -moz-user-select: none;
+      /* Firefox */
+      -ms-user-select: none;
+      /* IE/Edge */
+      user-select: none;
+      /* Standard */
+    }
+
+    .allow-select {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+
+
     .wrap {
       width: 100%;
       max-width: var(--maxWidth)
@@ -85,6 +104,7 @@
       font-size: 20px;
       font-weight: bold;
       color: #fff;
+      cursor: pointer;
       font-family: Arial, sans-serif;
     }
 
@@ -101,12 +121,19 @@
     .popup-content {
       background: #fff;
       width: 320px;
-      margin: 5% auto;
+      margin: 3% auto;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      height: 500px;
+      max-height: 500px;
       overflow-y: auto;
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    .popup-content::-webkit-scrollbar {
+      display: none;
+      /* Chrome, Safari */
     }
 
     .close {
@@ -370,11 +397,33 @@
 
     .appName1 {
       display: block;
+      cursor: pointer;
     }
 
     .appName2 {
       display: none;
+      cursor: pointer;
       margin-left: 10px;
+    }
+
+/*button btn effect, bust,  */
+    .particle {
+      position: absolute;
+      font-size: 24px;
+      animation: fly 1.5s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fly {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(var(--x), var(--y)) scale(0.5);
+        opacity: 0;
+      }
     }
 
     /* Responsive */
@@ -457,7 +506,7 @@
       <div class="brand">
 
 
-        <div class="appName1">
+        <div class="appName1" onclick="location.reload();">
           <h1>Mini Market</h1>
           <div style="font-size:12px;color:var(--muted)">Buy Your Laptop</div>
         </div>
@@ -471,7 +520,7 @@
       <div class="top-actions">
         <!-- Logo -->
         <div class="brand">
-          <div class="appName2">
+          <div class="appName2" onclick="location.reload();">
             <h1>Mini Market</h1>
             <div style="font-size:12px;color:var(--muted)">Buy Your Laptop</div>
           </div>
@@ -492,15 +541,12 @@
 
             <div
               style="display: flex;  justify-content: space-between;   align-items: center;  gap: 12px; padding: 8px 0;">
-              <button id="toggleFormBtn">➕ More Address</button>
-              <button onclick="location.reload();">Save</button>
+              <button class="btn ghost" id="toggleFormBtn">➕ More Address</button>
+              <button onclick="speakNow('Saved'); location.reload();">Save Change</button>
             </div>
 
-
             <div id="formBox" style="display:none;">
-              <h2>Company Details</h2>
-
-              <form id="detailsForm">
+              <form id="detailsForm"></br></br>
                 <label>Phone:</label>
                 <input type="text" id="phone" required><br><br>
 
@@ -510,7 +556,10 @@
                 <label>Address:</label>
                 <textarea id="address" rows="3" required></textarea><br><br>
 
-                <button type="submit">Add Address</button>
+
+                <div style="text-align:right;">
+                  <button type="submit">Add Address</button>
+                </div>
               </form>
             </div>
           </div>
@@ -634,7 +683,6 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
   <script>
     const toggleBtn = document.getElementById("toggleFormBtn");
     const formBox = document.getElementById("formBox");
-    const saveReload = document.getElementById("formBox");
 
     toggleBtn.addEventListener("click", () => {
       if (formBox.style.display === "none") {
@@ -645,6 +693,76 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         toggleBtn.textContent = "➕ Add New Address";
       }
     });
+
+
+    function speakNow(str) {
+      if (!str) return;
+
+      // पहले की आवाज़ रोक दो
+      speechSynthesis.cancel();
+
+      let utter = new SpeechSynthesisUtterance(str);
+      utter.lang = "hi-IN";   // Hindi accent
+      utter.rate = 1;         // normal speed
+      utter.pitch = 1;        // normal pitch
+
+      speechSynthesis.speak(utter);
+    }
+
+    // यह function बोलेगा "10 बार में 1 बार"
+    function speakOne(chance, ...texts) {
+      // 1 से chance तक random number
+      let randomNum = Math.floor(Math.random() * chance) + 1;
+
+      if (randomNum === 1) {
+        // Random text चुनना
+        let pick = texts[Math.floor(Math.random() * texts.length)];
+        speakNow(pick);
+      }
+    }
+
+
+
+
+    //btn click effect, bust, button click effect
+
+    const emojiGroups = [
+      ["🌸","🌺","🌼"],               // flowers
+      ["✨","🎇","🎆","💥"],          // fireworks
+      ["❤️","💖","💘","💕"],          // hearts
+      ["⭐","🌟","✨","💫"],          // stars
+      ["🎊","🎉","🥳","🍾"]          // confetti
+    ];
+
+    function randomBurst(btnID) {
+     // const btn = document.querySelector("btnID");
+      const btn = document.getElementById(btnID);
+      const rect = btn.getBoundingClientRect();
+      const centerX = rect.left + rect.width*4/5;
+      const centerY = rect.top; // top of button (upar se nikalega)
+
+      // pick random group
+      const group = emojiGroups[Math.floor(Math.random() * emojiGroups.length)];
+      burst(group, centerX, centerY);
+    }
+
+    function burst(emojis, x, y) {
+      for (let i = 0; i < 30; i++) {
+        const span = document.createElement("span");
+        span.className = "particle";
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = x + "px";
+        span.style.top = y + window.scrollY + "px"; // scroll ke sath adjust
+
+        const dx = (Math.random() - 0.5) * 300 + "px";
+        const dy = (Math.random() - 1) * 300 + "px"; // upar jaane ke liye jyada -ve
+        span.style.setProperty("--x", dx);
+        span.style.setProperty("--y", dy);
+
+        document.body.appendChild(span);
+        setTimeout(() => span.remove(), 1500);
+      }
+    }
   </script>
 
 
@@ -988,7 +1106,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
           <div class="rating">${p.star} ★</div>
           <div>
             <button class="btn ghost" data-view="${p.id}">View</button>
-            <button class="btn" data-id="${p.id}">Add</button>
+            <button  class="btn" data-id="${p.id}" onclick="randomBurst('cartToggle');speakNow('Product Cart मे ऐड किया गया')";>Add</button>
           </div>
         </div>
       </div>
@@ -1017,6 +1135,8 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
 
       // View Product
       if (btn.dataset.view) {
+        speakOne(2, "Amazon से अच्छा Deal", "इस प्रोडक्ट को Amazon पर चेक कर लो।", "Best Deal मिल रही है, अभी मौका है।", "अभी Order करो, स्टॉक Limited है।", "काफी लोग इसे खरीद रहे हैं, आप भी मिस मत करना।", "Price बहुत कम है, तुरंत देखो।");
+
         const id = btn.dataset.view;
         const prod = state.products.find(p => p.id === id);
         if (!prod) return;
@@ -1033,7 +1153,7 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
         <div class="price">${fmt(prod.price)} <span class="shipping_cost"> +${prod.shipping_cost}₹ Shipping Cost</span></div>
         <div><span class="old">${prod.old ? fmt(prod.old) : ''}</span> <span class="off">${prod.old !== prod.price ? fmt((prod.old - prod.price) * 100 / prod.old) + '% off ' : 'On MRP'}</span> </div>
       </div> 
-      <button class="btn" data-id="${id}">Add to Cart</button>
+      <button class="btn" data-id="${id}"  onclick="speakNow('Product Cart मे ऐड किया गया')";>Add to Cart</button>
     </div>
       
       
@@ -1044,8 +1164,10 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       <div style="display:flex;flex-direction:column;gap:10px;">
         ${prod.videos.map(v => `<iframe width="100%" height="250" src="${v}" frameborder="0" allowfullscreen></iframe>`).join('')}
       </div>
-      <div style="margin-top:15px;font-weight:bold">Price: ₹${prod.price}</div>
-      <div style="margin-top:15px;font-weight:bold"> We </div>
+      <div style="margin-top:15px;font-weight:bold">Price: ₹${prod.price} मैं आपको Flipkart और Amazon के products से भी सस्ता दे रहा हूँ।  
+👉 आप चाहें तो Flipkart और Amazon पर चेक कर सकते हैं।
+</div>
+      
     `;
 
         document.getElementById('productModal').style.display = 'flex';
@@ -1144,10 +1266,13 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
       else if (action === 'rm') removeFromCart(id);
       else if (btn.id === 'checkoutBtn') {
         if (Object.keys(state.cart).length === 0) {
+          speakNow('आपने कोई product ऐड नहीं किया है');
           return alert('Cart is empty');
         }
         if (!usrName) {
-          alert("पहले मुझे आपना Address तो बताओ ..... empty string, 0, null, undefined, false, NaN");
+          alert("पहले मुझे अपना Address तो बताओ ..... empty string, 0, null, undefined, false, NaN");
+
+          speakNow('पहले मुझे अपना Address तो बताओ');
           // alert के बाद अपने आप click event trigger करना
           document.getElementById("logoBtn").click();
           document.getElementById("toggleFormBtn").click();
@@ -1189,6 +1314,17 @@ background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:cente
     // Search
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', () => {
+
+
+      // speakNow('दिल्ली की Best Deal अब आपके घर पर');
+      speakOne(1,
+        "दिल्ली की Best Deal",
+        "अब आपके घर पर",
+        "Offer अभी Limited है",
+        "Best Price Guarantee",
+        "आज ही Order करो"
+      );
+
       const q = searchInput.value.trim().toLowerCase();
       const filtered = state.products.filter(p => (p.title + " " + p.desc).toLowerCase().includes(q));
       renderProducts(filtered);
