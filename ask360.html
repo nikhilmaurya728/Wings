@@ -91,7 +91,7 @@
             cursor: pointer;
         }
         .controls select{
-            width: 70px;
+            width: 60px;
         }
 
         main {
@@ -188,7 +188,8 @@
         function renderStars(id) {
             let saved = ratings[id] || 0;
             return [1, 2, 3, 4, 5].map(n =>
-                `<span data-id="${id}" data-val="${n}" style="color:${n <= saved ? 'gold' : '#888'}">★</span>`
+                `<span data-id="${id}" data-val="${n}" style="
+            padding: 4px; color:${n <= saved ? 'gold' : '#888'}">★</span>`
             ).join("");
         }
 
