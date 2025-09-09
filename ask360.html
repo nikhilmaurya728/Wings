@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask 360</title>
+   <style>
+    /* ==============================
+   Q&A App Look – Responsive CSS
+   Paste this file as style.css next to your HTML
+   ============================== */
+
+/* ---------- CSS Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, svg { display: block; max-width: 100%; height: auto; }
+
+/* ---------- Design Tokens ---------- */
+:root {
+  --bg: #0f1222;
+  --card: #151935;
+  --card-2: #1b2042;
+  --text: #e9ecff;
+  --muted: #b9c0ff;
+  --brand: #7a8cff;
+  --brand-2: #a1b0ff;
+  --ring: rgba(122, 140, 255, 0.45);
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 10px 20px rgba(0,0,0,.35), 0 4px 10px rgba(0,0,0,.25);
+  --radius: 18px;
+}
+
+[data-theme="dark"] {
+  --bg: #0f1222;
+  --card: #151935;
+  --card-2: #1b2042;
+  --text: #eff0fd;
+  --muted: #d4d9fa;
+  --brand: #7a8cff;
+  --brand-2: #a1b0ff;
+  --ring: rgba(122, 140, 255, 0.45);
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --bg: #f2f5ff;
+  --card: #ffffff;
+  --card-2: #f6f8ff;
+  --text: #12152b;
+  --muted: #303663;
+  --brand: #3c55ff;
+  --brand-2: #6e86ff;
+  --ring: rgba(60, 85, 255, .25);
+  --border: rgba(18, 21, 43, .08);
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f2f5ff;
+    --card: #ffffff;
+    --card-2: #f6f8ff;
+    --text: #12152b;
+    --muted: #4b528b;
+    --brand: #3c55ff;
+    --brand-2: #6e86ff;
+    --ring: rgba(60, 85, 255, .25);
+    --border: rgba(18, 21, 43, .08);
+  }
+}
+
+/* ---------- Base ---------- */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(122,140,255,.20), transparent 60%),
+    radial-gradient(1000px 500px at 90% 10%, rgba(161,176,255,.18), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg));
+  line-height: 1.6;
+}
+
+/* Make it feel like an app */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: saturate(140%) blur(10px);
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0px clamp(16px, 3vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(20px, 3.5vw, 34px);
+  letter-spacing: 0.2px;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+}
+
+main {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px clamp(16px, 3vw, 28px) 80px;
+}
+
+/* Optional divider (your HTML already has <hr>) */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0 0;
+}
+
+/* ---------- Q&A List ---------- */
+section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+  margin-top: 18px;
+}
+
+article {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(14px, 2.2vw, 20px);
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+article:hover {
+  background: var(--card-2);
+  box-shadow: 0 16px 32px rgba(0,0,0,.35), 0 6px 16px rgba(0,0,0,.25);
+}
+
+article h2 {
+  font-size: clamp(16px, 2.4vw, 20px);
+  margin: 0 0 8px;
+}
+
+article p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Code chips */
+code, pre, kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+code {
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--brand-2) 12%, transparent);
+  border: 1px dashed color-mix(in oklab, var(--brand) 40%, transparent);
+}
+
+/* ---------- App-like footer ---------- */
+footer {
+  position: fixed;
+  inset: auto 0 0 0;
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
+  border-top: 1px solid var(--border);
+  backdrop-filter: saturate(140%) blur(10px);
+}
+
+footer p {
+  margin: 0;
+  padding: 12px clamp(16px, 3vw, 28px);
+  max-width: 1040px;
+  margin-inline: auto;
+  color: var(--muted);
+}
+
+/* ---------- Interactive states & accessibility ---------- */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+/* ---------- Tiny screens tuning ---------- */
+@media (max-width: 380px) {
+  .header-inner { padding: 12px 14px; }
+  main { padding: 18px 14px 72px; }
+}
+
+/* ---------- Print-friendly (optional) ---------- */
+@media print {
+  body { background: #fff; color: #000; }
+  header, footer { position: static; backdrop-filter: none; }
+  section { grid-template-columns: 1fr; }
+  article { box-shadow: none; border: 1px solid #ccc; }
+}
+
+   </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <h1 role="button" tabindex="0" onclick="location.reload();"
+                style="min-width: 115px; margin-top: 4px;  cursor:pointer; user-select:none;  display:inline-block; padding:6px 10px; margin-right:8px; border-radius:10px; background: linear-gradient(90deg,#7a8cff,#a1b0ff); color:#08102a; font-weight:700; font-size:24px; box-shadow: inset 0 -2px 6px rgba(0,0,0,0.12); ">
+                Ask 360</h1>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <input type="text" id="searchBox" placeholder="Search questions..."
+                    style="padding:6px 10px; border-radius:8px; border:1px solid var(--border);">
+                <select id="tagFilter" style="padding:6px 10px; border-radius:8px; border:1px solid var(--border);">
+                    <option value="">All Tags</option>
+                </select>
+                <button id="langToggle" class="badge">हिंदी</button>
+                <button id="themeToggle" class="badge">🌙</button>
+            </div>
+        </div>
+        <hr>
+    </header>
+
+    <main>
+        <section id="qaContainer"></section>
+    </main>
+
+    <footer>
+        <p>© 2025 मेरा प्रश्न उत्तर पेज</p>
+    </footer>
+
+
+    <script src="ask360.js"></script>
+
+    <script>
+        // ---------------- Q&A डेटा ----------------
+
+
+        let currentLang = "hi"; // डिफॉल्ट हिंदी
+        let currentTheme = "dark"; // डिफॉल्ट डार्क
+        let ratings = JSON.parse(localStorage.getItem("ratings") || "{}");
+
+        // ---------------- स्टार बनाना ----------------
+        function renderStars(id) {
+            const saved = ratings[id] || 0;
+            return [1, 2, 3, 4, 5].map(num => `
+        <span data-id="${id}" data-value="${num}" style="padding:2px; color:${num <= saved ? 'gold' : '#ccc'}">★</span>
+      `).join("");
+        }
+
+        // ---------------- Render Function ----------------
+        function renderQuestions(filterTag = "", searchQuery = "") {
+            const container = document.getElementById("qaContainer");
+            container.innerHTML = "";
+
+            qaData.forEach(item => {
+                const question = currentLang === "hi" ? item.hi.q : item.en.q;
+                const answer = currentLang === "hi" ? item.hi.a : item.en.a;
+
+                // tag filter
+                if (filterTag && !item.tags.includes(filterTag)) return;
+
+                // search filter
+                const combinedText = (question + " " + answer).toLowerCase();
+                if (searchQuery && !combinedText.includes(searchQuery.toLowerCase())) return;
+
+                // article बनाना
+                const article = document.createElement("article");
+                article.setAttribute("data-tags", item.tags);
+
+                const h2 = document.createElement("h2");
+                h2.textContent = question;
+
+                const p = document.createElement("p");
+                p.textContent = answer;
+
+                const starsDiv = document.createElement("div");
+                starsDiv.className = "stars";
+                starsDiv.style.textAlign = "right";
+                starsDiv.style.cursor = "pointer";
+
+                starsDiv.innerHTML = renderStars(item.id);
+
+
+
+                article.appendChild(h2);
+                article.appendChild(p);
+                article.appendChild(starsDiv);
+                container.appendChild(article);
+            });
+
+            // Event Binding
+            document.querySelectorAll(".stars span").forEach(star => {
+                star.addEventListener("click", function () {
+                    const id = this.getAttribute("data-id");
+                    const val = parseInt(this.getAttribute("data-value"));
+                    ratings[id] = val;
+                    localStorage.setItem("ratings", JSON.stringify(ratings));
+                    renderQuestions(document.getElementById("tagFilter").value, document.getElementById("searchBox").value);
+                });
+            });
+        }
+
+        // ---------------- Tag Filter बनाना ----------------
+        function populateTagFilter() {
+            const select = document.getElementById("tagFilter");
+            const allTags = new Set();
+            qaData.forEach(item => {
+                item.tags.split(",").forEach(tag => allTags.add(tag.trim()));
+            });
+
+            allTags.forEach(tag => {
+                const opt = document.createElement("option");
+                opt.value = tag;
+                opt.textContent = tag;
+                select.appendChild(opt);
+            });
+        }
+
+        // ---------------- Event Listeners ----------------
+        document.getElementById("langToggle").addEventListener("click", () => {
+            currentLang = (currentLang === "hi" ? "en" : "hi");
+            document.getElementById("langToggle").textContent = (currentLang === "hi" ? "हिंदी" : "English");
+            renderQuestions(document.getElementById("tagFilter").value, document.getElementById("searchBox").value);
+        });
+
+        document.getElementById("tagFilter").addEventListener("change", (e) => {
+            renderQuestions(e.target.value, document.getElementById("searchBox").value);
+        });
+
+        document.getElementById("searchBox").addEventListener("input", (e) => {
+            renderQuestions(document.getElementById("tagFilter").value, e.target.value);
+        });
+
+        // Theme Toggle
+        document.getElementById("themeToggle").addEventListener("click", () => {
+            if (currentTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "light");
+                currentTheme = "light";
+                document.getElementById("themeToggle").textContent = "☀️";
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                currentTheme = "dark";
+                document.getElementById("themeToggle").textContent = "🌙";
+            }
+        });
+
+        // ---------------- Init ----------------
+        populateTagFilter();
+        renderQuestions();
+    </script>
+</body>
+
+</html>
