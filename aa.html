@@ -255,18 +255,10 @@
             renderQuestions(document.getElementById("tagFilter").value,
                 document.getElementById("searchBox").value);
         };
-        // Theme Toggle
-        document.getElementById("themeToggle").addEventListener("click", () => {
-            if (currentTheme === "dark") {
-                document.documentElement.setAttribute("data-theme", "light");
-                currentTheme = "light";
-                document.getElementById("themeToggle").textContent = "☀️";
-            } else {
-                document.documentElement.setAttribute("data-theme", "dark");
-                currentTheme = "dark";
-                document.getElementById("themeToggle").textContent = "🌙";
-            }
-        });
+        document.getElementById("themeToggle").onclick = () => {
+            if (currentTheme === "dark") { document.documentElement.dataset.theme = "light"; currentTheme = "light"; this.textContent = "☀️"; }
+            else { document.documentElement.dataset.theme = "dark"; currentTheme = "dark"; this.textContent = "🌙"; }
+        };
         document.getElementById("tagFilter").onchange = e => renderQuestions(e.target.value, document.getElementById("searchBox").value);
         document.getElementById("searchBox").oninput = e => renderQuestions(document.getElementById("tagFilter").value, e.target.value);
 
