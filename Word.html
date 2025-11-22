@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Local Word Editor — Character Count & Persistent Files</title>
+  <style>
+    :root{--bg:#0f1724;--panel:#0b1220;--muted:#94a3b8;--accent:#06b6d4;--glass: rgba(255,255,255,0.03)}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Noto Sans',Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071024 0%, #092036 100%);color:#e6eef6}
+    .app{display:grid;grid-template-columns:320px 1fr;gap:18px;height:100vh;padding:18px}
+
+    /* SIDEBAR */
+    .sidebar{background:var(--panel);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:12px}
+    .controls{display:flex;gap:8px}
+    button{background:var(--glass);border:1px solid rgba(255,255,255,0.04);color:inherit;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .file-list{overflow:auto;flex:1;padding:6px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .file-item{padding:10px;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .file-item.selected{background:linear-gradient(90deg, rgba(6,182,212,0.12), rgba(6,182,212,0.04));box-shadow:0 4px 14px rgba(2,6,23,0.6)}
+    .file-meta{font-size:12px;color:var(--muted)}
+
+    /* EDITOR */
+    .editor{background:var(--panel);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+    .title-row{display:flex;gap:10px;align-items:center}
+    input.title{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .toolbar{display:flex;gap:8px}
+    .area{display:flex;gap:12px;flex:1;min-height:0}
+    textarea{flex:1;resize:none;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;min-height:300px}
+    .preview{width:360px;padding:12px;border-radius:10px;border:1px dashed rgba(255,255,255,0.04);overflow:auto;background:rgba(255,255,255,0.02)}
+
+    .status{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+    .status .row{display:flex;gap:10px;align-items:center}
+    .small{font-size:12px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:900px){.app{grid-template-columns:1fr} .preview{display:none}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">My Files</h3>
+        <div class="small">Local • Auto-save</div>
+      </div>
+
+      <div class="controls">
+        <button id="newBtn">नया</button>
+        <button id="saveBtn">Save</button>
+        <button id="exportBtn">Export</button>
+        <button id="importBtn">Import</button>
+      </div>
+
+      <div class="file-list" id="fileList" aria-label="Saved files"></div>
+
+      <div class="small">Tip: ये सब आपके ब्राउज़र के localStorage में सुरक्षित रहते हैं — साइट बंद करने के बाद भी।</div>
+    </aside>
+
+    <main class="editor">
+      <div class="title-row">
+        <input id="titleInput" class="title" placeholder="Document title (अनुशंसित)" />
+        <div class="toolbar">
+          <button id="renameBtn">Rename</button>
+          <button id="deleteBtn">Delete</button>
+        </div>
+        <div class="toolbar">
+
+                    <!-- New formatting tools -->
+                    <button id="boldBtn"><b>B</b></button>
+                    <select id="sizeSelect">
+                        <option value="">Size</option>
+                        <option value="12">12px</option>
+                        <option value="14">14px</option>
+                        <option value="16">16px</option>
+                        <option value="18">18px</option>
+                        <option value="20">20px</option>
+                        <option value="24">24px</option>
+                    </select>
+                    <input type="color" id="colorPick" title="Pick text color" />
+                </div>
+      </div>
+
+      <div class="area">
+<div id="editor" contenteditable="true"></div>
+
+        <textarea id="editorArea" contenteditable="true" placeholder="Yahan likhiye..." spellcheck="true"></textarea>
+        <div class="preview" id="previewArea"><strong>Preview</strong><hr id="prhr"/></div>
+      </div>
+
+      <div class="status" aria-live="polite">
+        <div class="row">
+          <span id="chars">All Characters: 0 (0 no-spaces)</span> • 
+          <span id="words">Words: 0</span> • 
+          <span id="lines">Lines: 0</span>
+        </div>
+        <div class="row">
+          <span id="selStats">Selected: 0 chars (0 no-spaces) • 0 words • 0 lines</span>
+        </div>
+        <div class="row">
+          <span class="small" id="saveStatus">Not saved</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <input type="file" id="fileInput" accept="application/json" style="display:none" />
+
+  <script>
+    // Simple local persistent editor with character count, selection stats and file list
+    const LS_KEY = 'local_word_editor_files_v1';
+    let files = {};
+    let currentId = null; // id of current open file
+
+    // DOM
+    const fileListEl = document.getElementById('fileList');
+    const newBtn = document.getElementById('newBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const importBtn = document.getElementById('importBtn');
+    const renameBtn = document.getElementById('renameBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const titleInput = document.getElementById('titleInput');
+    const editorArea = document.getElementById('editorArea');
+    const chars = document.getElementById('chars');
+    const words = document.getElementById('words');
+    const lines = document.getElementById('lines');
+    const selStats = document.getElementById('selStats');
+    const saveStatus = document.getElementById('saveStatus');
+    const previewArea = document.getElementById('previewArea');
+    const fileInput = document.getElementById('fileInput');
+
+    // helpers
+    function uid(){return 'f_'+Math.random().toString(36).slice(2,10);} 
+    function now(){return new Date().toISOString();}
+
+    // load from localStorage
+    function loadFiles(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        files = raw ? JSON.parse(raw) : {};
+      }catch(e){files={}};
+    }
+    function persist(){localStorage.setItem(LS_KEY, JSON.stringify(files));}
+
+    function renderFileList(){
+      fileListEl.innerHTML='';
+      const ids = Object.keys(files).sort((a,b)=>files[b].modified.localeCompare(files[a].modified));
+      if(ids.length===0){
+        fileListEl.innerHTML = '<div class="small">Koi file nahi. \"नया\" button dabao.</div>'; 
+        return;
+      }
+      ids.forEach(id=>{
+        const f = files[id];
+        const div = document.createElement('div');
+        div.className = 'file-item' + (id===currentId? ' selected':'');
+        div.innerHTML = `<div style="flex:1"><strong>${escapeHtml(f.title||'Untitled')}</strong><div class="file-meta">${f.modified.split('T')[0]} • ${Math.max(0,(f.content||'').length)} chars</div></div>`;
+        div.addEventListener('click',()=>openFile(id));
+        fileListEl.appendChild(div);
+      });
+    }
+
+    function openFile(id){
+      if(!files[id]) return;
+      currentId = id;
+      titleInput.value = files[id].title;
+      editorArea.value = files[id].content;
+      updateCounts();
+      renderFileList();
+      setStatus('Loaded');
+    }
+
+    function newFile(){
+      const id = uid();
+      files[id] = {title: 'Untitled', content:'', created: now(), modified: now()};
+      persist();
+      openFile(id);
+      renderFileList();
+    }
+
+    function saveCurrent(){
+      if(!currentId) { setStatus('No file open'); return }
+      files[currentId].title = titleInput.value || 'Untitled';
+      files[currentId].content = editorArea.value;
+      files[currentId].modified = now();
+      persist();
+      renderFileList();
+      setStatus('Saved');
+    }
+
+    function renameCurrent(){
+      if(!currentId){ setStatus('No file open'); return }
+      files[currentId].title = titleInput.value || 'Untitled';
+      files[currentId].modified = now();
+      persist();
+      renderFileList();
+      setStatus('Renamed');
+    }
+
+    function deleteCurrent(){
+      if(!currentId){ setStatus('No file open'); return }
+      if(!confirm('Are you sure to delete this file?')) return;
+      delete files[currentId];
+      currentId = null;
+      persist();
+      titleInput.value=''; editorArea.value=''; updateCounts(); renderFileList(); setStatus('Deleted');
+    }
+
+    function exportAll(){
+      const blob = new Blob([JSON.stringify(files, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = 'local_word_editor_export.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    function importFile(file){
+      const reader = new FileReader();
+      reader.onload = e=>{
+        try{
+          const obj = JSON.parse(e.target.result);
+          // merge gently — assign new ids to avoid collision
+          Object.keys(obj).forEach(k=>{
+            const nid = uid();
+            files[nid] = obj[k];
+            if(!files[nid].created) files[nid].created = now();
+            files[nid].modified = files[nid].modified || now();
+          });
+          persist(); renderFileList(); setStatus('Imported');
+        }catch(err){alert('Invalid JSON');}
+      };
+      reader.readAsText(file);
+    }
+
+    // Update total counts (All) and preview
+    function updateCounts(){
+      const text = editorArea.value || '';
+      const c = text.length;
+      const cNoSpace = text.replace(/\s/g,'').length;
+      const w = text.trim().length===0?0:text.trim().split(/\s+/).length;
+      const l = text.split(/\r?\n/).length;
+      chars.textContent = `All Characters: ${c} (${cNoSpace} no-spaces)`;
+      words.textContent = `Words: ${w}`;
+      lines.textContent = `Lines: ${l}`;
+      previewArea.innerHTML = '<strong>Preview</strong><hr/>' + nl2br(escapeHtml(text));
+
+      // also update selection stats (in case content changed)
+      updateSelectionStats();
+    }
+
+    // Update selected text stats (with & without spaces, words, lines)
+    function updateSelectionStats(){
+      const text = editorArea.value || '';
+      const start = editorArea.selectionStart;
+      const end = editorArea.selectionEnd;
+
+      // If cursor not in this textarea, selectionStart/End still reflect last focus — but we only count when selection length>0
+      if(typeof start === 'number' && typeof end === 'number' && end > start){
+        const sel = text.slice(start, end);
+        const selChars = sel.length;
+        const selCharsNoSpace = sel.replace(/\s/g,'').length;
+        const selWords = sel.trim().length===0?0:sel.trim().split(/\s+/).length;
+        const selLines = sel.split(/\r?\n/).length;
+        selStats.textContent = `Selected: ${selChars} chars (${selCharsNoSpace} no-spaces) • ${selWords} words • ${selLines} lines`;
+      } else {
+        // nothing selected
+        selStats.textContent = `Selected: 0 chars (0 no-spaces) • 0 words • 0 lines`;
+      }
+    }
+
+    // small utilities
+    function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function nl2br(s){ return (s||'').replace(/\n/g,'<br/>'); }
+    function setStatus(t){ saveStatus.textContent = t; setTimeout(()=>{ if(saveStatus.textContent === t) saveStatus.textContent = '' }, 1600) }
+
+    // autosave every 3s if changed
+    let lastSnapshot = '';
+    setInterval(()=>{
+      if(!currentId) return;
+      const snapshot = titleInput.value + '\n' + editorArea.value;
+      if(snapshot !== lastSnapshot){
+        files[currentId].title = titleInput.value || 'Untitled';
+        files[currentId].content = editorArea.value;
+        files[currentId].modified = now();
+        persist(); lastSnapshot = snapshot; renderFileList(); setStatus('Auto-saved');
+      }
+    }, 3000);
+
+    // events
+    newBtn.addEventListener('click', newFile);
+    saveBtn.addEventListener('click', saveCurrent);
+    renameBtn.addEventListener('click', renameCurrent);
+    deleteBtn.addEventListener('click', deleteCurrent);
+    exportBtn.addEventListener('click', exportAll);
+    importBtn.addEventListener('click', ()=>fileInput.click());
+    fileInput.addEventListener('change', (e)=>{ if(e.target.files[0]) importFile(e.target.files[0]); e.target.value=''; });
+
+    // textarea events for counts and selection
+    editorArea.addEventListener('input', updateCounts);
+    editorArea.addEventListener('keyup', updateSelectionStats);
+    editorArea.addEventListener('mouseup', updateSelectionStats);
+    editorArea.addEventListener('select', updateSelectionStats);
+    titleInput.addEventListener('input', ()=>{ setStatus('Editing title'); });
+
+    // initial load
+    loadFiles(); renderFileList();
+
+    // open newest if any
+    const firstId = Object.keys(files).sort((a,b)=>files[b].modified.localeCompare(files[a].modified))[0];
+    if(firstId) openFile(firstId);
+
+  </script>
+<script>
+        const boldBtn = document.getElementById('boldBtn');
+        const sizeSelect = document.getElementById('sizeSelect');
+        const colorPick = document.getElementById('colorPick');
+
+        function applyWrap(tagStart, tagEnd) {
+            const start = editorArea.selectionStart;
+            const end = editorArea.selectionEnd;
+            if (end <= start) return; // nothing selected
+            const text = editorArea.value;
+            editorArea.value = text.slice(0, start) + tagStart + text.slice(start, end) + tagEnd + text.slice(end);
+            updateCounts();
+        }
+
+        // Bold button
+        boldBtn.addEventListener('click', () => {
+            applyWrap('**', '**'); // Markdown style bold
+        });
+
+        // Size select
+        sizeSelect.addEventListener('change', () => {
+            const size = sizeSelect.value;
+            if (!size) return;
+            applyWrap(`<span style="font-size:${size}px">`, `</span>`);
+            sizeSelect.value = ''; // reset
+        });
+
+        // Color picker
+        colorPick.addEventListener('input', () => {
+            const color = colorPick.value;
+            applyWrap(`<span style="color:${color}">`, `</span>`);
+        });
+
+        function format(command, value=null){
+    document.execCommand(command, false, value);
+}
+
+document.getElementById('boldBtn').addEventListener('click', ()=> format('bold'));
+document.getElementById('sizeSelect').addEventListener('change', (e)=> format('fontSize', e.target.value));
+document.getElementById('colorPick').addEventListener('input', (e)=> format('foreColor', e.target.value));
+
+
+    </script>
+
+</body>
+</html>
